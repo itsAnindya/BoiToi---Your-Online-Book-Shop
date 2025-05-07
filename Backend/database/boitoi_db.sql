@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 07/05/2025 20:15:47
+ Date: 07/05/2025 23:28:14
 */
 
 SET NAMES utf8mb4;
@@ -473,6 +473,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES (0, 'admin', 'admin@boitoi.com', '$2y$12$sFTsyW67JP93STa/zJ22Yus.PKcBME87v.MFTTtF2hWU96BiMBdsO', 'Anindya', 'Biswas', '01821646373', NULL, 'Superadmin');
 
 -- ----------------------------
 -- Table structure for user_address
