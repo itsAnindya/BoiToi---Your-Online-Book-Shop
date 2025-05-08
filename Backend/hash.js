@@ -1,10 +1,15 @@
-import { hash as _hash } from 'bcrypt';
+const bcrypt = require('bcrypt');
 
-const password = 'admin123'; // Replace this with any password you want
+const password = 'admin1234'; // Replace this with any password you want
 
-_hash(password, 10).then(hash => {
+bcrypt.hash(password, 10).then(hash => {
   console.log('Hashed password:', hash);
+}).catch(err => {
+  console.error('Error hashing password:', err);
 });
+
+console.log('Hashing process completed.');
+
 // This code uses the bcrypt library to hash a password.
 // The password is set to 'admin123', but you can replace it with any password you want to hash.
 // The bcrypt.hash function takes the password and a salt rounds value (10 in this case) as arguments.
