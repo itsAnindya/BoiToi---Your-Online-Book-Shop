@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 09/05/2025 14:40:57
+ Date: 09/05/2025 15:17:00
 */
 
 SET NAMES utf8mb4;
@@ -151,43 +151,6 @@ CREATE TABLE `book_category`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for book_edition
--- ----------------------------
-DROP TABLE IF EXISTS `book_edition`;
-CREATE TABLE `book_edition`  (
-  `ID` int NOT NULL,
-  `BOOK_ID` int NULL DEFAULT NULL,
-  `FORMAT_ID` int NULL DEFAULT NULL,
-  `ISBN` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `PRICE` decimal(10, 0) NULL DEFAULT NULL,
-  `STOCK_QUANTITY` int NULL DEFAULT NULL,
-  `IS_EBOOK` tinyint(1) NULL DEFAULT 0,
-  PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
-  INDEX `FORMAT_ID`(`FORMAT_ID` ASC) USING BTREE,
-  CONSTRAINT `book_edition_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `book_edition_ibfk_2` FOREIGN KEY (`FORMAT_ID`) REFERENCES `book_format` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of book_edition
--- ----------------------------
-
--- ----------------------------
--- Table structure for book_format
--- ----------------------------
-DROP TABLE IF EXISTS `book_format`;
-CREATE TABLE `book_format`  (
-  `ID` int NOT NULL,
-  `FORMAT_TYPE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of book_format
--- ----------------------------
-
--- ----------------------------
 -- Table structure for cart
 -- ----------------------------
 DROP TABLE IF EXISTS `cart`;
@@ -245,27 +208,6 @@ CREATE TABLE `discount`  (
 
 -- ----------------------------
 -- Records of discount
--- ----------------------------
-
--- ----------------------------
--- Table structure for ebook_file
--- ----------------------------
-DROP TABLE IF EXISTS `ebook_file`;
-CREATE TABLE `ebook_file`  (
-  `ID` int NOT NULL,
-  `BOOK_EDITION_ID` int NULL DEFAULT NULL,
-  `FILE_URL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `FILE_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `FILE_SIZE_MB` decimal(6, 2) NULL DEFAULT NULL,
-  `DRM_ENABLED` tinyint(1) NULL DEFAULT NULL,
-  `UPLOADED_AT` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `BOOK_EDITION_ID`(`BOOK_EDITION_ID` ASC) USING BTREE,
-  CONSTRAINT `ebook_file_ibfk_1` FOREIGN KEY (`BOOK_EDITION_ID`) REFERENCES `book_edition` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of ebook_file
 -- ----------------------------
 
 -- ----------------------------
@@ -554,28 +496,6 @@ CREATE TABLE `user_address`  (
 
 -- ----------------------------
 -- Records of user_address
--- ----------------------------
-
--- ----------------------------
--- Table structure for user_ebook_access
--- ----------------------------
-DROP TABLE IF EXISTS `user_ebook_access`;
-CREATE TABLE `user_ebook_access`  (
-  `ID` int NOT NULL,
-  `USER_ID` int NULL DEFAULT NULL,
-  `BOOK_EDITION_ID` int NULL DEFAULT NULL,
-  `PURCHASE_DATE` datetime NULL DEFAULT NULL,
-  `EXPIRY_DATE` datetime NULL DEFAULT NULL,
-  `ACCESS_COUNT` int NULL DEFAULT 0,
-  PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
-  INDEX `BOOK_EDITION_ID`(`BOOK_EDITION_ID` ASC) USING BTREE,
-  CONSTRAINT `user_ebook_access_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `user_ebook_access_ibfk_2` FOREIGN KEY (`BOOK_EDITION_ID`) REFERENCES `book_edition` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_ebook_access
 -- ----------------------------
 
 -- ----------------------------
