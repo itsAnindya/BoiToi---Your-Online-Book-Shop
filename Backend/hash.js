@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const password = 'admin1234'; // Replace this with any password you want
+const password = 'admin4321'; // Replace this with any password you want
 
 bcrypt.hash(password, 10).then(hash => {
   console.log('Hashed password:', hash);

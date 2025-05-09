@@ -11,7 +11,7 @@ app.use(cors());
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'mysqlServer#9971', // use your actual password
+  password: 'mysql', // use your actual password
   database: 'BoiToi_DB',
   port: 3306
 });
