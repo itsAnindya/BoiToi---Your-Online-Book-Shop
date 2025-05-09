@@ -50,6 +50,9 @@ app.post('/login', (req, res) => {
 });
 
 // Start the server
-app.listen(3001, () => {
-  console.log('🚀 Server running on http://localhost:3001');
+const PORT = 3001;
+const HOST = '0.0.0.0';  // This allows connections from any IP
+
+app.listen(PORT, HOST, () => {
+  console.log(`🚀 Server running on http://${HOST}:${PORT}`);
 });
