@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 07/05/2025 23:28:14
+ Date: 09/05/2025 14:40:57
 */
 
 SET NAMES utf8mb4;
@@ -41,12 +41,8 @@ CREATE TABLE `activity_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin`  (
-  `ID` int NOT NULL,
-  `USER_ID` int NULL DEFAULT NULL,
-  `ROLE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CREATED_AT` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
+  `USER_ID` int NOT NULL,
+  PRIMARY KEY (`USER_ID`) USING BTREE,
   CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -59,13 +55,14 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `admin_permission`;
 CREATE TABLE `admin_permission`  (
-  `ID` int NOT NULL,
-  `ADMIN_ID` int NULL DEFAULT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `ADMIN_USER_ID` int NULL DEFAULT NULL,
   `PERMISSION_ID` int NULL DEFAULT NULL,
+  `GRANTED_AT` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `ADMIN_ID`(`ADMIN_ID` ASC) USING BTREE,
+  INDEX `ADMIN_USER_ID`(`ADMIN_USER_ID` ASC) USING BTREE,
   INDEX `PERMISSION_ID`(`PERMISSION_ID` ASC) USING BTREE,
-  CONSTRAINT `admin_permission_ibfk_1` FOREIGN KEY (`ADMIN_ID`) REFERENCES `admin` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `admin_permission_ibfk_1` FOREIGN KEY (`ADMIN_USER_ID`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `admin_permission_ibfk_2` FOREIGN KEY (`PERMISSION_ID`) REFERENCES `permission` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -164,6 +161,7 @@ CREATE TABLE `book_edition`  (
   `ISBN` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PRICE` decimal(10, 0) NULL DEFAULT NULL,
   `STOCK_QUANTITY` int NULL DEFAULT NULL,
+  `IS_EBOOK` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   INDEX `FORMAT_ID`(`FORMAT_ID` ASC) USING BTREE,
@@ -250,6 +248,27 @@ CREATE TABLE `discount`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for ebook_file
+-- ----------------------------
+DROP TABLE IF EXISTS `ebook_file`;
+CREATE TABLE `ebook_file`  (
+  `ID` int NOT NULL,
+  `BOOK_EDITION_ID` int NULL DEFAULT NULL,
+  `FILE_URL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `FILE_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `FILE_SIZE_MB` decimal(6, 2) NULL DEFAULT NULL,
+  `DRM_ENABLED` tinyint(1) NULL DEFAULT NULL,
+  `UPLOADED_AT` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BOOK_EDITION_ID`(`BOOK_EDITION_ID` ASC) USING BTREE,
+  CONSTRAINT `ebook_file_ibfk_1` FOREIGN KEY (`BOOK_EDITION_ID`) REFERENCES `book_edition` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ebook_file
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for inventory_log
 -- ----------------------------
 DROP TABLE IF EXISTS `inventory_log`;
@@ -325,6 +344,26 @@ CREATE TABLE `order_discount`  (
 
 -- ----------------------------
 -- Records of order_discount
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for page_view
+-- ----------------------------
+DROP TABLE IF EXISTS `page_view`;
+CREATE TABLE `page_view`  (
+  `ID` int NOT NULL,
+  `USER_ID` int NULL DEFAULT NULL,
+  `PAGE_NAME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `VIEW_DATE` datetime NULL DEFAULT NULL,
+  `DEVICE_TYPE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SESSION_ID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
+  CONSTRAINT `page_view_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of page_view
 -- ----------------------------
 
 -- ----------------------------
@@ -432,6 +471,24 @@ CREATE TABLE `review`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for search_log
+-- ----------------------------
+DROP TABLE IF EXISTS `search_log`;
+CREATE TABLE `search_log`  (
+  `ID` int NOT NULL,
+  `USER_ID` int NULL DEFAULT NULL,
+  `SEARCH_QUERY` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `SEARCH_DATE` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
+  CONSTRAINT `search_log_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of search_log
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for shipping
 -- ----------------------------
 DROP TABLE IF EXISTS `shipping`;
@@ -465,6 +522,7 @@ CREATE TABLE `user`  (
   `PHONE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `IS_SIGNED_IN` tinyint(1) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   `ROLE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CREATED_AT` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_user_email`(`EMAIL` ASC) USING BTREE,
   INDEX `idx_user_username`(`USERNAME` ASC) USING BTREE
@@ -473,7 +531,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (0, 'admin', 'admin@boitoi.com', '$2y$12$sFTsyW67JP93STa/zJ22Yus.PKcBME87v.MFTTtF2hWU96BiMBdsO', 'Anindya', 'Biswas', '01821646373', NULL, 'Superadmin');
+INSERT INTO `user` VALUES (0, 'admin', 'admin@boitoi.com', '$2b$10$j61erVrRpSqUcA.mUs9HiuLORo.WtKi8TWZ/entx7f8dgzXaYxzam', 'Anindya', 'Biswas', '01821646373', NULL, 'Superadmin', NULL);
 
 -- ----------------------------
 -- Table structure for user_address
@@ -496,6 +554,28 @@ CREATE TABLE `user_address`  (
 
 -- ----------------------------
 -- Records of user_address
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for user_ebook_access
+-- ----------------------------
+DROP TABLE IF EXISTS `user_ebook_access`;
+CREATE TABLE `user_ebook_access`  (
+  `ID` int NOT NULL,
+  `USER_ID` int NULL DEFAULT NULL,
+  `BOOK_EDITION_ID` int NULL DEFAULT NULL,
+  `PURCHASE_DATE` datetime NULL DEFAULT NULL,
+  `EXPIRY_DATE` datetime NULL DEFAULT NULL,
+  `ACCESS_COUNT` int NULL DEFAULT 0,
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
+  INDEX `BOOK_EDITION_ID`(`BOOK_EDITION_ID` ASC) USING BTREE,
+  CONSTRAINT `user_ebook_access_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `user_ebook_access_ibfk_2` FOREIGN KEY (`BOOK_EDITION_ID`) REFERENCES `book_edition` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_ebook_access
 -- ----------------------------
 
 -- ----------------------------
