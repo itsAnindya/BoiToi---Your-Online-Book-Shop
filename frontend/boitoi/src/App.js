@@ -1,18 +1,15 @@
-import Login from './Login';
+import logo from './logo.svg';
+import './App.css';
+import LoginSignup from './components/login_signup/login_signup';
+
 
 function App() {
   return (
     <div>
-      <Login />
+      <LoginSignup/>
     </div>
-  );
+  )
 }
-
-export default App;
-
-// import logo from './logo.svg';
-// import './App.css';
-
 // function App() {
 //   return (
 //     <div className="App">
@@ -34,4 +31,4 @@ export default App;
 //   );
 // }
 
-// export default App;
+export default App;
