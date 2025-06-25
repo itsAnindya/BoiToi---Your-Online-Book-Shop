@@ -1,0 +1,124 @@
+/* global.css */
+
+/* CSS Reset (simplified) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Root variables for easy theming */
+:root {
+  --primary-color: #2d6cdf;
+  --secondary-color: #f5f7fa;
+  --accent-color: #ffb400;
+  --text-color: #222;
+  --background-color: #fff;
+  --border-radius: 4px;
+  --font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Base styles */
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5em;
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover, a:focus {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--primary-color);
+  color: #fff;
+  padding: 0.5em 1.2em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover, button:focus {
+  background: var(--accent-color);
+}
+
+/* Forms */
+input, textarea, select {
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  padding: 0.5em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary-color);
+}
+
+/* Utility classes */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Remove list styles */
+ul, ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* Table styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  padding: 0.75em;
+  border: 1px solid #eaeaea;
+}
+
+/* Scrollbar styling (optional) */
+::-webkit-scrollbar {
+  width: 8px;
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 4px;
+}

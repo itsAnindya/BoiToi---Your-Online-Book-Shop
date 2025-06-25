@@ -9,9 +9,9 @@ const Homepage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <HeroSection />
+      {/* <HeroSection />
       <BookCategories />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 };

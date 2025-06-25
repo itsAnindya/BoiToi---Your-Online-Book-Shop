@@ -9,7 +9,10 @@ import './styles/global.css'
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" onClickCapture={e => {
+      // logs the React component *type* if the element was rendered by React
+      console.log("Clicked:", e._reactName || e.target.tagName);
+    }}>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
