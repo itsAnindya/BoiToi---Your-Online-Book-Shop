@@ -6,10 +6,10 @@ const SearchBar = () => (
     <input
       type="text"
       placeholder="Search books..."
-      shape="round"
+      
       style={{ width: "256px" }}
       autoComplete="on"
-      className="w-64 px-4 py-2 border border-gray-300 rounded-l-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-black"
+      className="w-64 px-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-black"
     />
     <div className="bg-white border border-gray-300 border-l-0 rounded-r-full p-2 flex items-center">
       <Search className="w-5 h-5 text-gray-400" />
