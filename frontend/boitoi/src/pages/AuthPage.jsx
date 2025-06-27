@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building } from 'lucide-react';
+import { loginUser, signupUser } from '../services/api';
 
 const AuthPage = () => {
+  // Additional state variables you'll need in your component
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: '',
@@ -29,11 +33,63 @@ const AuthPage = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    if (isLogin) {
-      console.log('Login attempt:', { username: formData.username, password: formData.password });
-    } else {
-      console.log('Signup attempt:', formData);
+  // Updated handleSubmit function for your React component
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      if (isLogin) {
+        // Login
+        if (!formData.username || !formData.password) {
+          setError('Please fill in all fields');
+          setLoading(false);
+          return;
+        }
+
+        const result = await loginUser({
+          username: formData.username,
+          password: formData.password,
+        });
+
+        if (result.success) {
+          // Store token in localStorage or context
+          localStorage.setItem('authToken', result.token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+
+          console.log('Login successful:', result.user);
+          // Redirect to dashboard or home page
+          // window.location.href = '/dashboard';
+        } else {
+          setError(result.error);
+        }
+      } else {
+        // Signup
+        if (formData.password !== formData.confirmPassword) {
+          setError('Passwords do not match');
+          setLoading(false);
+          return;
+        }
+
+        const result = await signupUser(formData);
+
+        if (result.success) {
+          // Store token in localStorage or context
+          localStorage.setItem('authToken', result.token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+
+          console.log('Signup successful:', result.user);
+          // Redirect to dashboard or home page
+          // window.location.href = '/dashboard';
+        } else {
+          setError(result.error);
+        }
+      }
+    } catch (error) {
+      setError('Something went wrong. Please try again.');
+      console.error('Auth error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,21 +139,19 @@ const AuthPage = () => {
         <div className="flex bg-white/10 p-1 rounded-2xl mb-8 gap-2">
           <button
             onClick={() => setIsLogin(true)}
-            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-              isLogin
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
-                : 'text-white/70 hover:text-white hover:bg-white/5'
-            }`}
+            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${isLogin
+              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
+              : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
           >
             Login
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-              !isLogin
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
-                : 'text-white/70 hover:text-white hover:bg-white/5'
-            }`}
+            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${!isLogin
+              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
+              : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
           >
             Sign Up
           </button>
@@ -134,12 +188,30 @@ const AuthPage = () => {
                   />
                 </div>
               </div>
+
+              // Error display component (add this to your JSX)
+              {error && (
+                <div className="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-xl mb-4">
+                  {error}
+                </div>
+              )}
+
+              // Updated button with loading state
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                disabled={loading}
+                className={`w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-[1.02] transition-all duration-300 shadow-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
               >
-                Login to BoiToi
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    {isLogin ? 'Logging in...' : 'Creating Account...'}
+                  </div>
+                ) : (
+                  isLogin ? 'Login to BoiToi' : 'Create BoiToi Account'
+                )}
               </button>
             </>
           ) : (
@@ -148,7 +220,7 @@ const AuthPage = () => {
               {/* Personal Information */}
               <div className="space-y-4">
                 <h3 className="text-white font-semibold text-lg">Personal Information</h3>
-                
+
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
                   <input
@@ -239,16 +311,15 @@ const AuthPage = () => {
               {/* Address Information */}
               <div className="space-y-4 pt-4 border-t border-white/20">
                 <h3 className="text-white font-semibold text-lg">Address Information</h3>
-                
+
                 <div className="flex space-x-3">
                   <button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, addressType: 'home' }))}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${
-                      formData.addressType === 'home'
-                        ? 'bg-purple-500 text-white'
-                        : 'bg-white/10 text-white/70 hover:bg-white/20'
-                    }`}
+                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${formData.addressType === 'home'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                      }`}
                   >
                     <Home className="w-4 h-4" />
                     <span>Home</span>
@@ -256,11 +327,10 @@ const AuthPage = () => {
                   <button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, addressType: 'office' }))}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${
-                      formData.addressType === 'office'
-                        ? 'bg-purple-500 text-white'
-                        : 'bg-white/10 text-white/70 hover:bg-white/20'
-                    }`}
+                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${formData.addressType === 'office'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                      }`}
                   >
                     <Building className="w-4 h-4" />
                     <span>Office</span>
