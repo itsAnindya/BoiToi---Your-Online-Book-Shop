@@ -131,6 +131,52 @@ app.post('/signup', async (req, res) => {
     res.status(500).json({ message: 'Server error (try/catch block)', error: err.message });
   }
 });
+//--------home route to get top 5 books based on average rating--------
+app.post('/home', (req, res) => {
+  // Step 1: Get top 5 books based on average rating
+  const avgQuery = `
+    SELECT BOOK_ID, AVG(Rating) AS avg_rating
+    FROM review
+    GROUP BY BOOK_ID
+    ORDER BY avg_rating DESC
+    LIMIT 5;
+  `;
+
+  db.query(avgQuery, (err, topBooks) => {
+    if (err) {
+      console.error('Error in avg rating query:', err);
+      return res.status(500).json({ error: 'Database error while getting top books' });
+    }
+
+    const topBookIds = topBooks.map(book => book.BOOK_ID);
+    if (topBookIds.length === 0) {
+      return res.status(200).json([]); // No reviews
+    }
+
+    // Step 2: Get book
+    //  info for top 5 book IDs
+    const placeholders = topBookIds.map(() => '?').join(', ');
+    const bookQuery = `
+      SELECT id, title, isbn, published_date, publisher_id,
+             page_count, language, edition, price,
+             stock_quantity, description, cover_url,
+             added_at, genre
+      FROM book
+      WHERE id IN (${placeholders});
+    `;
+
+    db.query(bookQuery, topBookIds, (err, books) => {
+      if (err) {
+        console.error('Error in book info query:', err);
+        return res.status(500).json({ error: 'Database error while getting book details' });
+      }
+
+      console.log('Top 5 books:', books);
+      res.status(200).json(books);
+    });
+  });
+});
+
 
 // -------------------- Start Server --------------------
 const PORT = 3001;
