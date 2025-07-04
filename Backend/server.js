@@ -31,7 +31,7 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM USER WHERE USERNAME = ?';
   db.query(sql, [username], async (err, results) => {
     if (err) return res.status(500).json({ message: 'Server error (query failed)' });
-
+    console.log('Login query executed:', sql, 'with username:', username);
     // Step 1: USER not found
     if (results.length === 0) {
       return res.status(401).json({ message: 'No such user' });
@@ -77,7 +77,7 @@ app.post('/signup', async (req, res) => {
     gender,
     birthday
   } = req.body;
-
+  console.log('Signup request received:', req.body);
   // Basic validation
   if (!id || !username || !email || !password) {
     return res.status(400).json({ message: 'Required fields are missing (id, username, email, password)' });
@@ -141,7 +141,7 @@ app.post('/home', (req, res) => {
     ORDER BY avg_rating DESC
     LIMIT 5;
   `;
-
+  console.log('Executing avg rating query:', avgQuery);
   db.query(avgQuery, (err, topBooks) => {
     if (err) {
       console.error('Error in avg rating query:', err);
@@ -152,7 +152,7 @@ app.post('/home', (req, res) => {
     if (topBookIds.length === 0) {
       return res.status(200).json([]); // No reviews
     }
-
+    console.log('Top 5 book IDs:', topBookIds);
     // Step 2: Get book
     //  info for top 5 book IDs
     const placeholders = topBookIds.map(() => '?').join(', ');
@@ -177,7 +177,9 @@ app.post('/home', (req, res) => {
   });
 });
 
-
+app.post('/test', (req, res) => {
+  res.status(200).json({ message: 'Backend is connected!' });
+});
 // -------------------- Start Server --------------------
 const PORT = 3001;
 const HOST = '0.0.0.0';  // listen from any IP
