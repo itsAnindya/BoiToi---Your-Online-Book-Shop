@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { FaBars, FaTimes, FaBook, FaShoppingCart, FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,17 +23,17 @@ const NavBar = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <BookOpen></BookOpen>
+          <Link to="/"><div className="flex items-center space-x-2">
+            <BookOpen />
             {/* <FaBook className="text-2xl" /> */}
             <span className="font-bold text-xl">BoiToi</span>
-          </div>
+          </div></Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             {navItems.map((item) => (
-              <a 
-                key={item.id} 
+              <a
+                key={item.id}
                 href={item.link}
                 className="hover:text-slate-100 transition-colors text-slate-100"
               >
@@ -46,13 +47,15 @@ const NavBar = () => {
             <button className="hover:text-amber-200 transition-colors">
               <FaShoppingCart className="text-xl" />
             </button>
-            <button className="hover:text-amber-200 transition-colors">
-              <FaUser className="text-xl" />
-            </button>
+            <Link to="/auth">
+              <button className="hover:text-amber-200 transition-colors">
+                <FaUser className="text-xl" />
+              </button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
-          <button 
+          <button
             className="md:hidden focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
           >
