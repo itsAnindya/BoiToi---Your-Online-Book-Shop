@@ -5,20 +5,28 @@ import './App.css'
 import './styles/global.css' // Uncomment if you have global styles
 import Homepage from './pages/Homepage'
 import AuthPage from './pages/AuthPage'
+import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
+import { BrowserRouter } from 'react-router-dom'
+
 // import Homepage from './pages/Homepage'; // Ensure this path and file exist and exports a React component
 
 import NavBar from './components/NavBar';
 
 function App() {
   return (
-    <div>
-      <AuthPage />
-      {/* <Homepage /> */}
-      {/* Your other components here */}
-    </div>
+    <BrowserRouter>
+      <div>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/auth" element={<AuthPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter >
   );
 }
 
+export default App
 
 // function App() {
 //   const [count, setCount] = useState(0)
@@ -50,4 +58,3 @@ function App() {
 //   )
 // }
 
-export default App
