@@ -1,17 +1,17 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : BoiToi Database
+ Source Server         : Protaya's Server
  Source Server Type    : MySQL
- Source Server Version : 80041 (8.0.41)
- Source Host           : localhost:3306
+ Source Server Version : 90200 (9.2.0)
+ Source Host           : 192.168.0.126:3306
  Source Schema         : boitoi_db
 
  Target Server Type    : MySQL
- Target Server Version : 80041 (8.0.41)
+ Target Server Version : 90200 (9.2.0)
  File Encoding         : 65001
 
- Date: 24/06/2025 21:49:30
+ Date: 05/07/2025 20:14:21
 */
 
 SET NAMES utf8mb4;
@@ -25,11 +25,12 @@ CREATE TABLE `admin`  (
   `USER_ID` int NOT NULL,
   PRIMARY KEY (`USER_ID`) USING BTREE,
   CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
+INSERT INTO `admin` VALUES (2);
 
 -- ----------------------------
 -- Table structure for admin_permission
@@ -48,7 +49,7 @@ CREATE TABLE `admin_permission`  (
   CONSTRAINT `admin_permission_ibfk_1` FOREIGN KEY (`ADMIN_USER_ID`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `admin_permission_ibfk_2` FOREIGN KEY (`PERMISSION_ID`) REFERENCES `permission` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `permitted_by` FOREIGN KEY (`GRANTED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_permission
@@ -67,7 +68,7 @@ CREATE TABLE `author`  (
   `WEBSITE` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PHOTO_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of author
@@ -98,11 +99,80 @@ CREATE TABLE `book`  (
   INDEX `idx_book_title`(`TITLE` ASC) USING BTREE,
   INDEX `idx_book_isbn`(`ISBN` ASC) USING BTREE,
   CONSTRAINT `book_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book
 -- ----------------------------
+INSERT INTO `book` VALUES (100, 'দমফাটানো হাসির মীরাক্কেল জোকস্', '9789844322288', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (101, 'জাদরেল জনি', '9789849043737', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (102, 'পুরুষের যতো অসুখ', '9789849104759', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (103, 'মেদ কমাবেন কীভাবে', '9789849104773', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (104, 'সুস্বাস্থ্যের সাত-সতের', '9789844321700', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (105, 'আমাদের ', '9789844322516', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:59:24', 'Fiction');
+INSERT INTO `book` VALUES (106, 'আমীরুলের কি ছড়া হয়', '9789844323247', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (107, 'বিশ্বভরা রূপকথা : রূপকথা সমগ্র ২', '9789844323506', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (108, 'ফেরা', '97898490299201', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000226.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (109, 'বহুব্রীহি', '9847016600272', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000227.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (110, 'ভয়', '97898490299225', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (111, 'ফিহা সমীকরণ', '9847016600623', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000229.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (112, '১৯৭১', '9848005080', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (113, 'অপেক্ষা', '9847016600173', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (114, 'হিমু মিসির আলি যুগলবন্দি', '9847016600791', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000232.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (115, 'কিছুক্ষণ', '98480051163', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000233.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (116, 'প্রিয়পদরেখা', '98470166319', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000234.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (117, 'বৃষ্টি ও বসন্তবিলাস', '9789849029900912', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10007117.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (118, 'প্রেমের গল্প', '9847016600272', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (119, 'বিজ্ঞান ও গণিত সমগ্র', '98470166814', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000563.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (120, 'ক্রসফায়ার এবং অন্যান্য', '9789849029960', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000575.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (121, 'একজন সাদাসিধে মা এবং অন্যান্য', '9789849029900091', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10003744.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (122, 'যখনি জাগিবে তুমি', '9789849029908', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10005502.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (123, 'তারুণ্যের এপিঠ-ওপিঠ', '9789849029908', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10007120.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (124, 'এডলফ হিটলার', '9847011600777', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (125, '২৬৭ দিনের মুক্তিযুদ্ধ', '9847011600760', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (126, 'কেন এলো জরুরি অবস্থা', '9847016600210', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (127, 'প্রথম বিশ্বযুদ্ধ', '98480051156', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (128, 'দ্বিতীয় বিশ্বযুদ্ধের ট্রাজেডি', '9847016600104', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (129, 'আজকের বিশ্ব রাজনীতি', '9848005536', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (130, 'মোগল সাম্রাজ্যের সোনালী অধ্যায়', '97898490229133', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (131, 'ইসলামের দিগ্বিজয়', '97898490299833', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (132, 'ক্যান্সারের সাথে বসবাস', '98480051147', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (133, 'শ্রেষ্ঠ কবিতা', '97898490299249', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (134, 'কৃষ্ণকান্তের উইল', '984701670410', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001952.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (135, 'গোয়েন্দা কাহিনি : আতঙ্কের দুর্গ', '9789849029900668', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (136, 'মানুষের মুখ (২) চেনা অচেনা মুখ', '9789849028192', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (137, 'আমরা সবাই রাজা', '9789849001867', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (138, 'বাবার প্রিয় মুখ ( মানুষের মুখ - ৫ )', '9789844322646', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (139, 'কাছের মানুষের মুখ ( মানুষের মুখ - ৬ )', '9789844322653', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (140, 'মানুষের মুখ সমগ্র ১', '9789844323308', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (141, 'অপ্সরার স্পর্শ', '9789844321045', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (142, 'গিগাবাইট দৈত্য', '9789844324145', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10008910.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (143, 'সহস্র গাণিতিক কুইজ', '9789844320284', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (144, 'বিজ্ঞানের স্মরণীয় নারীরা', '9789844320499', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (145, 'সায়েন্স ফিকশন ডোনা', '9789844323278', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (146, 'শ্রেষ্ঠ বড় গল্প', '9841800942', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000788.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (147, 'রক্তকরবী', '9841801019', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000785.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (148, 'গোরা', '9841803037', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/defaultbook.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (149, 'ঘরে বাইরে', '9841801316', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000641.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (150, 'চোখের বালি', '9841802872', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000638.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (151, 'জীবন স্মৃতি', '984180274X', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001327.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (152, 'রাশিয়ার চিঠি', '9841803836', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002732.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (153, 'ছিন্নপত্র', '9841803844', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002970.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (154, 'সঞ্চয়িতা', '9789849092087', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10003145.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (155, 'গল্পগুচ্ছ', '9789849092070', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10003564.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (156, 'গীতাঞ্জলি', '9847008401773', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001502.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (157, 'মানসী', '9847008403638', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000647.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (158, 'বলাকা', '9847008403621', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002490.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (159, 'সোনার তরী', '9847008403607', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002560.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (160, 'ক্ষণিকা', '9847008403614', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10006736.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (161, 'আধুনিক সাহিত্য', '9847035502748', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001285.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (162, 'সোনার তরী', '9847035502663', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002560.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (163, 'প্রাচীন সাহিত্য', '9845695054', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001296.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (164, 'সহজপাঠ (১ম ও ২য়)', '9845692013', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001297.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (165, 'সেরা ভৌতিক গল্প', '9845691404', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10001298.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (166, 'ছন্দ', '9848167226', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10000846.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (167, 'জীবনস্মৃতি', '9847034302532', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002996.jpg', '2025-06-25 11:45:00', 'Fiction');
+INSERT INTO `book` VALUES (168, 'সোনার তরী', '9847034306941', '2025-01-01', NULL, 100, 'English', '1st', 200.00, 10, 'Good book.', 1, '/images/books/10002560.jpg', '2025-06-25 11:45:00', 'Fiction');
 
 -- ----------------------------
 -- Table structure for book_author
@@ -116,7 +186,7 @@ CREATE TABLE `book_author`  (
   INDEX `AUTHOR_ID`(`AUTHOR_ID` ASC) USING BTREE,
   CONSTRAINT `book_author_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `book_author_ibfk_2` FOREIGN KEY (`AUTHOR_ID`) REFERENCES `author` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book_author
@@ -133,10 +203,47 @@ CREATE TABLE `book_category`  (
   INDEX `CATEGORY_ID`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `book_category_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `book_category_ibfk_2` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book_category
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for book_edition
+-- ----------------------------
+DROP TABLE IF EXISTS `book_edition`;
+CREATE TABLE `book_edition`  (
+  `ID` int NOT NULL,
+  `BOOK_ID` int NULL DEFAULT NULL,
+  `FORMAT_ID` int NULL DEFAULT NULL,
+  `ISBN` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PRICE` decimal(10, 0) NULL DEFAULT NULL,
+  `STOCK_QUANTITY` int NULL DEFAULT NULL,
+  `IS_EBOOK` tinyint(1) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
+  INDEX `FORMAT_ID`(`FORMAT_ID` ASC) USING BTREE,
+  CONSTRAINT `book_edition_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `book_edition_ibfk_2` FOREIGN KEY (`FORMAT_ID`) REFERENCES `book_format` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of book_edition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for book_format
+-- ----------------------------
+DROP TABLE IF EXISTS `book_format`;
+CREATE TABLE `book_format`  (
+  `ID` int NOT NULL,
+  `FORMAT_TYPE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of book_format
 -- ----------------------------
 
 -- ----------------------------
@@ -154,7 +261,7 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
@@ -172,7 +279,7 @@ CREATE TABLE `category`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `PARENT_ID`(`PARENT_ID` ASC) USING BTREE,
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`PARENT_ID`) REFERENCES `category` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of category
@@ -193,7 +300,7 @@ CREATE TABLE `category_bestseller`  (
   INDEX `CATEGORY_ID`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `category_bestseller_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `category_bestseller_ibfk_2` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of category_bestseller
@@ -219,7 +326,7 @@ CREATE TABLE `discount`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `DISCOUNT_ADMIN`(`ADDED_BY` ASC) USING BTREE,
   CONSTRAINT `DISCOUNT_ADMIN` FOREIGN KEY (`ADDED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of discount
@@ -237,7 +344,7 @@ CREATE TABLE `favourite`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `favourite_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `favourite_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of favourite
@@ -257,7 +364,7 @@ CREATE TABLE `inventory_log`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `inventory_log_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of inventory_log
@@ -277,7 +384,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID` DESC) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notifications
@@ -298,7 +405,7 @@ CREATE TABLE `order`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_order_user_id`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order
@@ -316,7 +423,7 @@ CREATE TABLE `order_book`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `order_book_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_book_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_book
@@ -335,7 +442,7 @@ CREATE TABLE `order_discount`  (
   INDEX `DISCOUNT_ID`(`DISCOUNT_ID` ASC) USING BTREE,
   CONSTRAINT `order_discount_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_discount_ibfk_2` FOREIGN KEY (`DISCOUNT_ID`) REFERENCES `discount` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_discount
@@ -356,7 +463,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payment
@@ -371,7 +478,7 @@ CREATE TABLE `permission`  (
   `NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DESCRIPTION` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of permission
@@ -395,7 +502,7 @@ CREATE TABLE `publisher`  (
   `CREATED_AT` timestamp NULL DEFAULT NULL,
   `STATUS` enum('ACTIVE','INACTIVE','BANNED') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'ACTIVE',
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publisher
@@ -423,7 +530,7 @@ CREATE TABLE `publisher_book_draft`  (
   INDEX `idx_book_isbn`(`ISBN` ASC) USING BTREE,
   INDEX `REQUEST_ID`(`REQUEST_ID` ASC) USING BTREE,
   CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publisher_book_draft
@@ -447,7 +554,7 @@ CREATE TABLE `publisher_request`  (
   INDEX `REVIEWED_BY`(`REVIEWED_BY` ASC) USING BTREE,
   CONSTRAINT `publisher_request_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `publisher_request_ibfk_2` FOREIGN KEY (`REVIEWED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publisher_request
@@ -472,7 +579,7 @@ CREATE TABLE `return_request`  (
   CONSTRAINT `return_request_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `return_request_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `return_request_ibfk_3` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of return_request
@@ -495,11 +602,15 @@ CREATE TABLE `review`  (
   INDEX `idx_review_book_id`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `review_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `review_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of review
 -- ----------------------------
+INSERT INTO `review` VALUES (1, 2, 100, 1, 'Good', '2025-07-04 23:08:08', 1);
+INSERT INTO `review` VALUES (2, 2, 101, 1, 'Good', '2025-07-03 23:10:37', 1);
+INSERT INTO `review` VALUES (3, 2, 102, 2, 'Good', '2025-07-01 23:11:07', 1);
+INSERT INTO `review` VALUES (4, 2, 103, 3, 'Good', '2025-06-30 23:11:31', 1);
 
 -- ----------------------------
 -- Table structure for review_reaction
@@ -513,7 +624,7 @@ CREATE TABLE `review_reaction`  (
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `review_reaction_ibfk_1` FOREIGN KEY (`REVIEW_ID`) REFERENCES `review` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `review_reaction_ibfk_2` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of review_reaction
@@ -531,7 +642,7 @@ CREATE TABLE `search_log`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `search_log_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of search_log
@@ -551,7 +662,7 @@ CREATE TABLE `shipping`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `shipping_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shipping
@@ -577,11 +688,18 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_user_email`(`EMAIL` ASC) USING BTREE,
   INDEX `idx_user_username`(`USERNAME` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES (1, 'admin', NULL, 'hash', NULL, NULL, NULL, NULL, NULL, 0, 'UNSPECIFIED', NULL);
+INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
+INSERT INTO `user` VALUES (3, 'anindya', 'anindya@example.com', '$2b$10$86qqVb2OxZu/a56hpWoaKObpWPgffjZuP6N7SjfcbeuVUnDtFHCXi', 'Anindya', 'Biswas', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
+INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
+INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-05 19:58:17', 1, 'MALE', '2000-01-01');
+INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');
+INSERT INTO `user` VALUES (7, 'anindya1', 'anindya@gmail.com', '$2b$10$UQH5JtdMmEic2uRe4TEv7.RhVf2SPy/sUn1ArmLwucMakKwDPFuz6', 'anindya', 'biswas', '12345678901', '2025-06-28 02:05:35', '2025-06-28 02:05:35', 0, 'FEMALE', '2025-05-31');
 
 -- ----------------------------
 -- Table structure for user_address
@@ -600,11 +718,13 @@ CREATE TABLE `user_address`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_address
 -- ----------------------------
+INSERT INTO `user_address` VALUES (1, 6, 'home', 'Bangladesh University of Engineering and Technology\nPalashi, Dhaka 1000', 'Dhaka', 'Bangladesh', 'Bangladesh', '1000', 1);
+INSERT INTO `user_address` VALUES (2, 7, 'office', '60 Biswanath Heights, Natun Bazar', 'Magura', 'Bangladesh', 'Bangladesh', '7600', 1);
 
 -- ----------------------------
 -- Table structure for wishlist
@@ -620,7 +740,7 @@ CREATE TABLE `wishlist`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wishlist

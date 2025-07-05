@@ -13,6 +13,7 @@ import { BrowserRouter } from 'react-router-dom'
 import NavBar from './components/NavBar';
 
 function App() {
+  console.log('App component rendered');
   return (
     <BrowserRouter>
       <div>
