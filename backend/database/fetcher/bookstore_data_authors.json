@@ -1,0 +1,2270 @@
+[
+  {
+    "ID": 200,
+    "NAME": "Jules Verne",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 201,
+    "NAME": "Albert Camus",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 202,
+    "NAME": "Nikolái V. Gogol",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 203,
+    "NAME": "Lee Child",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 204,
+    "NAME": "James Joyce",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 205,
+    "NAME": "Thucydides",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 206,
+    "NAME": "Philippa Gregory",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 207,
+    "NAME": "Knut Hamsun",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 208,
+    "NAME": "Oscar Wilde",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 209,
+    "NAME": "ARTHUR CONAN DOYLE",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 210,
+    "NAME": "Agatha Christie",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 211,
+    "NAME": "Dan Brown",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 212,
+    "NAME": "Andrea Camilleri",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 213,
+    "NAME": "Tess Gerritsen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 214,
+    "NAME": "Mark Haddon",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 215,
+    "NAME": "P.D. James",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 216,
+    "NAME": "Len Jenkin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 217,
+    "NAME": "Fyodor Dostoyevsky",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 218,
+    "NAME": "Jane Austen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 219,
+    "NAME": "David Herbert Lawrence",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 220,
+    "NAME": "Judith McNaught",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 221,
+    "NAME": "Colleen Hoover",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 222,
+    "NAME": "Danielle Steel",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 223,
+    "NAME": "Julie Garwood",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 224,
+    "NAME": "Johanna Lindsey",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 225,
+    "NAME": "Sandra Brown",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 226,
+    "NAME": "Craig Bourne",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 227,
+    "NAME": "Brian M. Stableford",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 228,
+    "NAME": "Jukka Mikkonen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 229,
+    "NAME": "John Krige",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 230,
+    "NAME": "Lisa Zunshine",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 231,
+    "NAME": "De Witt Douglas Kilgore",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 232,
+    "NAME": "Raphael Zon",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 233,
+    "NAME": "Burton Feldman",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 234,
+    "NAME": "j.r.r. tolkien",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 235,
+    "NAME": "Kenneth Grahame",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 236,
+    "NAME": "Ursula K. Le Guin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 237,
+    "NAME": "Philip Pullman",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 238,
+    "NAME": "Tove Jansson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 239,
+    "NAME": "John Ronald Reuel Tolkien",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 240,
+    "NAME": "Brandon Mull",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 241,
+    "NAME": "Sarah J. Maas",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 242,
+    "NAME": "Jonathan Cahn",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 243,
+    "NAME": "Philip Meadows Taylor",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 244,
+    "NAME": "Jack Higgins",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 245,
+    "NAME": "Dean Koontz",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 246,
+    "NAME": "Ruth Rendell",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 247,
+    "NAME": "K.A. Tucker",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 248,
+    "NAME": "Kevin J. Anderson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 249,
+    "NAME": "Walter Isaacson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 250,
+    "NAME": "Victor E. Thoren",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 251,
+    "NAME": "Richard A. Burridge",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 252,
+    "NAME": "Primo Levi",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 253,
+    "NAME": "Yukiko Sugihara",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 254,
+    "NAME": "Joyce A. Tyldesley",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 255,
+    "NAME": "Ben Bland",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 256,
+    "NAME": "William Smith",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 257,
+    "NAME": "Plutarch",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 258,
+    "NAME": "Peter L. Bergen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 259,
+    "NAME": "C. S. Lewis",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 260,
+    "NAME": "Philip Freeman",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 261,
+    "NAME": "Michel Foucault",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 262,
+    "NAME": "Ronald Herbert Sack",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 263,
+    "NAME": "Ronald Hutton",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 264,
+    "NAME": "Judith Butler",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 265,
+    "NAME": "Homerus",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 266,
+    "NAME": "Jerry Z. Muller",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 267,
+    "NAME": "John Boardman",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 268,
+    "NAME": "G. N. Devy",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 269,
+    "NAME": "Gregory Choppin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 270,
+    "NAME": "Steve T. Beckett",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 271,
+    "NAME": "George Dyson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 272,
+    "NAME": "Unknown Author",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 273,
+    "NAME": "N. Katherine Hayles",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 274,
+    "NAME": "Tony Whitten",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 275,
+    "NAME": "R. E. Hester",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 276,
+    "NAME": "Peter Morris",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 277,
+    "NAME": "Ward Chesworth",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 278,
+    "NAME": "Will Durant",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 279,
+    "NAME": "Friedrich Kiessling",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 280,
+    "NAME": "Lawrence Principe",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 281,
+    "NAME": "Andrew Feenberg",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 282,
+    "NAME": "Mitchel Resnick",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 283,
+    "NAME": "Herbert Marcuse",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 284,
+    "NAME": "Floyd James Rutherford",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 285,
+    "NAME": "Stephen Graham",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 286,
+    "NAME": "Barry Commoner",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 287,
+    "NAME": "M.P. Feldman",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 288,
+    "NAME": "Hannah Arendt",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 289,
+    "NAME": "Mark Saunders",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 290,
+    "NAME": "United States. Bureau of International Commerce",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 291,
+    "NAME": "Eliyahu M. Goldratt",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 292,
+    "NAME": "Norman Lloyd Johnson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 293,
+    "NAME": "Clow Kenneth E.",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 294,
+    "NAME": "Khwaja Masoom",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 295,
+    "NAME": "Thorstein Veblen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 296,
+    "NAME": "David Barnes",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 297,
+    "NAME": "Sue Mosher",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 298,
+    "NAME": "Brian Hedden",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 299,
+    "NAME": "Deena Mandell",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 300,
+    "NAME": "Cordula Brand",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 301,
+    "NAME": "Debra Grodin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 302,
+    "NAME": "Jane Loevinger",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 303,
+    "NAME": "Aubre Andrus",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 304,
+    "NAME": "Ann E. Potter",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 305,
+    "NAME": "Madisyn Taylor",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 306,
+    "NAME": "Kent Maynard",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 307,
+    "NAME": "Camila Devis-Rozental",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 308,
+    "NAME": "Gabriel Cousens",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 309,
+    "NAME": "Seymour Simon",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 310,
+    "NAME": "Bill Phillips",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 311,
+    "NAME": "T. Colin Campbell",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 312,
+    "NAME": "Sandra Alters",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 313,
+    "NAME": "Deepak Chopra",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 314,
+    "NAME": "Angus Deaton",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 315,
+    "NAME": "Andrew Boorde",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 316,
+    "NAME": "Kathryn H. Jacobsen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 317,
+    "NAME": "Lizzie Collingham",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 318,
+    "NAME": "Jean Anthelme Brillat-Savarin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 319,
+    "NAME": "The Culinary Institute of America (CIA)",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 320,
+    "NAME": "Elizabeth David",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 321,
+    "NAME": "Maria Dembinska",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 322,
+    "NAME": "W. P. Edwards",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 323,
+    "NAME": "Silvano Serventi",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 324,
+    "NAME": "Diane Morgan",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 325,
+    "NAME": "Mikey Leung",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 326,
+    "NAME": "Orhan Pamuk",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 327,
+    "NAME": "Claudio Magris",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 328,
+    "NAME": "Conrad Joseph,",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 329,
+    "NAME": "Daniel Defoe",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 330,
+    "NAME": "Jeremy Boissevain",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 331,
+    "NAME": "Tom Stone",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 332,
+    "NAME": "Francis Morrone",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 333,
+    "NAME": "Eric Solsten",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 334,
+    "NAME": "John Dewey",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 335,
+    "NAME": "Guanzhong Luo",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 336,
+    "NAME": "Mary Ellen Miller",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 337,
+    "NAME": "Martin Kemp",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 338,
+    "NAME": "George Bernard Shaw",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 339,
+    "NAME": "Conrad Rudolph",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 340,
+    "NAME": "Shaikh 'Abd Al-Qadir Al-Jilani",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 341,
+    "NAME": "Guy Debord",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 342,
+    "NAME": "Gogol Google Translate",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 343,
+    "NAME": "Nora M. Alter",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 344,
+    "NAME": "John Szarkowski",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 345,
+    "NAME": "Kimon Nicolaïdes",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 346,
+    "NAME": "Serena Ferrara",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 347,
+    "NAME": "Edward Young",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 348,
+    "NAME": "Ali Behdad",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 349,
+    "NAME": "Morten Strange",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 350,
+    "NAME": "Steven Douglas Katz",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 351,
+    "NAME": "Jerry Bloom",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 352,
+    "NAME": "Kenyon C. Rosenberg",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 353,
+    "NAME": "Richard Branson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 354,
+    "NAME": "Richard Cook",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 355,
+    "NAME": "Susan Rutherford",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 356,
+    "NAME": "John Rosselli",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 357,
+    "NAME": "Peter Williams",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 358,
+    "NAME": "Eric Walter White",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 359,
+    "NAME": "Robert Gottlieb",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 360,
+    "NAME": "Rob Price",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 361,
+    "NAME": "Shane M. Murphy",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 362,
+    "NAME": "J. A. Mangan",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 363,
+    "NAME": "Ralph T. Byrns",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 364,
+    "NAME": "Allen Guttmann",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 365,
+    "NAME": "Roland Auguet",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 366,
+    "NAME": "Nigel B. Crowther",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 367,
+    "NAME": "Richard D. Mandell",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 368,
+    "NAME": "Guy Masterman",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 369,
+    "NAME": "Stephen A. Mitchell",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 370,
+    "NAME": "Muhammad Yunus",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 371,
+    "NAME": "Carolyne Larrington",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 372,
+    "NAME": "Nimrod Hurvitz",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 373,
+    "NAME": "Dineschandra Sircar",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 374,
+    "NAME": "William Shakespeare",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 375,
+    "NAME": "Jalāl al-Dīn Rūmī (Maulana)",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 376,
+    "NAME": "Graham Oppy",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 377,
+    "NAME": "Saint Gregory (of Nyssa)",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 378,
+    "NAME": "Arthur T. Vanderbilt",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 379,
+    "NAME": "John Sutherland",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 380,
+    "NAME": "Ukiyoto",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 381,
+    "NAME": "Olivia Goldsmith",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 382,
+    "NAME": "Lisa Fletcher",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 383,
+    "NAME": "Daniel Rubio",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 384,
+    "NAME": "Clive Bloom",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 385,
+    "NAME": "Jon Helgason",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 386,
+    "NAME": "Edward L. Davis",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 387,
+    "NAME": "Albert Uderzo",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 388,
+    "NAME": "Julia Kent",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 389,
+    "NAME": "Kenneth B. Kidd",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 390,
+    "NAME": "Bradley A. Gorski",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 391,
+    "NAME": "Dave Blevins",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 392,
+    "NAME": "United States. Congress",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 393,
+    "NAME": "The Supreme Master Ching Hai",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 394,
+    "NAME": "Manfred Bruhn",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 395,
+    "NAME": "California. Legislature. Assembly",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 396,
+    "NAME": "Rolf Giesen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 397,
+    "NAME": "United States. Congress. House. Committee on Science, Space, and Technology. Subcommittee on Technology and Competitiveness",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 398,
+    "NAME": "Highland and agricultural society of Scotland, Edinburgh",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 399,
+    "NAME": "Aesop",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 400,
+    "NAME": "John L. Jacobus",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 401,
+    "NAME": "Heinz-D. Fischer",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 402,
+    "NAME": "Heinz Dietrich Fischer",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 403,
+    "NAME": "Robert Stevenson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 404,
+    "NAME": "Mark Twain",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 405,
+    "NAME": "Edwin A. Abbott",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 406,
+    "NAME": "Edgar Rice Burroughs",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 407,
+    "NAME": "Napoleon Hill",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 408,
+    "NAME": "Angela Lou Harvey",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 409,
+    "NAME": "John Fiske",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 410,
+    "NAME": "Henry Brook",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 411,
+    "NAME": "Benjamin J. Nourse",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 412,
+    "NAME": "Rachael Durkin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 413,
+    "NAME": "Merriam-Webster, Inc",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 414,
+    "NAME": "R.K. Pruthi",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 415,
+    "NAME": "Blackie & Son",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 416,
+    "NAME": "Louisa May Alcott",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 417,
+    "NAME": "Stephen P. Berczuk",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 418,
+    "NAME": "United States. Congress. House. Committee on Appropriations. Subcommittee on the Departments of Commerce, Justice, and State, the Judiciary, and Related Agencies",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 419,
+    "NAME": "Michael H. Jang",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 420,
+    "NAME": "Larissa Hjorth",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 421,
+    "NAME": "Ronnie Tucker",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 422,
+    "NAME": "Michael H. Tonry",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 423,
+    "NAME": "David D. Busch",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 424,
+    "NAME": "Fred Hebert",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 425,
+    "NAME": "E. Allen Richardson",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 426,
+    "NAME": "Tarek Sobh",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 427,
+    "NAME": "Garrett Rooney",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 428,
+    "NAME": "Pierre Dillenbourg",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 429,
+    "NAME": "Patrick Hung",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 430,
+    "NAME": "David Glover",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 431,
+    "NAME": "Yann Martel",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 432,
+    "NAME": "J. K. Rowling",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 433,
+    "NAME": "Yonglin Huang",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 434,
+    "NAME": "Rupayan Mukherjee",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 435,
+    "NAME": "Amish",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 436,
+    "NAME": "Vivien Jones",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 437,
+    "NAME": "Susan L. Austin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 438,
+    "NAME": "Timothy Unwin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 439,
+    "NAME": "Paul Lopes",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 440,
+    "NAME": "Jaydipsinh Dodiya",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 441,
+    "NAME": "Ai Maeda",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 442,
+    "NAME": "Joanne Shattock",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 443,
+    "NAME": "Valentina Cuccio",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 444,
+    "NAME": "Hill Napolean",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 445,
+    "NAME": "Charles Darwin",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 446,
+    "NAME": "Danielle Fuller",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 447,
+    "NAME": "Neal Wyatt",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 448,
+    "NAME": "Julie Rak",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 449,
+    "NAME": "Jenn B. Allen",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 450,
+    "NAME": "Gerry McGovern",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  },
+  {
+    "ID": 451,
+    "NAME": "Joanna Penn",
+    "BIO": "Author of various published works including books available in our collection.",
+    "DATE_OF_BIRTH": null,
+    "NATIONALITY": null,
+    "WEBSITE": null,
+    "PHOTO_URL": null
+  }
+]

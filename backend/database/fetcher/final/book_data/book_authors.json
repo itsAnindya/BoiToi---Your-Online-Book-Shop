@@ -1,0 +1,1482 @@
+[
+  {
+    "BOOK_ID": 200,
+    "AUTHOR_ID": 200,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 201,
+    "AUTHOR_ID": 201,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 201,
+    "AUTHOR_ID": 202,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 201,
+    "AUTHOR_ID": 203,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 202,
+    "AUTHOR_ID": 204,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 203,
+    "AUTHOR_ID": 205,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 204,
+    "AUTHOR_ID": 206,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 204,
+    "AUTHOR_ID": 207,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 205,
+    "AUTHOR_ID": 208,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 206,
+    "AUTHOR_ID": 200,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 207,
+    "AUTHOR_ID": 209,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 208,
+    "AUTHOR_ID": 210,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 209,
+    "AUTHOR_ID": 211,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 210,
+    "AUTHOR_ID": 212,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 210,
+    "AUTHOR_ID": 208,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 211,
+    "AUTHOR_ID": 213,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 212,
+    "AUTHOR_ID": 214,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 213,
+    "AUTHOR_ID": 215,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 214,
+    "AUTHOR_ID": 216,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 214,
+    "AUTHOR_ID": 217,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 215,
+    "AUTHOR_ID": 218,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 216,
+    "AUTHOR_ID": 219,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 217,
+    "AUTHOR_ID": 220,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 218,
+    "AUTHOR_ID": 221,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 218,
+    "AUTHOR_ID": 207,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 219,
+    "AUTHOR_ID": 222,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 220,
+    "AUTHOR_ID": 223,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 221,
+    "AUTHOR_ID": 224,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 222,
+    "AUTHOR_ID": 225,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 223,
+    "AUTHOR_ID": 226,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 223,
+    "AUTHOR_ID": 227,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 224,
+    "AUTHOR_ID": 228,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 225,
+    "AUTHOR_ID": 229,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 226,
+    "AUTHOR_ID": 230,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 227,
+    "AUTHOR_ID": 231,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 228,
+    "AUTHOR_ID": 232,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 229,
+    "AUTHOR_ID": 233,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 229,
+    "AUTHOR_ID": 234,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 229,
+    "AUTHOR_ID": 235,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 230,
+    "AUTHOR_ID": 236,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 230,
+    "AUTHOR_ID": 237,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 231,
+    "AUTHOR_ID": 238,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 231,
+    "AUTHOR_ID": 239,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 231,
+    "AUTHOR_ID": 240,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 232,
+    "AUTHOR_ID": 241,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 233,
+    "AUTHOR_ID": 242,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 233,
+    "AUTHOR_ID": 243,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 234,
+    "AUTHOR_ID": 244,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 234,
+    "AUTHOR_ID": 245,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 235,
+    "AUTHOR_ID": 246,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 236,
+    "AUTHOR_ID": 247,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 236,
+    "AUTHOR_ID": 248,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 236,
+    "AUTHOR_ID": 249,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 237,
+    "AUTHOR_ID": 250,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 237,
+    "AUTHOR_ID": 251,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 238,
+    "AUTHOR_ID": 252,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 239,
+    "AUTHOR_ID": 241,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 240,
+    "AUTHOR_ID": 250,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 240,
+    "AUTHOR_ID": 251,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 241,
+    "AUTHOR_ID": 253,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 242,
+    "AUTHOR_ID": 254,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 242,
+    "AUTHOR_ID": 255,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 243,
+    "AUTHOR_ID": 256,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 243,
+    "AUTHOR_ID": 257,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 244,
+    "AUTHOR_ID": 258,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 244,
+    "AUTHOR_ID": 259,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 245,
+    "AUTHOR_ID": 260,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 246,
+    "AUTHOR_ID": 261,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 247,
+    "AUTHOR_ID": 262,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 248,
+    "AUTHOR_ID": 263,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 249,
+    "AUTHOR_ID": 264,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 250,
+    "AUTHOR_ID": 265,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 250,
+    "AUTHOR_ID": 266,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 251,
+    "AUTHOR_ID": 267,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 251,
+    "AUTHOR_ID": 268,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 252,
+    "AUTHOR_ID": 269,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 252,
+    "AUTHOR_ID": 270,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 253,
+    "AUTHOR_ID": 271,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 253,
+    "AUTHOR_ID": 272,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 253,
+    "AUTHOR_ID": 273,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 254,
+    "AUTHOR_ID": 274,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 255,
+    "AUTHOR_ID": 275,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 256,
+    "AUTHOR_ID": 276,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 257,
+    "AUTHOR_ID": 277,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 257,
+    "AUTHOR_ID": 278,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 258,
+    "AUTHOR_ID": 279,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 258,
+    "AUTHOR_ID": 280,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 258,
+    "AUTHOR_ID": 281,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 258,
+    "AUTHOR_ID": 282,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 259,
+    "AUTHOR_ID": 283,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 259,
+    "AUTHOR_ID": 284,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 259,
+    "AUTHOR_ID": 285,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 260,
+    "AUTHOR_ID": 286,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 260,
+    "AUTHOR_ID": 287,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 260,
+    "AUTHOR_ID": 288,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 261,
+    "AUTHOR_ID": 289,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 262,
+    "AUTHOR_ID": 200,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 263,
+    "AUTHOR_ID": 290,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 264,
+    "AUTHOR_ID": 275,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 265,
+    "AUTHOR_ID": 291,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 265,
+    "AUTHOR_ID": 292,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 266,
+    "AUTHOR_ID": 293,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 266,
+    "AUTHOR_ID": 294,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 266,
+    "AUTHOR_ID": 295,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 267,
+    "AUTHOR_ID": 296,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 267,
+    "AUTHOR_ID": 297,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 267,
+    "AUTHOR_ID": 298,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 267,
+    "AUTHOR_ID": 299,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 267,
+    "AUTHOR_ID": 300,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 267,
+    "AUTHOR_ID": 301,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 268,
+    "AUTHOR_ID": 302,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 269,
+    "AUTHOR_ID": 303,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 270,
+    "AUTHOR_ID": 304,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 271,
+    "AUTHOR_ID": 305,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 272,
+    "AUTHOR_ID": 306,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 273,
+    "AUTHOR_ID": 307,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 274,
+    "AUTHOR_ID": 308,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 275,
+    "AUTHOR_ID": 309,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 275,
+    "AUTHOR_ID": 310,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 276,
+    "AUTHOR_ID": 311,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 277,
+    "AUTHOR_ID": 312,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 278,
+    "AUTHOR_ID": 313,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 279,
+    "AUTHOR_ID": 314,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 279,
+    "AUTHOR_ID": 315,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 279,
+    "AUTHOR_ID": 316,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 279,
+    "AUTHOR_ID": 317,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 280,
+    "AUTHOR_ID": 318,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 281,
+    "AUTHOR_ID": 319,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 282,
+    "AUTHOR_ID": 320,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 283,
+    "AUTHOR_ID": 321,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 284,
+    "AUTHOR_ID": 322,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 285,
+    "AUTHOR_ID": 323,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 286,
+    "AUTHOR_ID": 324,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 287,
+    "AUTHOR_ID": 325,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 287,
+    "AUTHOR_ID": 326,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 288,
+    "AUTHOR_ID": 327,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 288,
+    "AUTHOR_ID": 328,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 289,
+    "AUTHOR_ID": 329,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 290,
+    "AUTHOR_ID": 330,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 291,
+    "AUTHOR_ID": 289,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 292,
+    "AUTHOR_ID": 331,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 292,
+    "AUTHOR_ID": 332,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 292,
+    "AUTHOR_ID": 333,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 293,
+    "AUTHOR_ID": 334,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 294,
+    "AUTHOR_ID": 335,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 295,
+    "AUTHOR_ID": 336,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 296,
+    "AUTHOR_ID": 337,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 297,
+    "AUTHOR_ID": 338,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 297,
+    "AUTHOR_ID": 339,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 298,
+    "AUTHOR_ID": 340,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 299,
+    "AUTHOR_ID": 341,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 299,
+    "AUTHOR_ID": 342,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 299,
+    "AUTHOR_ID": 343,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 299,
+    "AUTHOR_ID": 344,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 300,
+    "AUTHOR_ID": 345,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 301,
+    "AUTHOR_ID": 346,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 302,
+    "AUTHOR_ID": 347,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 302,
+    "AUTHOR_ID": 348,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 303,
+    "AUTHOR_ID": 349,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 303,
+    "AUTHOR_ID": 350,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 304,
+    "AUTHOR_ID": 351,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 305,
+    "AUTHOR_ID": 352,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 305,
+    "AUTHOR_ID": 353,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 306,
+    "AUTHOR_ID": 354,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 308,
+    "AUTHOR_ID": 355,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 309,
+    "AUTHOR_ID": 356,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 310,
+    "AUTHOR_ID": 357,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 310,
+    "AUTHOR_ID": 358,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 310,
+    "AUTHOR_ID": 359,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 311,
+    "AUTHOR_ID": 360,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 312,
+    "AUTHOR_ID": 361,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 313,
+    "AUTHOR_ID": 362,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 314,
+    "AUTHOR_ID": 363,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 314,
+    "AUTHOR_ID": 364,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 314,
+    "AUTHOR_ID": 365,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 315,
+    "AUTHOR_ID": 366,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 316,
+    "AUTHOR_ID": 367,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 317,
+    "AUTHOR_ID": 368,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 317,
+    "AUTHOR_ID": 369,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 318,
+    "AUTHOR_ID": 370,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 319,
+    "AUTHOR_ID": 371,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 319,
+    "AUTHOR_ID": 372,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 320,
+    "AUTHOR_ID": 373,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 320,
+    "AUTHOR_ID": 374,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 321,
+    "AUTHOR_ID": 373,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 322,
+    "AUTHOR_ID": 375,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 323,
+    "AUTHOR_ID": 376,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 324,
+    "AUTHOR_ID": 377,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 324,
+    "AUTHOR_ID": 378,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 325,
+    "AUTHOR_ID": 379,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 325,
+    "AUTHOR_ID": 380,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 325,
+    "AUTHOR_ID": 381,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 326,
+    "AUTHOR_ID": 382,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 327,
+    "AUTHOR_ID": 383,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 328,
+    "AUTHOR_ID": 384,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 329,
+    "AUTHOR_ID": 385,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 330,
+    "AUTHOR_ID": 386,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 331,
+    "AUTHOR_ID": 387,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 332,
+    "AUTHOR_ID": 388,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 333,
+    "AUTHOR_ID": 387,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 334,
+    "AUTHOR_ID": 389,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 334,
+    "AUTHOR_ID": 390,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 335,
+    "AUTHOR_ID": 391,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 335,
+    "AUTHOR_ID": 392,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 335,
+    "AUTHOR_ID": 393,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 336,
+    "AUTHOR_ID": 394,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 336,
+    "AUTHOR_ID": 395,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 337,
+    "AUTHOR_ID": 396,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 337,
+    "AUTHOR_ID": 397,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 338,
+    "AUTHOR_ID": 398,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 339,
+    "AUTHOR_ID": 399,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 340,
+    "AUTHOR_ID": 356,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 341,
+    "AUTHOR_ID": 400,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 342,
+    "AUTHOR_ID": 401,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 343,
+    "AUTHOR_ID": 402,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 344,
+    "AUTHOR_ID": 403,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 345,
+    "AUTHOR_ID": 404,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 346,
+    "AUTHOR_ID": 405,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 347,
+    "AUTHOR_ID": 406,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 347,
+    "AUTHOR_ID": 407,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 349,
+    "AUTHOR_ID": 408,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 350,
+    "AUTHOR_ID": 409,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 351,
+    "AUTHOR_ID": 410,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 352,
+    "AUTHOR_ID": 410,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 353,
+    "AUTHOR_ID": 411,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 354,
+    "AUTHOR_ID": 412,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 355,
+    "AUTHOR_ID": 413,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 355,
+    "AUTHOR_ID": 414,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 355,
+    "AUTHOR_ID": 415,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 356,
+    "AUTHOR_ID": 405,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 357,
+    "AUTHOR_ID": 412,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 358,
+    "AUTHOR_ID": 404,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 359,
+    "AUTHOR_ID": 416,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 360,
+    "AUTHOR_ID": 417,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 361,
+    "AUTHOR_ID": 418,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 361,
+    "AUTHOR_ID": 419,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 362,
+    "AUTHOR_ID": 420,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 363,
+    "AUTHOR_ID": 421,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 363,
+    "AUTHOR_ID": 422,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 364,
+    "AUTHOR_ID": 423,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 365,
+    "AUTHOR_ID": 424,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 366,
+    "AUTHOR_ID": 425,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 366,
+    "AUTHOR_ID": 426,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 367,
+    "AUTHOR_ID": 427,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 368,
+    "AUTHOR_ID": 428,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 368,
+    "AUTHOR_ID": 429,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 369,
+    "AUTHOR_ID": 430,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 370,
+    "AUTHOR_ID": 431,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 371,
+    "AUTHOR_ID": 432,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 373,
+    "AUTHOR_ID": 433,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 374,
+    "AUTHOR_ID": 434,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 374,
+    "AUTHOR_ID": 435,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 374,
+    "AUTHOR_ID": 436,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 375,
+    "AUTHOR_ID": 398,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 376,
+    "AUTHOR_ID": 437,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 376,
+    "AUTHOR_ID": 438,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 377,
+    "AUTHOR_ID": 439,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 378,
+    "AUTHOR_ID": 398,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 378,
+    "AUTHOR_ID": 440,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 379,
+    "AUTHOR_ID": 441,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 379,
+    "AUTHOR_ID": 442,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 380,
+    "AUTHOR_ID": 443,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 380,
+    "AUTHOR_ID": 444,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 381,
+    "AUTHOR_ID": 445,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 381,
+    "AUTHOR_ID": 446,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 382,
+    "AUTHOR_ID": 447,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 383,
+    "AUTHOR_ID": 448,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 383,
+    "AUTHOR_ID": 449,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 383,
+    "AUTHOR_ID": 450,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 384,
+    "AUTHOR_ID": 451,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 384,
+    "AUTHOR_ID": 452,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 384,
+    "AUTHOR_ID": 453,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 385,
+    "AUTHOR_ID": 454,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 386,
+    "AUTHOR_ID": 398,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 387,
+    "AUTHOR_ID": 447,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 388,
+    "AUTHOR_ID": 455,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 388,
+    "AUTHOR_ID": 456,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 388,
+    "AUTHOR_ID": 457,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 389,
+    "AUTHOR_ID": 458,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 389,
+    "AUTHOR_ID": 459,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 389,
+    "AUTHOR_ID": 460,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 389,
+    "AUTHOR_ID": 461,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 390,
+    "AUTHOR_ID": 462,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 391,
+    "AUTHOR_ID": 463,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 391,
+    "AUTHOR_ID": 464,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 392,
+    "AUTHOR_ID": 465,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 393,
+    "AUTHOR_ID": 466,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 394,
+    "AUTHOR_ID": 467,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 395,
+    "AUTHOR_ID": 468,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 396,
+    "AUTHOR_ID": 469,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 396,
+    "AUTHOR_ID": 470,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 396,
+    "AUTHOR_ID": 471,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 396,
+    "AUTHOR_ID": 472,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 396,
+    "AUTHOR_ID": 473,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 397,
+    "AUTHOR_ID": 474,
+    "CONTRIBUTION": "Author"
+  },
+  {
+    "BOOK_ID": 399,
+    "AUTHOR_ID": 475,
+    "CONTRIBUTION": "Author"
+  }
+]

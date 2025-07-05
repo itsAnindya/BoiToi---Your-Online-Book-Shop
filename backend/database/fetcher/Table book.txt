@@ -1,0 +1,63 @@
+Table: "book"
+Attributes:
+ID
+TITLE
+ISBN
+PUBLISHED_DATE
+PUBLISHER_ID
+PAGE_COUNT
+LANGUAGE
+EDITION
+PRICE
+STOCK_QUANTITY
+DESCRIPTION
+SHOW_BOOK
+COVER_URL
+ADDED_AT
+GENRE
+
+Table: "author"
+Attributes:
+ID
+NAME
+BIO
+DATE_OF_BIRTH
+NATIONALITY
+WEBSITE
+PHOTO_URL
+
+Table: "book_author"
+Attributes:
+BOOK_ID
+AUTHOR_ID
+CONTRIBUTION
+
+Table: "publisher"
+Attributes:
+ID
+NAME
+ADDRESS
+CITY
+STATE
+COUNTRY
+EMAIL
+PHONE
+WEBSITE
+PASSWORD_HASH
+CREATED_AT
+STATUS
+
+Table: "category"
+Attributes:
+ID
+NAME
+DESCRIPTION
+PARENT_ID (for subcategory in a category.)
+
+Table: "book_category"
+Attributes:
+BOOK_ID
+CATEGORY_ID
+
+I need python fetcher code using google api to fetch data of these books and save them to json files.
+The ID attributes should start counting from 200 and increment.
