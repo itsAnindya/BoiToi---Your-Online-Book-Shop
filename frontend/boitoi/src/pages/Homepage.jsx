@@ -43,21 +43,23 @@ const booksettings = {
 };
 
 const Homepage = () => {
+  console.log('Homepage component rendered');
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log('Fetching best sellers...');
     const fetchBestSellers = async () => {
       try {
-        const response = await fetch('http://localhost:3001/home', {
+        const response = await fetch('http://192.168.0.126:3001/home', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({})
         });
-
+        console.log('Response status:', response.status);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
