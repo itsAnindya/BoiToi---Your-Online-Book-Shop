@@ -210,7 +210,7 @@ app.post('/home', (req, res) => {
       return res.status(200).json([]); // No reviews
     }
 
-    console.log('Top 5 book IDs:', topBookIds);
+    //console.log('Top 5 book IDs:', topBookIds);
 
     // Step 2: Get book info for top 5 book IDs
     const placeholders = topBookIds.map(() => '?').join(', ');
@@ -229,44 +229,46 @@ app.post('/home', (req, res) => {
         return res.status(500).json({ error: 'Database error while getting book details' });
       }
 
-      console.log('Top 5 books:', books);
+      //console.log('Top 5 books:', books);
       res.status(200).json(books);
     });
   });
 });
 
 app.get('/show_books', (req, res) => {
+  console.log('Received request to show top 5 books in each category');
   const query = `
-    SELECT 
-      c.ID AS category_id, 
-      c.NAME AS category_name, 
-      c.DESCRIPTION AS category_description, 
-      c.PARENT_ID AS  category_parent_id,
-      b.ID AS book_id,
-      b.TITLE,
-      b.ISBN,
-      b.PUBLISHED_DATE,
-      b.PUBLISHER_ID,
-      b.PAGE_COUNT,
-      b.LANGUAGE,
-      b.EDITION,
-      b.PRICE,
-      b.STOCK_QUANTITY,
-      b.DESCRIPTION AS book_description,
-      b.SHOW_BOOK,
-      b.COVER_URL,
-      b.ADDED_AT,
-      b.GENRE
-    FROM (
-      SELECT * 
-      FROM category_bestseller 
-      WHERE RANK BETWEEN 1 AND 5
-    ) AS bs
-    JOIN book b ON bs.BOOK_ID = b.ID
-    JOIN catagory c ON bs.CATEGORY_ID = c.ID
-    ORDER BY bs.CATEGORY_ID, bs.RANK;
-  `;
+  SELECT 
+    c.ID AS category_id, 
+    c.NAME AS category_name, 
+    c.DESCRIPTION AS category_description, 
+    c.PARENT_ID AS category_parent_id,
+    b.ID AS book_id,
+    b.TITLE,
+    b.ISBN,
+    b.PUBLISHED_DATE,
+    b.PUBLISHER_ID,
+    b.PAGE_COUNT,
+    b.LANGUAGE,
+    b.EDITION,
+    b.PRICE,
+    b.STOCK_QUANTITY,
+    b.DESCRIPTION AS book_description,
+    b.SHOW_BOOK,
+    b.COVER_URL,
+    b.ADDED_AT,
+    b.GENRE
+  FROM (
+    SELECT * 
+    FROM category_bestseller 
+    WHERE \`RANK\` BETWEEN 1 AND 5
+  ) AS bs
+  JOIN book b ON bs.BOOK_ID = b.ID
+  JOIN category c ON bs.CATEGORY_ID = c.ID
+  ORDER BY bs.CATEGORY_ID, bs.\`RANK\`;
+`;
 
+  console.log('Executing query to show books:', query);
   db.query(query, (err, results) => {
     if (err) {
       console.error('Database query error:', err);
@@ -306,6 +308,7 @@ app.get('/show_books', (req, res) => {
         ADDED_AT: row.ADDED_AT ?? null,
         GENRE: row.GENRE ?? null
       });
+      console.log(`Added book ${row.TITLE} price ${row.PRICE}`);
     }
 
     res.json(Object.values(response));
