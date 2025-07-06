@@ -196,7 +196,9 @@ app.post('/home', (req, res) => {
     ORDER BY avg_rating DESC
     LIMIT 5;
   `;
+  
   console.log('Executing avg rating query:', avgQuery);
+
   db.query(avgQuery, (err, topBooks) => {
     if (err) {
       console.error('Error in avg rating query:', err);
@@ -207,9 +209,10 @@ app.post('/home', (req, res) => {
     if (topBookIds.length === 0) {
       return res.status(200).json([]); // No reviews
     }
+
     console.log('Top 5 book IDs:', topBookIds);
-    // Step 2: Get book
-    //  info for top 5 book IDs
+
+    // Step 2: Get book info for top 5 book IDs
     const placeholders = topBookIds.map(() => '?').join(', ');
     const bookQuery = `
       SELECT id, title, isbn, published_date, publisher_id,
@@ -229,6 +232,83 @@ app.post('/home', (req, res) => {
       console.log('Top 5 books:', books);
       res.status(200).json(books);
     });
+  });
+});
+
+app.get('/show_books', (req, res) => {
+  const query = `
+    SELECT 
+      c.ID AS category_id, 
+      c.NAME AS category_name, 
+      c.DESCRIPTION AS category_description, 
+      c.PARENT_ID AS  category_parent_id,
+      b.ID AS book_id,
+      b.TITLE,
+      b.ISBN,
+      b.PUBLISHED_DATE,
+      b.PUBLISHER_ID,
+      b.PAGE_COUNT,
+      b.LANGUAGE,
+      b.EDITION,
+      b.PRICE,
+      b.STOCK_QUANTITY,
+      b.DESCRIPTION AS book_description,
+      b.SHOW_BOOK,
+      b.COVER_URL,
+      b.ADDED_AT,
+      b.GENRE
+    FROM (
+      SELECT * 
+      FROM category_bestseller 
+      WHERE RANK BETWEEN 1 AND 5
+    ) AS bs
+    JOIN book b ON bs.BOOK_ID = b.ID
+    JOIN catagory c ON bs.CATEGORY_ID = c.ID
+    ORDER BY bs.CATEGORY_ID, bs.RANK;
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Database query error:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    const response = {};
+
+    for (const row of results) {
+      const catId = row.category_id;
+      if (!response[catId]) {
+        response[catId] = {
+          category: {
+            ID: row.category_id,
+            NAME: row.category_name ?? null,
+            DESCRIPTION: row.category_description ?? null,
+            PARENT_ID: row.category_parent_id ?? null
+          },
+          top_books: []
+        };
+      }
+
+      response[catId].top_books.push({
+        ID: row.book_id,
+        TITLE: row.TITLE ?? null,
+        ISBN: row.ISBN ?? null,
+        PUBLISHED_DATE: row.PUBLISHED_DATE ?? null,
+        PUBLISHER_ID: row.PUBLISHER_ID ?? null,
+        PAGE_COUNT: row.PAGE_COUNT ?? null,
+        LANGUAGE: row.LANGUAGE ?? null,
+        EDITION: row.EDITION ?? null,
+        PRICE: row.PRICE ?? null,
+        STOCK_QUANTITY: row.STOCK_QUANTITY ?? null,
+        DESCRIPTION: row.book_description ?? null,
+        SHOW_BOOK: row.SHOW_BOOK ?? null,
+        COVER_URL: row.COVER_URL ?? null,
+        ADDED_AT: row.ADDED_AT ?? null,
+        GENRE: row.GENRE ?? null
+      });
+    }
+
+    res.json(Object.values(response));
   });
 });
 
