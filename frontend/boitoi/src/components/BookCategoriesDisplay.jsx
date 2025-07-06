@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Star, ShoppingCart, Share2 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
-const BookCategoriesDisplay = ({ apiUrl = 'http://localhost:3001/api' }) => {
+const BookCategoriesDisplay = ({ apiUrl = `${API_BASE_URL}/show_books` }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,8 +11,7 @@ const BookCategoriesDisplay = ({ apiUrl = 'http://localhost:3001/api' }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${apiUrl}/categories-with-books`);
-        
+        const response = await fetch(`${API_BASE_URL}/show_books`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
