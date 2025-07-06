@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Col, Container, Row } from 'react-bootstrap';
 import '../styles/book_card.css';
+import { API_BASE_URL } from '../config';
+import BookCategoriesDisplay from '../components/BookCategoriesDisplay';
 
 const booksettings = {
   dots: true,
@@ -52,7 +54,7 @@ const Homepage = () => {
     console.log('Fetching best sellers...');
     const fetchBestSellers = async () => {
       try {
-        const response = await fetch('http://192.168.0.126:3001/home', {
+        const response = await fetch(`${API_BASE_URL}/home`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -182,6 +184,7 @@ const Homepage = () => {
             </Col>
           </Row>
         </Container>
+        <div><BookCategoriesDisplay /></div>
       </div>
     </>
   );

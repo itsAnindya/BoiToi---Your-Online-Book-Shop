@@ -235,6 +235,11 @@ app.post('/home', (req, res) => {
 app.get('/test', (req, res) => {
   res.status(200).json({ message: 'Backend is connected!' });
 });
+
+// server.js
+app.get('/health', (_, res) => res.send('OK'));
+
+
 // -------------------- Start Server --------------------
 const PORT = 3001;
 const HOST = '0.0.0.0';  // listen from any IP

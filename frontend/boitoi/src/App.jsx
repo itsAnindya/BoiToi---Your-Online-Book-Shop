@@ -7,15 +7,19 @@ import Homepage from './pages/Homepage'
 import AuthPage from './pages/AuthPage'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
+import StatusBanner from './components/StatusBanner'
+import { API_BASE_URL } from './config'; // Adjust the import path as necessary
 
 // import Homepage from './pages/Homepage'; // Ensure this path and file exist and exports a React component
 
 import NavBar from './components/NavBar';
 
 function App() {
+  console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL); // Log the API base URL for debugging
   console.log('App component rendered');
   return (
     <BrowserRouter>
+      <StatusBanner />
       <div>
         <NavBar />
         <Routes>
