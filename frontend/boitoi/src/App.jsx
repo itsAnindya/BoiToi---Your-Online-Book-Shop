@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import './styles/global.css' // Uncomment if you have global styles
 import Homepage from './pages/Homepage'
@@ -8,7 +5,6 @@ import AuthPage from './pages/AuthPage'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import StatusBanner from './components/StatusBanner'
-import { API_BASE_URL } from './config'; // Adjust the import path as necessary
 
 // import Homepage from './pages/Homepage'; // Ensure this path and file exist and exports a React component
 

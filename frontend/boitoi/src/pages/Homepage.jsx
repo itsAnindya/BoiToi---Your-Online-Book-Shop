@@ -7,6 +7,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import '../styles/book_card.css';
 import { API_BASE_URL } from '../config';
 import BookShowcase from '../components/BookShowcase';
+import BestsellerBooksSection from '../components/BestSellerBooksSection';
 
 const booksettings = {
   dots: true,
@@ -185,7 +186,7 @@ const Homepage = () => {
           </Row>
         </Container>
       </div>
-      <div><BookShowcase /></div>
+      <div><BestsellerBooksSection /></div>
     </>
   );
 };

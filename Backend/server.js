@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
+const router = express.Router();
 
 const app = express();
 app.use(express.json());
@@ -31,7 +32,9 @@ app.post('/api/login', (req, res) => {
 
   const sql = 'SELECT * FROM USER WHERE USERNAME = ?';
   db.query(sql, [username], async (err, results) => {
-    if (err) return res.status(500).json({ message: 'Server error (query failed)' });
+    if (err) {
+      return res.status(500).json({ message: 'Server error (query failed)' });
+    }
 
     if (results.length === 0) {
       return res.status(401).json({ message: 'No such user' });
@@ -48,12 +51,16 @@ app.post('/api/login', (req, res) => {
     // Update is_active and last_active
     const updateSql = 'UPDATE USER SET IS_ACTIVE = 1, LAST_ACTIVE = NOW() WHERE ID = ?';
     db.query(updateSql, [userId], (err) => {
-      if (err) return res.status(500).json({ message: 'Server error (updating active state)' });
+      if (err) {
+        return res.status(500).json({ message: 'Server error (updating active state)' });
+      }
 
       // Check admin
       const adminSql = 'SELECT * FROM ADMIN WHERE USER_ID = ?';
       db.query(adminSql, [userId], (err, adminResults) => {
-        if (err) return res.status(500).json({ message: 'Server error (admin check) ' + err.message });
+        if (err) {
+          return res.status(500).json({ message: 'Server error (admin check) ' + err.message });
+        }
 
         const role = adminResults.length > 0 ? 'admin' : 'user';
         console.log(`User ${userId} logged in as ${role}`);
@@ -96,14 +103,16 @@ app.post('/api/signup', async (req, res) => {
       username, email, password, address_type, address, city, state, country, zipCode
     });
     return res.status(400).json({ message: 'Missing required user or address fields' });
-    
+
   }
   try {
     // Check if username or email already exists
     const checkSql = 'SELECT * FROM USER WHERE USERNAME = ? OR EMAIL = ?';
     db.query(checkSql, [username, email], async (err, results) => {
-      if (err) return res.status(500).json({ message: 'Server error (checking existing user)' });
-      
+      if (err) {
+        return res.status(500).json({ message: 'Server error (checking existing user)' });
+      }
+
       if (results.length > 0) {
         console.log('Username or email already exists:', { username, email });
         return res.status(409).json({ message: 'Username or email already exists' });
@@ -112,8 +121,12 @@ app.post('/api/signup', async (req, res) => {
       // Get new user ID = user count + 1
       const countUserSql = 'SELECT COUNT(*) AS count FROM USER';
       db.query(countUserSql, async (err, countResult) => {
-        if (err) return res.status(500).json({ message: 'Server error (counting users)' });
-        if(err)console.log('Error counting users:', err.message);
+        if (err) {
+          return res.status(500).json({ message: 'Server error (counting users)' });
+        }
+        if (err) {
+          console.log('Error counting users:', err.message);
+        }
         const id = countResult[0].count + 1;
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -143,12 +156,16 @@ app.post('/api/signup', async (req, res) => {
             return res.status(500).json({ message: 'Server error (insert user)', error: err.message });
             console.log('Error inserting user:', err.message);
           }
-          
+
           // Get new address ID = user_address count + 1
           const countAddressSql = 'SELECT COUNT(*) AS count FROM USER_ADDRESS';
           db.query(countAddressSql, (err, addressCountResult) => {
-            if (err) return res.status(500).json({ message: 'Server error (counting user_address)' });
-            if(err)console.log('Error counting user_address:', err.message);
+            if (err) {
+              return res.status(500).json({ message: 'Server error (counting user_address)' });
+            }
+            if (err) {
+              console.log('Error counting user_address:', err.message);
+            }
             const userAddressId = addressCountResult[0].count + 1;
 
             // Insert address with userAddressId and userId
@@ -174,7 +191,9 @@ app.post('/api/signup', async (req, res) => {
               if (err) {
                 return res.status(500).json({ message: 'Server error (insert address)', error: err.message });
               }
-              if(err)console.log('Error inserting address:', err.message);
+              if (err) {
+                console.log('Error inserting address:', err.message);
+              }
               res.status(201).json({ message: 'Signup successful (user + address inserted)' });
             });
           });
@@ -196,7 +215,7 @@ app.post('/home', (req, res) => {
     ORDER BY avg_rating DESC
     LIMIT 5;
   `;
-  
+
   console.log('Executing avg rating query:', avgQuery);
 
   db.query(avgQuery, (err, topBooks) => {
@@ -314,6 +333,85 @@ app.get('/show_books', (req, res) => {
     res.json(Object.values(response));
   });
 });
+
+router.get('/bestsellers', async (req, res) => {
+  let connection;
+
+  try {
+    connection = await mysql.createConnection(dbConfig);
+    console.log('Connected to MySQL database');
+
+    const query = `
+      SELECT 
+        c.ID as category_id,
+        c.NAME as category_name,
+        c.DESCRIPTION as category_description,
+        b.ID as book_id,
+        b.TITLE,
+        b.PRICE,
+        b.COVER_URL,
+        b.STOCK_QUANTITY,
+        cb.RANK,
+        GROUP_CONCAT(a.NAME ORDER BY a.NAME SEPARATOR '|') as authors
+      FROM category c
+      JOIN category_bestseller cb ON c.ID = cb.CATEGORY_ID
+      JOIN book b ON cb.BOOK_ID = b.ID
+      JOIN book_author ba ON b.ID = ba.BOOK_ID
+      JOIN author a ON ba.AUTHOR_ID = a.ID
+      WHERE cb.RANK <= 5 
+        AND b.SHOW_BOOK = 1 
+        AND b.STOCK_QUANTITY >= 0
+      GROUP BY c.ID, c.NAME, c.DESCRIPTION, b.ID, b.TITLE, b.PRICE, b.COVER_URL, b.STOCK_QUANTITY, cb.RANK
+      ORDER BY c.NAME, cb.RANK;
+    `;
+
+    const [rows] = await connection.execute(query);
+
+    // Group books by category
+    const categoriesMap = new Map();
+
+    rows.forEach(row => {
+      const categoryId = row.category_id;
+
+      if (!categoriesMap.has(categoryId)) {
+        categoriesMap.set(categoryId, {
+          id: categoryId,
+          name: row.category_name,
+          description: row.category_description,
+          books: []
+        });
+      }
+
+      const category = categoriesMap.get(categoryId);
+      category.books.push({
+        id: row.book_id,
+        title: row.TITLE,
+        authors: row.authors ? row.authors.split('|') : [],
+        price: parseFloat(row.PRICE),
+        cover_url: row.COVER_URL,
+        stock_quantity: row.STOCK_QUANTITY,
+        rank: row.RANK
+      });
+    });
+
+    const result = Array.from(categoriesMap.values());
+
+    res.json(result);
+
+  } catch (error) {
+    console.error('Error fetching bestseller books:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to fetch bestseller books'
+    });
+  } finally {
+    if (connection) {
+      await connection.end();
+    }
+  }
+});
+
+module.exports = router;
 
 app.get('/test', (req, res) => {
   res.status(200).json({ message: 'Backend is connected!' });

@@ -1,0 +1,50 @@
+Table: 'book'
+Attributes:
+ADDED_AT
+COVER_URL
+DESCRIPTION
+EDITION
+GENRE
+ID
+ISBN
+LANGUAGE
+PAGE_COUNT
+PRICE
+PUBLISHED_DATE
+PUBLISHER_ID
+SHOW_BOOK
+STOCK_QUANTITY
+TITLE
+
+Table: 'author'
+BIO
+DATE_OF_BIRTH
+ID
+NAME
+NATIONALITY
+PHOTO_URL
+WEBSITE
+
+Table: 'book_author'
+Attributes:
+AUTHOR_ID
+BOOK_ID
+CONTRIBUTION
+
+Table: 'category'
+Attributes:
+DESCRIPTION
+ID
+NAME
+PARENT_ID
+
+Table: 'book_category'
+Attributes:
+BOOK_ID
+CATEGORY_ID
+
+SQL USED:
+SELECT COLUMN_NAME
+FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = 'BoiToi_DB'    -- your database name
+  AND TABLE_NAME = 'book_category'; -- your table name
