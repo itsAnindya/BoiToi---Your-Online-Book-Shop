@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Col, Container, Row } from 'react-bootstrap';
 import '../styles/book_card.css';
 import { API_BASE_URL } from '../config';
-import BookCategoriesDisplay from '../components/BookCategoriesDisplay';
+import BookShowcase from '../components/BookShowcase';
 
 const booksettings = {
   dots: true,
@@ -184,8 +184,8 @@ const Homepage = () => {
             </Col>
           </Row>
         </Container>
-        <div><BookCategoriesDisplay /></div>
       </div>
+      <div><BookShowcase /></div>
     </>
   );
 };
