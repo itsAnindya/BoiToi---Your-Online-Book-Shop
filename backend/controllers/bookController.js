@@ -1,87 +1,111 @@
-const { pool } = require('../config/db');
+const db = require('../config/database');
 
-// ---------------- getHomeBooks ----------------
-const getHomeBooks = async (req, res) => {
-  try {
-    const [topBooks] = await pool.promise().query(`
-      SELECT BOOK_ID, AVG(Rating) AS avg_rating
-      FROM review
-      GROUP BY BOOK_ID
-      ORDER BY avg_rating DESC
-      LIMIT 5;
-    `);
+/**
+ * Get Home Page Books
+ * Returns top 5 books based on average rating
+ */
+const getHomeBooks = (req, res) => {
+  console.log('Fetching top 5 books based on average rating');
+
+  // Get top 5 books based on average rating
+  const avgQuery = `
+    SELECT BOOK_ID, AVG(Rating) AS avg_rating
+    FROM review
+    GROUP BY BOOK_ID
+    ORDER BY avg_rating DESC
+    LIMIT 5;
+  `;
+
+  db.query(avgQuery, (err, topBooks) => {
+    if (err) {
+      console.error('Error in avg rating query:', err);
+      return res.status(500).json({ error: 'Database error while getting top books' });
+    }
 
     const topBookIds = topBooks.map(book => book.BOOK_ID);
+
     if (topBookIds.length === 0) {
+      console.log('No reviews found, returning empty array');
       return res.status(200).json([]);
     }
 
+    console.log('Top 5 book IDs:', topBookIds);
+
+    // Get book details for top 5 book IDs
     const placeholders = topBookIds.map(() => '?').join(', ');
-    const [books] = await pool.promise().query(`
+    const bookQuery = `
       SELECT id, title, isbn, published_date, publisher_id,
              page_count, language, edition, price,
              stock_quantity, description, cover_url,
              added_at, genre
       FROM book
       WHERE id IN (${placeholders});
-    `, topBookIds);
+    `;
 
-    res.status(200).json(books);
-  } catch (err) {
-    console.error('Error in getHomeBooks:', err);
-    res.status(500).json({ error: 'Database error' });
-  }
+    db.query(bookQuery, topBookIds, (err, books) => {
+      if (err) {
+        console.error('Error in book info query:', err);
+        return res.status(500).json({ error: 'Database error while getting book details' });
+      }
+
+      console.log(`Found ${books.length} books for home page`);
+      res.status(200).json(books);
+    });
+  });
 };
 
-// ---------------- showBooks ----------------
-const showBooks = async (req, res) => {
-  console.log('Received request to show top 5 books in each category');
+/**
+ * Get Books by Category
+ * Returns top 5 books in each category
+ */
+const getBooksByCategory = (req, res) => {
+  console.log('Fetching top 5 books per category sorted by number of books');
 
   const query = `
-    SELECT 
-      c.ID AS category_id, 
-      c.NAME AS category_name, 
-      c.DESCRIPTION AS category_description, 
-      c.PARENT_ID AS category_parent_id,
-      b.ID AS book_id,
-      b.TITLE,
-      b.ISBN,
-      b.PUBLISHED_DATE,
-      b.PUBLISHER_ID,
-      b.PAGE_COUNT,
-      b.LANGUAGE,
-      b.EDITION,
-      b.PRICE,
-      b.STOCK_QUANTITY,
-      b.DESCRIPTION AS book_description,
-      b.SHOW_BOOK,
-      b.COVER_URL,
-      b.ADDED_AT,
-      b.GENRE
-    FROM (
-      SELECT * FROM category_bestseller 
-      WHERE \`RANK\` BETWEEN 1 AND 5
-    ) AS bs
-    JOIN book b ON bs.BOOK_ID = b.ID
-    JOIN category c ON bs.CATEGORY_ID = c.ID
-    ORDER BY bs.CATEGORY_ID, bs.\`RANK\`;
+  SELECT 
+  c.ID AS category_id,
+  c.NAME AS category_name,
+  b.ID AS book_id,
+  b.TITLE,
+  b.COVER_URL,
+  b.PRICE,
+  GROUP_CONCAT(DISTINCT a.NAME ORDER BY a.NAME SEPARATOR ' · ') AS author_names,
+  cb.book_count
+FROM (
+    SELECT CATEGORY_ID, COUNT(*) AS book_count
+    FROM category_bestseller
+    WHERE POSITION BETWEEN 1 AND 5
+    GROUP BY CATEGORY_ID
+) AS cb
+JOIN category c ON c.ID = cb.CATEGORY_ID
+JOIN category_bestseller bs ON bs.CATEGORY_ID = c.ID AND bs.POSITION BETWEEN 1 AND 5
+JOIN book b ON b.ID = bs.BOOK_ID
+LEFT JOIN book_author ba ON ba.BOOK_ID = b.ID
+LEFT JOIN author a ON a.ID = ba.AUTHOR_ID
+GROUP BY c.ID, b.ID, cb.book_count
+ORDER BY cb.book_count DESC, c.ID;
+
   `;
 
-  try {
-    const [results] = await pool.promise().query(query);
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Database query error: u', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (results.length === 0) {
+      console.log('No books found');
+      return res.status(200).json([]);
+    }
 
     const response = {};
-
     for (const row of results) {
       const catId = row.category_id;
+
       if (!response[catId]) {
         response[catId] = {
-          category: {
-            ID: row.category_id,
-            NAME: row.category_name ?? null,
-            DESCRIPTION: row.category_description ?? null,
-            PARENT_ID: row.category_parent_id ?? null
-          },
+          category_id: catId,
+          category_name: row.category_name,
           top_books: []
         };
       }
@@ -89,93 +113,22 @@ const showBooks = async (req, res) => {
       response[catId].top_books.push({
         ID: row.book_id,
         TITLE: row.TITLE ?? null,
-        ISBN: row.ISBN ?? null,
-        PUBLISHED_DATE: row.PUBLISHED_DATE ?? null,
-        PUBLISHER_ID: row.PUBLISHER_ID ?? null,
-        PAGE_COUNT: row.PAGE_COUNT ?? null,
-        LANGUAGE: row.LANGUAGE ?? null,
-        EDITION: row.EDITION ?? null,
-        PRICE: row.PRICE ?? null,
-        STOCK_QUANTITY: row.STOCK_QUANTITY ?? null,
-        DESCRIPTION: row.book_description ?? null,
-        SHOW_BOOK: row.SHOW_BOOK ?? null,
         COVER_URL: row.COVER_URL ?? null,
-        ADDED_AT: row.ADDED_AT ?? null,
-        GENRE: row.GENRE ?? null
+        PRICE: row.PRICE ?? null,
+        AUTHORS: row.author_names ?? ''
       });
     }
 
-    res.json(Object.values(response));
-  } catch (err) {
-    console.error('Error in showBooks:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+    // Sort categories by number of books (already done in SQL), but grouping flattened it
+    const finalResponse = Object.values(response);
+
+    console.log(`Returning ${finalResponse.length} categories`);
+    res.json(finalResponse);
+  });
 };
 
-// ---------------- getBestsellers ----------------
-const getBestsellers = async (req, res) => {
-  try {
-    const [rows] = await pool.promise().query(`
-      SELECT 
-        c.ID as category_id,
-        c.NAME as category_name,
-        c.DESCRIPTION as category_description,
-        b.ID as book_id,
-        b.TITLE,
-        b.PRICE,
-        b.COVER_URL,
-        b.STOCK_QUANTITY,
-        cb.RANK,
-        GROUP_CONCAT(a.NAME ORDER BY a.NAME SEPARATOR '|') as authors
-      FROM category c
-      JOIN category_bestseller cb ON c.ID = cb.CATEGORY_ID
-      JOIN book b ON cb.BOOK_ID = b.ID
-      JOIN book_author ba ON b.ID = ba.BOOK_ID
-      JOIN author a ON ba.AUTHOR_ID = a.ID
-      WHERE cb.RANK <= 5 
-        AND b.SHOW_BOOK = 1 
-        AND b.STOCK_QUANTITY >= 0
-      GROUP BY c.ID, c.NAME, c.DESCRIPTION, b.ID, b.TITLE, b.PRICE, b.COVER_URL, b.STOCK_QUANTITY, cb.RANK
-      ORDER BY c.NAME, cb.RANK;
-    `);
-
-    const categoriesMap = new Map();
-
-    rows.forEach(row => {
-      const categoryId = row.category_id;
-
-      if (!categoriesMap.has(categoryId)) {
-        categoriesMap.set(categoryId, {
-          id: categoryId,
-          name: row.category_name,
-          description: row.category_description,
-          books: []
-        });
-      }
-
-      categoriesMap.get(categoryId).books.push({
-        id: row.book_id,
-        title: row.TITLE,
-        authors: row.authors ? row.authors.split('|') : [],
-        price: parseFloat(row.PRICE),
-        cover_url: row.COVER_URL,
-        stock_quantity: row.STOCK_QUANTITY,
-        rank: row.RANK
-      });
-    });
-
-    res.json(Array.from(categoriesMap.values()));
-  } catch (error) {
-    console.error('Error fetching bestseller books:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-      message: 'Failed to fetch bestseller books'
-    });
-  }
-};
 
 module.exports = {
   getHomeBooks,
-  showBooks,
-  getBestsellers
+  getBooksByCategory
 };
