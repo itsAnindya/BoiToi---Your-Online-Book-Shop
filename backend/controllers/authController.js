@@ -1,158 +1,230 @@
-// backend/controllers/authController.js
-const bcrypt  = require('bcrypt');
-const { pool } = require('../config/db');
-const config  = require('../config');            // export BCRYPT_SALT_ROUNDS = 10 (for example)
+const bcrypt = require('bcrypt');
+const db = require('../config/database');
 
-/* ----------------------------------------------------------- *
- *  Helpers
- * ----------------------------------------------------------- */
-const getUserByUsername = async (username) => {
-  const [rows] = await pool.promise().query(
-    'SELECT * FROM USER WHERE USERNAME = ?',
-    [username]
-  );
-  return rows[0];
-};
-
-const isAdmin = async (userId) => {
-  const [rows] = await pool.promise().query(
-    'SELECT 1 FROM ADMIN WHERE USER_ID = ? LIMIT 1',
-    [userId]
-  );
-  return rows.length > 0;
-};
-
-/* ----------------------------------------------------------- *
- *  POST /api/auth/login
- * ----------------------------------------------------------- */
+/**
+ * Login Controller
+ * Handles user authentication
+ */
 const login = async (req, res) => {
-  const { username, password } = req.body;
-  console.log(`Login attempt for ${username}`);
-
   try {
-    const user = await getUserByUsername(username);
-    if (!user) {
-      return res.status(401).json({ success: false, message: 'No such user' });
+    const { username, password } = req.body;
+    
+    // Input validation
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
     }
 
-    const match = await bcrypt.compare(password, user.PASSWORD_HASH);
-    if (!match) {
-      return res.status(401).json({ success: false, message: 'Invalid username or password' });
-    }
+    console.log('Login attempt:', { username });
 
-    // 1️⃣ update active flags (not inside a transaction—single query is fine)
-    await pool.promise().query(
-      'UPDATE USER SET IS_ACTIVE = 1, LAST_ACTIVE = NOW() WHERE ID = ?',
-      [user.ID]
-    );
+    // Query user by username
+    const sql = 'SELECT * FROM USER WHERE USERNAME = ?';
+    
+    db.query(sql, [username], async (err, results) => {
+      if (err) {
+        console.error('Database error during login:', err);
+        return res.status(500).json({ message: 'Server error during login' });
+      }
 
-    // 2️⃣ determine role
-    const role = (await isAdmin(user.ID)) ? 'admin' : 'user';
-    console.log(`User ${user.ID} logged in as ${role}`);
+      if (results.length === 0) {
+        return res.status(401).json({ message: 'No such user' });
+      }
 
-    res.json({ success: true, data: { id: user.ID, role } });
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+      const user = results[0];
+      
+      // Verify password
+      const match = await bcrypt.compare(password, user.PASSWORD_HASH);
+      if (!match) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+
+      const userId = user.ID;
+
+      // Update user active status
+      const updateSql = 'UPDATE USER SET IS_ACTIVE = 1, LAST_ACTIVE = NOW() WHERE ID = ?';
+      
+      db.query(updateSql, [userId], (err) => {
+        if (err) {
+          console.error('Error updating user active status:', err);
+          return res.status(500).json({ message: 'Server error updating active state' });
+        }
+
+        // Check if user is admin
+        const adminSql = 'SELECT * FROM ADMIN WHERE USER_ID = ?';
+        
+        db.query(adminSql, [userId], (err, adminResults) => {
+          if (err) {
+            console.error('Error checking admin status:', err);
+            return res.status(500).json({ message: 'Server error checking admin status' });
+          }
+
+          const role = adminResults.length > 0 ? 'admin' : 'user';
+          console.log(`User ${userId} logged in as ${role}`);
+          
+          return res.json({ 
+            message: 'Login successful', 
+            role, 
+            id: userId,
+            username: user.USERNAME
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-/* ----------------------------------------------------------- *
- *  POST /api/auth/signup
- * ----------------------------------------------------------- */
+/**
+ * Signup Controller
+ * Handles user registration
+ */
 const signup = async (req, res) => {
-  const {
-    username,
-    email,
-    password,
-    first_name,
-    last_name,
-    phone,
-    gender,
-    birthday,
-    address: addr = {},
-  } = req.body;
-
-  const {
-    type: address_type,
-    address,
-    city,
-    state,
-    country,
-    zipCode,
-  } = addr;
-
-  /* basic required‑field check */
-  if (
-    !username || !email || !password ||
-    !address_type || !address || !city || !state || !country || !zipCode
-  ) {
-    return res
-      .status(400)
-      .json({ success: false, message: 'Missing required user or address fields' });
-  }
-
   try {
-    /* 1️⃣ make sure username / email are unique */
-    const [dup] = await pool.promise().query(
-      'SELECT 1 FROM USER WHERE USERNAME = ? OR EMAIL = ? LIMIT 1',
-      [username, email]
-    );
-    if (dup.length) {
-      return res
-        .status(409)
-        .json({ success: false, message: 'Username or email already exists' });
+    const {
+      username,
+      email,
+      password,
+      first_name,
+      last_name,
+      phone,
+      gender,
+      birthday,
+      address: addressObj
+    } = req.body;
+
+    const {
+      type: address_type,
+      address,
+      city,
+      state,
+      country,
+      zipCode
+    } = addressObj || {};
+
+    // Validate required fields
+    if (!username || !email || !password || !address_type || !address || !city || !state || !country || !zipCode) {
+      console.log('Missing required fields:', {
+        username: !!username,
+        email: !!email,
+        password: !!password,
+        address_type: !!address_type,
+        address: !!address,
+        city: !!city,
+        state: !!state,
+        country: !!country,
+        zipCode: !!zipCode
+      });
+      return res.status(400).json({ message: 'Missing required user or address fields' });
     }
 
-    /* 2️⃣ hash password */
-    const saltRounds = config.BCRYPT_SALT_ROUNDS || 10;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
+    // Check if username or email already exists
+    const checkSql = 'SELECT * FROM USER WHERE USERNAME = ? OR EMAIL = ?';
+    
+    db.query(checkSql, [username, email], async (err, results) => {
+      if (err) {
+        console.error('Error checking existing user:', err);
+        return res.status(500).json({ message: 'Server error checking existing user' });
+      }
+      
+      if (results.length > 0) {
+        console.log('Username or email already exists:', { username, email });
+        return res.status(409).json({ message: 'Username or email already exists' });
+      }
 
-    /* 3️⃣ transaction: insert user + address */
-    const conn = await pool.promise().getConnection();
-    try {
-      await conn.beginTransaction();
+      // Get new user ID
+      const countUserSql = 'SELECT COUNT(*) AS count FROM USER';
+      
+      db.query(countUserSql, async (err, countResult) => {
+        if (err) {
+          console.error('Error counting users:', err);
+          return res.status(500).json({ message: 'Server error counting users' });
+        }
 
-      /* insert user (ID auto‑generated) */
-      const [userResult] = await conn.query(
-        `INSERT INTO USER (
-          USERNAME, EMAIL, PASSWORD_HASH, FIRST_NAME, LAST_NAME, PHONE,
-          CREATED_AT, LAST_ACTIVE, IS_ACTIVE, GENDER, BIRTHDAY
-        ) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 0, ?, ?)`,
-        [
+        const id = countResult[0].count + 1;
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert new user
+        const insertUserSql = `
+          INSERT INTO USER (
+            ID, USERNAME, EMAIL, PASSWORD_HASH, FIRST_NAME, LAST_NAME, PHONE,
+            CREATED_AT, LAST_ACTIVE, IS_ACTIVE, GENDER, BIRTHDAY
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)
+        `;
+
+        const userValues = [
+          id,
           username,
           email,
-          passwordHash,
+          hashedPassword,
           first_name || null,
           last_name || null,
-          phone      || null,
-          gender     || 'UNSPECIFIED',
-          birthday   || null,
-        ]
-      );
-      const userId = userResult.insertId;
+          phone || null,
+          0, // is_active initial value
+          gender || 'UNSPECIFIED',
+          birthday || null
+        ];
 
-      /* insert address */
-      await conn.query(
-        `INSERT INTO USER_ADDRESS (
-          USER_ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
-        [userId, address_type, address, city, state, country, zipCode]
-      );
+        db.query(insertUserSql, userValues, (err) => {
+          if (err) {
+            console.error('Error inserting user:', err);
+            return res.status(500).json({ message: 'Server error inserting user' });
+          }
+          
+          // Get new address ID
+          const countAddressSql = 'SELECT COUNT(*) AS count FROM USER_ADDRESS';
+          
+          db.query(countAddressSql, (err, addressCountResult) => {
+            if (err) {
+              console.error('Error counting user addresses:', err);
+              return res.status(500).json({ message: 'Server error counting addresses' });
+            }
 
-      await conn.commit();
-      res.status(201).json({ success: true, message: 'Signup successful' });
-    } catch (txErr) {
-      await conn.rollback();
-      console.error('Signup transaction error:', txErr);
-      res.status(500).json({ success: false, message: 'Failed to sign up' });
-    } finally {
-      conn.release();
-    }
-  } catch (err) {
-    console.error('Signup error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+            const userAddressId = addressCountResult[0].count + 1;
+
+            // Insert address
+            const insertAddressSql = `
+              INSERT INTO USER_ADDRESS (
+                ID, USER_ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
+              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            const addressValues = [
+              userAddressId,
+              id,
+              address_type,
+              address,
+              city,
+              state,
+              country,
+              zipCode,
+              1 // IS_DEFAULT always 1
+            ];
+
+            db.query(insertAddressSql, addressValues, (err) => {
+              if (err) {
+                console.error('Error inserting address:', err);
+                return res.status(500).json({ message: 'Server error inserting address' });
+              }
+              
+              console.log(`User ${username} successfully registered with ID: ${id}`);
+              res.status(201).json({ 
+                message: 'Signup successful',
+                userId: id,
+                username: username
+              });
+            });
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Signup error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-module.exports = { login, signup };
+module.exports = {
+  login,
+  signup
+};
