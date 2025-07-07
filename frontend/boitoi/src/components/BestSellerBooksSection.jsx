@@ -14,7 +14,7 @@ const BestsellerBooksSection = ({ apiBaseUrl = API_BASE_URL }) => {
   const fetchBestsellerBooks = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${apiBaseUrl}/bestsellers`);
+      const response = await fetch(`${apiBaseUrl}/api/books/categories`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
