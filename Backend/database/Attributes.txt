@@ -43,6 +43,24 @@ Attributes:
 BOOK_ID
 CATEGORY_ID
 
+Table: 'category_bestseller'
+Attributes:
+BOOK_ID
+CATEGORY_ID
+PERIOD_START
+PERIOD_TYPE
+RANK
+
+In a book card, I'll show the following information:
+1. Book thumbnail
+2. Book title
+3. Author names separated by dots
+4. Price
+5. Add to cart button
+
+In the homepage, I want to show the category wise 5 best seller books per row. I need a frontend code to send necessary request to the server. The server has to respond with appropriate JSON.
+
+
 SQL USED:
 SELECT COLUMN_NAME
 FROM information_schema.COLUMNS
