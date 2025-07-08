@@ -31,6 +31,13 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || '0.0.0.0';
 
+console.log(
+  'ACTIVE ROUTES:',
+  app._router?.stack
+    ?.filter(r => r.route)
+    .map(r => `${Object.keys(r.route.methods).join(',').toUpperCase()} ${r.route.path}`) || 'No routes defined yet'
+);
+
 app.listen(PORT, HOST, () => {
   console.log(`🚀 Server running on http://${HOST}:${PORT}`);
 });
