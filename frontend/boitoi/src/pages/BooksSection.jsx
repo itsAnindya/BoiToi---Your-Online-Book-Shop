@@ -1,3 +1,5 @@
+import SearchBar from '../components/SearchBar';
+import FilterSidebar from '../components/FilterSidebar';
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from '../layouts/DefaultLayout';
 import { API_BASE_URL } from '../config';
