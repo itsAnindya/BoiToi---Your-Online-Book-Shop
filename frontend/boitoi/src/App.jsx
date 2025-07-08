@@ -14,15 +14,17 @@ function App() {
   console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL); // Log the API base URL for debugging
   console.log('App component rendered');
   return (
-    <BrowserRouter>
-      <StatusBanner />
-      <div>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/auth" element={<AuthPage />} />
-        </Routes>
-      </div>
-    </BrowserRouter >
+    <>
+      <BrowserRouter>
+        {/* <StatusBanner /> */}
+        <div>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/auth" element={<AuthPage />} />
+          </Routes>
+        </div>
+      </BrowserRouter >
+    </>
   );
 }
 

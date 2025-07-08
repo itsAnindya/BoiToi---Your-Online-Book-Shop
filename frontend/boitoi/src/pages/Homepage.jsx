@@ -10,6 +10,7 @@ import BookShowcase from '../components/BookShowcase';
 import BestsellerBooksSection from '../components/BestSellerBooksSection';
 import NavBar from '../components/NavBar';
 import BestsellerSlider from '../components/BestSellerSlider';
+import DefaultLayout from '../layouts/DefaultLayout';
 
 const booksettings = {
   dots: true,
@@ -47,78 +48,10 @@ const booksettings = {
   ]
 };
 
-const Homepage = () => {
-  console.log('Homepage component rendered');
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    console.log('Fetching best sellers...');
-    const fetchBestSellers = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/books/home`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({})
-        });
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setBooks(data);
-      } catch (err) {
-        console.error('Error fetching best sellers:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBestSellers();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-        <p>Loading best sellers...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-5">
-        <div className="alert alert-danger" role="alert">
-          Error loading books: {error}
-        </div>
-      </div>
-    );
-  }
-
-  if (books.length === 0) {
-    return (
-      <div className="text-center py-5">
-        <p>No books available at the moment.</p>
-      </div>
-    );
-  }
-
+export default function Homepage() {
   return (
-    <>
-      <div className='flex flex-col items-center justify-center'>
-        <NavBar />
-        <BestsellerSlider books={books} settings={booksettings} />
-      </div>
-    </>
+    <DefaultLayout>
+      <BestsellerSlider />
+    </DefaultLayout>
   );
-};
-
-export default Homepage;
+}

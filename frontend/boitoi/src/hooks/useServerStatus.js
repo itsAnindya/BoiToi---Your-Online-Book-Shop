@@ -10,7 +10,7 @@ export function useServerStatus(interval = 10_000) {
 
     const ping = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/health`, { cache: 'no-store' });
+        const res = await fetch(`${API_BASE_URL}/api/health`, { cache: 'no-store' });
         setIsOnline(res.ok);
         console.log('Server is online:', res.ok);
       } catch {

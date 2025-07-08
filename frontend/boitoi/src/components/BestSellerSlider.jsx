@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Star, BookOpen } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const BestsellerSlider = () => {
   const [books, setBooks] = useState([]);
@@ -15,10 +16,18 @@ const BestsellerSlider = () => {
     try {
       setLoading(true);
       // Replace with your actual server endpoint
-      const response = await fetch('/api/home-books');
-      
+      const response = await fetch(`${API_BASE_URL}/api/books/home`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({})
+      });
+
       if (!response.ok) {
         throw new Error('Failed to fetch books');
+      } else {
+        console.log("response status:", response.status);
       }
       
       const data = await response.json();
