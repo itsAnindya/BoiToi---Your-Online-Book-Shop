@@ -1,6 +1,6 @@
 import SearchBar from '../components/SearchBar';
 import FilterSidebar from '../components/FilterSidebar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import DefaultLayout from '../layouts/DefaultLayout';
 import { API_BASE_URL } from '../config';
 import { Search, Filter, ShoppingCart, Star, AlertCircle, X } from 'lucide-react';
@@ -109,7 +109,7 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
     console.log(`Add to cart → ${id} (${title})`);
 
   /* ------------------ presentational bits -------------------------- */
-  const SearchBar = () => (
+  const SearchBar = memo(() => (
     <div className="sticky top-0 bg-white z-50 border-b border-gray-200 px-6 py-4">
       <div className="max-w-2xl mx-auto">
         <div className="relative">
@@ -125,7 +125,7 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
         </div>
       </div>
     </div>
-  );
+  ));
 
   const FilterSidebar = () => (
     <div className="w-64 bg-white border-r border-gray-200 p-6">
