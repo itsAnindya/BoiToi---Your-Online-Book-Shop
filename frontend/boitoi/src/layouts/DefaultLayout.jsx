@@ -6,7 +6,7 @@ export default function DefaultLayout({ children }) {
       <header className="sticky top-0 left-0 right-0 z-50">
         <NavBar />
       </header>
-      <main className="flex-grow pt-16">
+      <main className="flex-grow w-full pt-16">
         {children}
       </main>
     </div>

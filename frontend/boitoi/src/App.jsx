@@ -2,9 +2,11 @@ import './App.css'
 import './styles/global.css' // Uncomment if you have global styles
 import Homepage from './pages/Homepage'
 import AuthPage from './pages/AuthPage'
+import BooksSection from './pages/BooksSection' // Ensure this path and file exist and exports a React component
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import StatusBanner from './components/StatusBanner'
+import BestsellerSlider from './components/BestSellerSlider'; // Ensure this path and file exist and exports a React component
 
 // import Homepage from './pages/Homepage'; // Ensure this path and file exist and exports a React component
 
@@ -21,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/books" element={<BooksSection />}/>
           </Routes>
         </div>
       </BrowserRouter >

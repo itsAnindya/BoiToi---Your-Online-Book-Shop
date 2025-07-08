@@ -1,16 +1,10 @@
 //Beautiful homepage for Boitoi--Your Online Bookshop project
-import React, { useEffect, useState } from 'react';
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Col, Container, Row } from 'react-bootstrap';
 import '../styles/book_card.css';
-import { API_BASE_URL } from '../config';
-import BookShowcase from '../components/BookShowcase';
-import BestsellerBooksSection from '../components/BestSellerBooksSection';
-import NavBar from '../components/NavBar';
 import BestsellerSlider from '../components/BestSellerSlider';
 import DefaultLayout from '../layouts/DefaultLayout';
+import BestsellerBooksSection from "../components/BestSellerBooksSection";
 
 const booksettings = {
   dots: true,
@@ -51,7 +45,10 @@ const booksettings = {
 export default function Homepage() {
   return (
     <DefaultLayout>
-      <BestsellerSlider />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <BestsellerSlider />
+        <BestsellerBooksSection/>
+      </div>
     </DefaultLayout>
   );
 }
