@@ -17,7 +17,6 @@ function App() {
     <BrowserRouter>
       <StatusBanner />
       <div>
-        <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<AuthPage />} />

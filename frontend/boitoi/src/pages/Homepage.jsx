@@ -8,6 +8,8 @@ import '../styles/book_card.css';
 import { API_BASE_URL } from '../config';
 import BookShowcase from '../components/BookShowcase';
 import BestsellerBooksSection from '../components/BestSellerBooksSection';
+import NavBar from '../components/NavBar';
+import BestsellerSlider from '../components/BestSellerSlider';
 
 const booksettings = {
   dots: true,
@@ -111,82 +113,10 @@ const Homepage = () => {
 
   return (
     <>
-      <div>
-        <Container>
-          <Row>
-            <Col lg={12} md={12} className="mx-auto">
-              <div className="text-center mb-4">
-                <h2>Best Sellers</h2>
-                <p>Discover our top-rated books based on customer reviews</p>
-              </div>
-              <div style={{ minWidth: 320 }}>
-                <Slider {...booksettings}>
-                  {books.map((book) => (
-                    <div key={book.id} className='book-slider-img'>
-                      <div className="book-card p-3">
-                        <img
-                          src={book.cover_url || '/images/default-book-cover.jpg'}
-                          alt={book.title || 'Book Cover'}
-                          style={{
-                            width: '100%',
-                            height: '300px',
-                            objectFit: 'cover',
-                            borderRadius: '8px',
-                            marginBottom: '15px'
-                          }}
-                        />
-                        <div className="book-info">
-                          <h5 className="book-title" style={{
-                            fontSize: '1.2rem',
-                            fontWeight: 'bold',
-                            marginBottom: '10px',
-                            height: '60px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical'
-                          }}>
-                            {book.title}
-                          </h5>
-                          <p className="book-genre" style={{
-                            color: '#666',
-                            fontSize: '0.9rem',
-                            marginBottom: '5px'
-                          }}>
-                            {book.genre}
-                          </p>
-                          <p className="book-price" style={{
-                            color: '#007bff',
-                            fontSize: '1.1rem',
-                            fontWeight: 'bold',
-                            marginBottom: '10px'
-                          }}>
-                            ${book.price}
-                          </p>
-                          <p className="book-description" style={{
-                            fontSize: '0.85rem',
-                            color: '#555',
-                            height: '60px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 3,
-                            WebkitBoxOrient: 'vertical'
-                          }}>
-                            {book.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+      <div className='flex flex-col items-center justify-center'>
+        <NavBar />
+        <BestsellerSlider books={books} settings={booksettings} />
       </div>
-      <div><BestsellerBooksSection /></div>
     </>
   );
 };

@@ -8,7 +8,7 @@ const bookController = require('../controllers/bookController');
  */
 
 // POST /api/books/home - Get top 5 books based on average rating
-router.post('/home', bookController.getHomeBooks);
+router.post('/home-books', bookController.getHomeBooks);
 
 // GET /api/books/categories - Get top 5 books in each category
 router.get('/categories', bookController.getBooksByCategory);
