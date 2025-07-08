@@ -13,4 +13,5 @@ router.post('/home', bookController.getHomeBooks);
 // GET /api/books/categories - Get top 5 books in each category
 router.get('/categories', bookController.getBooksByCategory);
 
+//router.get('/searchByPrice', SearchController.searchByPrice);
 module.exports = router;

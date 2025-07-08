@@ -84,12 +84,11 @@ LEFT JOIN book_author ba ON ba.BOOK_ID = b.ID
 LEFT JOIN author a ON a.ID = ba.AUTHOR_ID
 GROUP BY c.ID, b.ID, cb.book_count
 ORDER BY cb.book_count DESC, c.ID;
-
   `;
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Database query error: u', err);
+      console.error('Database query error: ', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
 
@@ -121,7 +120,9 @@ ORDER BY cb.book_count DESC, c.ID;
 
     // Sort categories by number of books (already done in SQL), but grouping flattened it
     const finalResponse = Object.values(response);
-
+    for(row of finalResponse) {
+      console.log(`Category: ${row.category_name}, Books: ${row.top_books.length}`);
+    }
     console.log(`Returning ${finalResponse.length} categories`);
     res.json(finalResponse);
   });
