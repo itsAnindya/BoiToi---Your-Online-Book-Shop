@@ -14,4 +14,5 @@ router.post('/home', bookController.getHomeBooks);
 router.get('/categories', bookController.getBooksByCategory);
 
 //router.get('/searchByPrice', SearchController.searchByPrice);
+
 module.exports = router;
