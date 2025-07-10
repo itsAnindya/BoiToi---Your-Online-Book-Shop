@@ -38,6 +38,7 @@ C:\Users\parab\Experiment-Lab\BoiToi\frontend\boitoi
 |  ├── main.jsx
 |  ├── pages
 |  |  ├── AuthPage.jsx
+|  |  ├── BookDetails.jsx
 |  |  ├── BooksSection.jsx
 |  |  ├── Homepage.jsx
 |  |  └── Homepage.jsx.bak
@@ -54,6 +55,6 @@ C:\Users\parab\Experiment-Lab\BoiToi\frontend\boitoi
 ├── tailwind.config.js
 └── vite.config.js
 
-directory: 716 file: 1315
+directory: 716 file: 1316
 
 ignored: directory (56)
