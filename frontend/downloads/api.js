@@ -1,8 +1,10 @@
 // API service functions
-const API_BASE_URL = 'http://162.168.0.126:3001/api'; // Replace with your backend URL
+const API_BASE_URL='http://localhost:3001/api'; // Replace with your backend URL
+//const API_BASE_URL = 'http://162.168.0.126:3001/api'; // Replace with your backend URL
 
 // Login API call
 export const loginUser = async (credentials) => {
+  console.log('Login API called with:', credentials);
   try {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
@@ -20,7 +22,7 @@ export const loginUser = async (credentials) => {
     if (!response.ok) {
       throw new Error(data.message || 'Login failed');
     }
-
+    console.log('Login response:', data);
     return {
       success: true,
       data: data,
