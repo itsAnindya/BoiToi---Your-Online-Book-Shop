@@ -21,10 +21,12 @@ const getBookById = (req, res) => {
       b.COVER_URL,
       b.ADDED_AT,
       b.GENRE,
-      GROUP_CONCAT(DISTINCT a.NAME ORDER BY a.NAME SEPARATOR ' · ') AS author_names
+      GROUP_CONCAT(DISTINCT a.NAME ORDER BY a.NAME SEPARATOR ' · ') AS author_names,
+      GROUP_CONCAT(DISTINCT pu.NAME ORDER BY pu.NAME SEPARATOR ' . ') AS publisher_names
     FROM book b
     LEFT JOIN book_author ba ON b.ID = ba.BOOK_ID
     LEFT JOIN author a ON a.ID = ba.AUTHOR_ID
+    LEFT JOIN publisher pu ON b.PUBLISHER_ID = pu.ID
     WHERE b.ID = ?
     GROUP BY b.ID;
   `;
@@ -46,7 +48,7 @@ const getBookById = (req, res) => {
       TITLE: book.TITLE,
       ISBN: book.ISBN,
       PUBLISHED_DATE: book.PUBLISHED_DATE,
-      PUBLISHER_ID: book.PUBLISHER_ID,
+      PUBLISHER_NAME: book.publisher_names,
       PAGE_COUNT: book.PAGE_COUNT,
       LANGUAGE: book.LANGUAGE,
       EDITION: book.EDITION,
@@ -59,7 +61,7 @@ const getBookById = (req, res) => {
       GENRE: book.GENRE,
       AUTHORS: book.author_names ?? ''
     });
-    console.log('Book details fetched successfully:', book.TITLE);
+    console.log(`Book details fetched successfully:  ${book.publisher_names} ${book.TITLE}`);
   });
 };
 
