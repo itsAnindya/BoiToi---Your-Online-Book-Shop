@@ -18,7 +18,7 @@ app.use('/api', healthRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(err.stack + 'u');
   res.status(500).json({ message: 'Something went wrong!' });
 });
 

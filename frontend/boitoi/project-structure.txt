@@ -1,0 +1,59 @@
+C:\Users\parab\Experiment-Lab\BoiToi\frontend\boitoi
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── project-structure.txt
+├── public
+|  └── vite.svg
+├── README.md
+├── src
+|  ├── App.css
+|  ├── App.jsx
+|  ├── assets
+|  |  └── react.svg
+|  ├── components
+|  |  ├── BestSellerBooksSection.jsx
+|  |  ├── BestSellerSlider.jsx
+|  |  ├── books
+|  |  ├── BookShowcase.jsx
+|  |  ├── FilterSidebar.jsx
+|  |  ├── header
+|  |  ├── NavBar.jsx
+|  |  ├── SearchBar.jsx
+|  |  ├── StatusBanner.jsx
+|  |  └── ui
+|  ├── config
+|  |  └── index.js
+|  ├── constants
+|  |  └── books.js
+|  ├── hooks
+|  |  ├── useBooks.jsx
+|  |  ├── useFilters.jsx
+|  |  └── useServerStatus.js
+|  ├── index.css
+|  ├── layouts
+|  |  └── DefaultLayout.jsx
+|  ├── main.jsx
+|  ├── pages
+|  |  ├── AuthPage.jsx
+|  |  ├── BooksSection.jsx
+|  |  ├── Homepage.jsx
+|  |  └── Homepage.jsx.bak
+|  ├── services
+|  |  ├── api.jsx
+|  |  └── booksApi.js
+|  ├── styles
+|  |  ├── book_card.css
+|  |  ├── global.css
+|  |  ├── Header.css
+|  |  └── NavBar.css
+|  └── utils
+|     └── formatters.js
+├── tailwind.config.js
+└── vite.config.js
+
+directory: 716 file: 1315
+
+ignored: directory (56)

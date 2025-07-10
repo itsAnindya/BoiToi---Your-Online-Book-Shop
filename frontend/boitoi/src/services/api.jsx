@@ -3,7 +3,7 @@
 // // Enhanced response handler
 // const handleResponse = async (response) => {
 //   const contentType = response.headers.get('content-type');
-  
+
 //   // Check if response is JSON
 //   if (!contentType || !contentType.includes('application/json')) {
 //     const text = await response.text();
@@ -11,7 +11,7 @@
 //   }
 
 //   const data = await response.json();
-  
+
 //   if (!response.ok) {
 //     throw new Error(data.message || `Request failed with status ${response.status}`);
 //   }
@@ -34,7 +34,7 @@
 //     });
 
 //     const data = await handleResponse(response);
-    
+
 //     if (!data.token || !data.user) {
 //       throw new Error('Server response missing required fields');
 //     }
@@ -87,12 +87,13 @@
 
 // API service functions
 import React from "react";
-const API_BASE_URL = 'http://192.168.0.126:3001/api'; // Replace with your backend URL
+import { API_BASE_URL } from "../config";
+const apiBaseUrl = `${API_BASE_URL}/api`; // Replace with your backend
 
 // Login API call
 export const loginUser = async (credentials) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(`${apiBaseUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,7 +127,7 @@ export const loginUser = async (credentials) => {
 // Signup API call
 export const signupUser = async (userData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/signup`, {
+    const response = await fetch(`${apiBaseUrl}/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ export const signupUser = async (userData) => {
         password: userData.password,
         first_name: userData.firstName,
         last_name: userData.lastName,
-        
+
         phone: userData.phone,
         birthday: userData.birthday,
         gender: userData.gender,
@@ -149,7 +150,7 @@ export const signupUser = async (userData) => {
           country: userData.country,
           zipCode: userData.zipCode,
         },
-        
+
       }),
     });
 
@@ -198,7 +199,7 @@ export const getCurrentUser = () => {
 // API interceptor for authenticated requests
 export const authenticatedFetch = async (url, options = {}) => {
   const token = getAuthToken();
-  
+
   const config = {
     ...options,
     headers: {
@@ -209,7 +210,7 @@ export const authenticatedFetch = async (url, options = {}) => {
   };
 
   const response = await fetch(url, config);
-  
+
   // Handle token expiration
   if (response.status === 401) {
     logout();
