@@ -57,12 +57,9 @@ const AuthPage = () => {
         });
 
         if (result.success) {
-          sessionStorage.setItem('authToken', result.token);
-          sessionStorage.setItem('username', result.user.username);
-          sessionStorage.setItem('user', JSON.stringify(result.user));
-          console.log('Login successful:', result.user);
+          console.log('Login successful:', result.username);
           // Redirect to personal account page
-          navigate(`/books/user/${result.user.id}`);
+          navigate(`/user/${result.id}`);
         } else {
           setError(result.error);
         }

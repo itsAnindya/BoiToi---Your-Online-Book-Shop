@@ -130,6 +130,7 @@ export const loginUser = async (credentials) => {
     };
   }
 };
+//user/:id 
 // Signup API call
 export const signupUser = async (userData) => {
   try {
