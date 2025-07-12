@@ -97,11 +97,12 @@ const addToCart = async (req, res) => {
               console.log(`Updated quantity for book ${bookId} in user ${userId}'s cart`);
               return res.status(200).json({
                 success: true,
-                message: 'Book quantity updated in cart',
+                message: `Book - ${book.title} quantity updated in your cart`,
                 data: {
                   bookId: bookId,
                   userId: userId,
-                  action: 'quantity_updated'
+                  action: 'quantity_updated',
+                  bookTitle: book.title
                 }
               });
             });
@@ -138,13 +139,14 @@ const addToCart = async (req, res) => {
               console.log(`Added book ${bookId} to user ${userId}'s cart`);
               return res.status(201).json({
                 success: true,
-                message: 'Book added to cart successfully',
+                message: `Book - ${book.title} has been added to your cart`,
                 data: {
                   cartId: result.insertId,
                   bookId: bookId,
                   userId: userId,
                   quantity: 1,
-                  action: 'item_added'
+                  action: 'item_added',
+                  bookTitle: book.title
                 }
               });
             });
