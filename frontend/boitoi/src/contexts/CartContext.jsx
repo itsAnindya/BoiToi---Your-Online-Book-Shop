@@ -124,9 +124,9 @@ export const CartProvider = ({ children }) => {
     const cartItem = {
       book_id: book.id || book.book_id,
       title: book.title,
-      author: book.author,
-      price: book.price,
-      thumbnail: book.thumbnail || book.image_url,
+      author: book.author || 'Unknown Author',
+      price: parseFloat(book.price) || 0,
+      thumbnail: book.thumbnail || book.image_url || book.cover_url || '/images/books/defaultbook.jpg',
       quantity: quantity,
     };
     

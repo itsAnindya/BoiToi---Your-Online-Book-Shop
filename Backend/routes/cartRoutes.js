@@ -5,7 +5,9 @@ const {
   getCartItems,
   removeFromCart,
   updateCartQuantity,
-  clearCart
+  clearCart,
+  saveCart,
+  placeOrder
 } = require('../controllers/cartController');
 
 /**
@@ -33,12 +35,12 @@ router.get('/:userId', getCartItems);
 router.delete('/remove', removeFromCart);
 
 /**
- * @route   PUT /api/cart/update-quantity
+ * @route   PUT /api/cart/update
  * @desc    Update quantity of a specific item in user's cart
  * @access  Public
- * @body    { userId, bookId, quantity }
+ * @body    { user_id, book_id, quantity }
  */
-router.put('/update-quantity', updateCartQuantity);
+router.put('/update', updateCartQuantity);
 
 /**
  * @route   DELETE /api/cart/clear
@@ -47,5 +49,21 @@ router.put('/update-quantity', updateCartQuantity);
  * @body    { userId }
  */
 router.delete('/clear', clearCart);
+
+/**
+ * @route   PUT /api/cart/save
+ * @desc    Save cart (update multiple items at once)
+ * @access  Public
+ * @body    { user_id, items }
+ */
+router.put('/save', saveCart);
+
+/**
+ * @route   POST /api/cart/place-order
+ * @desc    Place order (convert cart to order)
+ * @access  Public
+ * @body    { user_id }
+ */
+router.post('/place-order', placeOrder);
 
 module.exports = router;

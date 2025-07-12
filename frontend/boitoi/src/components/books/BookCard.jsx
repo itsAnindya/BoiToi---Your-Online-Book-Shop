@@ -1,13 +1,30 @@
 import React, { memo } from 'react';
 import { ShoppingCart, Star } from 'lucide-react';
-import { formatPrice, handleAddToCart } from '../../utils/formatters';
+import { formatPrice } from '../../utils/formatters';
+import { useCartActions } from '../../hooks/useCartActions';
 import { BOOK_CONSTANTS } from '../../constants/books';
 import Button from '../ui/Button';
 import { Link } from 'react-router-dom';
 
-const BookCard = memo(({ book, rank, onAddToCart = handleAddToCart }) => {
+const BookCard = memo(({ book, rank }) => {
+  const { addToCart } = useCartActions();
+  
   const handleImageError = (e) => {
     e.target.src = BOOK_CONSTANTS.PLACEHOLDER_IMAGE;
+  };
+
+  const handleAddToCart = () => {
+    // Transform book data to match cart expectations
+    const cartBook = {
+      id: book.ID,
+      book_id: book.ID,
+      title: book.TITLE,
+      author: book.AUTHORS || 'Unknown Author',
+      price: book.PRICE,
+      thumbnail: book.COVER_URL || BOOK_CONSTANTS.PLACEHOLDER_IMAGE,
+    };
+    
+    addToCart(cartBook, 1);
   };
 
   return (
@@ -46,7 +63,7 @@ const BookCard = memo(({ book, rank, onAddToCart = handleAddToCart }) => {
           </span>
 
           <Button
-            onClick={() => onAddToCart(book.ID, book.TITLE)}
+            onClick={handleAddToCart}
             className="mt-3 w-full flex items-center justify-center gap-2"
           >
             <ShoppingCart className="w-4 h-4" />

@@ -6,22 +6,26 @@ const db = require('../config/database');
  */
 const addToCart = async (req, res) => {
   try {
-    const { bookId, userId } = req.body;
+    const { bookId, userId, book_id, user_id, quantity = 1 } = req.body;
+    
+    // Support both naming conventions
+    const finalBookId = bookId || book_id;
+    const finalUserId = userId || user_id;
     
     // Input validation
-    if (!bookId || !userId) {
+    if (!finalBookId || !finalUserId) {
       return res.status(400).json({ 
         success: false,
         message: 'Book ID and User ID are required' 
       });
     }
 
-    console.log(`Adding book ${bookId} to cart for user ${userId}`);
+    console.log(`Adding book ${finalBookId} to cart for user ${finalUserId}`);
 
     // Check if user exists and is active
     const userCheckSql = 'SELECT ID FROM USER WHERE ID = ?';
     
-    db.query(userCheckSql, [userId], (err, userResults) => {
+    db.query(userCheckSql, [finalUserId], (err, userResults) => {
       if (err) {
         console.error('Database error during user check:', err);
         return res.status(500).json({ 
@@ -37,17 +41,10 @@ const addToCart = async (req, res) => {
         });
       }
 
-      /*if (userResults[0].IS_ACTIVE !== 1) {
-        return res.status(403).json({ 
-          success: false,
-          message: 'User account is not active' 
-        });
-      }*/
-
       // Check if book exists
       const bookCheckSql = 'SELECT id, title, price FROM book WHERE id = ?';
       
-      db.query(bookCheckSql, [bookId], (err, bookResults) => {
+      db.query(bookCheckSql, [finalBookId], (err, bookResults) => {
         if (err) {
           console.error('Database error during book check:', err);
           return res.status(500).json({ 
@@ -68,7 +65,7 @@ const addToCart = async (req, res) => {
         // Check if item already exists in cart
         const checkCartSql = 'SELECT * FROM cart WHERE user_id = ? AND book_id = ?';
         
-        db.query(checkCartSql, [userId, bookId], (err, cartResults) => {
+        db.query(checkCartSql, [finalUserId, finalBookId], (err, cartResults) => {
           if (err) {
             console.error('Database error during cart check:', err);
             return res.status(500).json({ 
@@ -81,11 +78,11 @@ const addToCart = async (req, res) => {
             // Item already exists, update quantity
             const updateCartSql = `
               UPDATE cart 
-              SET quantity = quantity + 1 
+              SET quantity = quantity + ? 
               WHERE user_id = ? AND book_id = ?
             `;
             
-            db.query(updateCartSql, [userId, bookId], (err) => {
+            db.query(updateCartSql, [quantity, finalUserId, finalBookId], (err) => {
               if (err) {
                 console.error('Database error during cart update:', err);
                 return res.status(500).json({ 
@@ -94,13 +91,13 @@ const addToCart = async (req, res) => {
                 });
               }
 
-              console.log(`Updated quantity for book ${bookId} in user ${userId}'s cart`);
+              console.log(`Updated quantity for book ${finalBookId} in user ${finalUserId}'s cart`);
               return res.status(200).json({
                 success: true,
                 message: `Book - ${book.title} quantity updated in your cart`,
                 data: {
-                  bookId: bookId,
-                  userId: userId,
+                  bookId: finalBookId,
+                  userId: finalUserId,
                   action: 'quantity_updated',
                   bookTitle: book.title
                 }
@@ -108,48 +105,66 @@ const addToCart = async (req, res) => {
             });
           } else {
             // Item doesn't exist, add new item to cart
-            // First get the count of existing rows to determine the next ID
-            const getCountSql = 'SELECT COUNT(*) as count FROM cart';
+            const addToCartSql = `
+              INSERT INTO cart (user_id, book_id, quantity, added_at) 
+              VALUES (?, ?, ?, NOW())
+            `;
             
-            db.query(getCountSql, (err, countResult) => {
+            db.query(addToCartSql, [finalUserId, finalBookId, quantity], (err, result) => {
               if (err) {
-                console.error('Database error during count fetch:', err);
-                return res.status(500).json({ 
-                  success: false,
-                  message: 'Server error during cart count' 
-                });
-              }
-              
-              const nextId = countResult[0].count + 1;
-              
-              const addToCartSql = `
-                INSERT INTO cart (id, user_id, book_id, quantity, added_at) 
-                VALUES (?, ?, ?, 1, NOW())
-              `;
-              
-              db.query(addToCartSql, [nextId, userId, bookId], (err, result) => {
-              if (err) {
-                console.error('Database error during cart insertion:', err);
-                return res.status(500).json({ 
-                  success: false,
-                  message: 'Server error during cart addition' 
-                });
+                // Check if it's a duplicate key error (in case of race condition)
+                if (err.code === 'ER_DUP_ENTRY') {
+                  // If duplicate, try to update instead
+                  const updateCartSql = `
+                    UPDATE cart 
+                    SET quantity = quantity + ? 
+                    WHERE user_id = ? AND book_id = ?
+                  `;
+                  
+                  db.query(updateCartSql, [quantity, finalUserId, finalBookId], (updateErr) => {
+                    if (updateErr) {
+                      console.error('Database error during cart update after duplicate:', updateErr);
+                      return res.status(500).json({ 
+                        success: false,
+                        message: 'Server error during cart addition' 
+                      });
+                    }
+                    
+                    return res.status(200).json({
+                      success: true,
+                      message: `Book - ${book.title} quantity updated in your cart`,
+                      data: {
+                        bookId: finalBookId,
+                        userId: finalUserId,
+                        quantity: quantity,
+                        action: 'quantity_updated',
+                        bookTitle: book.title
+                      }
+                    });
+                  });
+                } else {
+                  console.error('Database error during cart insertion:', err);
+                  return res.status(500).json({ 
+                    success: false,
+                    message: 'Server error during cart addition' 
+                  });
+                }
+                return;
               }
 
-              console.log(`Added book ${bookId} to user ${userId}'s cart`);
+              console.log(`Added book ${finalBookId} to user ${finalUserId}'s cart`);
               return res.status(201).json({
                 success: true,
                 message: `Book - ${book.title} has been added to your cart`,
                 data: {
                   cartId: result.insertId,
-                  bookId: bookId,
-                  userId: userId,
-                  quantity: 1,
+                  bookId: finalBookId,
+                  userId: finalUserId,
+                  quantity: quantity,
                   action: 'item_added',
                   bookTitle: book.title
                 }
               });
-            });
             });
           }
         });
@@ -191,10 +206,15 @@ const getCartItems = async (req, res) => {
         b.title,
         b.price,
         b.isbn,
-        b.image_url
+        b.cover_url as thumbnail,
+        b.description,
+        COALESCE(GROUP_CONCAT(DISTINCT a.name SEPARATOR ', '), 'Unknown Author') as author
       FROM cart c
       JOIN book b ON c.book_id = b.id
-      WHERE c.user_id = ?
+      LEFT JOIN book_author ba ON b.id = ba.book_id
+      LEFT JOIN author a ON ba.author_id = a.id
+      WHERE c.user_id = ? AND b.show_book = 1
+      GROUP BY c.id, c.user_id, c.book_id, c.quantity, c.added_at, b.title, b.price, b.isbn, b.cover_url, b.description
       ORDER BY c.added_at DESC
     `;
 
@@ -207,19 +227,33 @@ const getCartItems = async (req, res) => {
         });
       }
 
+      // Transform results to match frontend expectations
+      const cartItems = results.map(item => ({
+        cart_id: item.cart_id,
+        book_id: item.book_id,
+        title: item.title,
+        author: item.author || 'Unknown Author',
+        price: parseFloat(item.price) || 0,
+        thumbnail: item.thumbnail || '/images/books/defaultbook.jpg',
+        quantity: item.quantity,
+        added_at: item.added_at,
+        isbn: item.isbn,
+        description: item.description
+      }));
+
       const totalItems = results.reduce((sum, item) => sum + item.quantity, 0);
-      const totalAmount = results.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const totalAmount = results.reduce((sum, item) => sum + (parseFloat(item.price || 0) * item.quantity), 0);
+
+      console.log(`Found ${cartItems.length} items in cart for user ${userId}`);
 
       return res.status(200).json({
         success: true,
         message: 'Cart items fetched successfully',
-        data: {
-          items: results,
-          summary: {
-            totalItems: totalItems,
-            totalAmount: parseFloat(totalAmount.toFixed(2)),
-            itemCount: results.length
-          }
+        cart: cartItems, // Frontend expects 'cart' property
+        summary: {
+          totalItems: totalItems,
+          totalAmount: parseFloat(totalAmount.toFixed(2)),
+          itemCount: results.length
         }
       });
     });
@@ -238,20 +272,24 @@ const getCartItems = async (req, res) => {
  */
 const removeFromCart = async (req, res) => {
   try {
-    const { userId, bookId } = req.body;
+    const { userId, bookId, user_id, book_id } = req.body;
     
-    if (!userId || !bookId) {
+    // Support both naming conventions
+    const finalUserId = userId || user_id;
+    const finalBookId = bookId || book_id;
+    
+    if (!finalUserId || !finalBookId) {
       return res.status(400).json({ 
         success: false,
         message: 'User ID and Book ID are required' 
       });
     }
 
-    console.log(`Removing book ${bookId} from cart for user ${userId}`);
+    console.log(`Removing book ${finalBookId} from cart for user ${finalUserId}`);
 
     const removeFromCartSql = 'DELETE FROM cart WHERE user_id = ? AND book_id = ?';
     
-    db.query(removeFromCartSql, [userId, bookId], (err, result) => {
+    db.query(removeFromCartSql, [finalUserId, finalBookId], (err, result) => {
       if (err) {
         console.error('Database error during cart removal:', err);
         return res.status(500).json({ 
@@ -267,13 +305,13 @@ const removeFromCart = async (req, res) => {
         });
       }
 
-      console.log(`Removed book ${bookId} from user ${userId}'s cart`);
+      console.log(`Removed book ${finalBookId} from user ${finalUserId}'s cart`);
       return res.status(200).json({
         success: true,
         message: 'Item removed from cart successfully',
         data: {
-          bookId: bookId,
-          userId: userId
+          bookId: finalBookId,
+          userId: finalUserId
         }
       });
     });
@@ -292,16 +330,20 @@ const removeFromCart = async (req, res) => {
  */
 const updateCartQuantity = async (req, res) => {
   try {
-    const { userId, bookId, quantity } = req.body;
+    const { userId, bookId, quantity, user_id, book_id } = req.body;
     
-    if (!userId || !bookId || quantity === undefined || quantity < 1) {
+    // Support both naming conventions
+    const finalUserId = userId || user_id;
+    const finalBookId = bookId || book_id;
+    
+    if (!finalUserId || !finalBookId || quantity === undefined || quantity < 1) {
       return res.status(400).json({ 
         success: false,
         message: 'User ID, Book ID, and valid quantity (>= 1) are required' 
       });
     }
 
-    console.log(`Updating quantity to ${quantity} for book ${bookId} in user ${userId}'s cart`);
+    console.log(`Updating quantity to ${quantity} for book ${finalBookId} in user ${finalUserId}'s cart`);
 
     const updateQuantitySql = `
       UPDATE cart 
@@ -309,7 +351,7 @@ const updateCartQuantity = async (req, res) => {
       WHERE user_id = ? AND book_id = ?
     `;
     
-    db.query(updateQuantitySql, [quantity, userId, bookId], (err, result) => {
+    db.query(updateQuantitySql, [quantity, finalUserId, finalBookId], (err, result) => {
       if (err) {
         console.error('Database error during quantity update:', err);
         return res.status(500).json({ 
@@ -325,13 +367,13 @@ const updateCartQuantity = async (req, res) => {
         });
       }
 
-      console.log(`Updated quantity for book ${bookId} in user ${userId}'s cart`);
+      console.log(`Updated quantity for book ${finalBookId} in user ${finalUserId}'s cart`);
       return res.status(200).json({
         success: true,
         message: 'Cart quantity updated successfully',
         data: {
-          bookId: bookId,
-          userId: userId,
+          bookId: finalBookId,
+          userId: finalUserId,
           quantity: quantity
         }
       });
@@ -393,10 +435,224 @@ const clearCart = async (req, res) => {
   }
 };
 
+/**
+ * Save cart (update multiple items at once)
+ */
+const saveCart = async (req, res) => {
+  try {
+    const { user_id, items } = req.body;
+    
+    if (!user_id || !items || !Array.isArray(items)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'User ID and items array are required' 
+      });
+    }
+
+    console.log(`Saving cart for user ${user_id} with ${items.length} items`);
+
+    // Start a transaction to ensure all updates succeed or fail together
+    db.beginTransaction((err) => {
+      if (err) {
+        console.error('Transaction start error:', err);
+        return res.status(500).json({ 
+          success: false,
+          message: 'Server error during cart save' 
+        });
+      }
+
+      let completed = 0;
+      let hasError = false;
+
+      if (items.length === 0) {
+        db.commit((err) => {
+          if (err) {
+            console.error('Transaction commit error:', err);
+            return res.status(500).json({ 
+              success: false,
+              message: 'Server error during cart save' 
+            });
+          }
+          return res.status(200).json({
+            success: true,
+            message: 'Cart saved successfully'
+          });
+        });
+        return;
+      }
+
+      items.forEach((item) => {
+        const { book_id, quantity } = item;
+        
+        if (quantity <= 0) {
+          // Remove item if quantity is 0 or negative
+          const removeSql = 'DELETE FROM cart WHERE user_id = ? AND book_id = ?';
+          db.query(removeSql, [user_id, book_id], (err) => {
+            if (err && !hasError) {
+              hasError = true;
+              console.error('Database error during item removal:', err);
+              return db.rollback(() => {
+                res.status(500).json({ 
+                  success: false,
+                  message: 'Server error during cart save' 
+                });
+              });
+            }
+            
+            completed++;
+            if (completed === items.length && !hasError) {
+              db.commit((err) => {
+                if (err) {
+                  console.error('Transaction commit error:', err);
+                  return res.status(500).json({ 
+                    success: false,
+                    message: 'Server error during cart save' 
+                  });
+                }
+                return res.status(200).json({
+                  success: true,
+                  message: 'Cart saved successfully'
+                });
+              });
+            }
+          });
+        } else {
+          // Update quantity
+          const updateSql = 'UPDATE cart SET quantity = ? WHERE user_id = ? AND book_id = ?';
+          db.query(updateSql, [quantity, user_id, book_id], (err) => {
+            if (err && !hasError) {
+              hasError = true;
+              console.error('Database error during item update:', err);
+              return db.rollback(() => {
+                res.status(500).json({ 
+                  success: false,
+                  message: 'Server error during cart save' 
+                });
+              });
+            }
+            
+            completed++;
+            if (completed === items.length && !hasError) {
+              db.commit((err) => {
+                if (err) {
+                  console.error('Transaction commit error:', err);
+                  return res.status(500).json({ 
+                    success: false,
+                    message: 'Server error during cart save' 
+                  });
+                }
+                return res.status(200).json({
+                  success: true,
+                  message: 'Cart saved successfully'
+                });
+              });
+            }
+          });
+        }
+      });
+    });
+
+  } catch (error) {
+    console.error('Unexpected error in saveCart:', error);
+    return res.status(500).json({ 
+      success: false,
+      message: 'Internal server error' 
+    });
+  }
+};
+
+/**
+ * Place order (convert cart to order)
+ */
+const placeOrder = async (req, res) => {
+  try {
+    const { user_id } = req.body;
+    
+    if (!user_id) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'User ID is required' 
+      });
+    }
+
+    console.log(`Placing order for user ${user_id}`);
+
+    // First, get all cart items for the user
+    const getCartSql = `
+      SELECT 
+        c.book_id,
+        c.quantity,
+        b.price,
+        b.title
+      FROM cart c
+      JOIN book b ON c.book_id = b.id
+      WHERE c.user_id = ?
+    `;
+
+    db.query(getCartSql, [user_id], (err, cartItems) => {
+      if (err) {
+        console.error('Database error during cart fetch for order:', err);
+        return res.status(500).json({ 
+          success: false,
+          message: 'Server error during order processing' 
+        });
+      }
+
+      if (cartItems.length === 0) {
+        return res.status(400).json({ 
+          success: false,
+          message: 'Cart is empty' 
+        });
+      }
+
+      // Calculate total amount
+      const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      // Generate a simple order ID (in production, you'd want a more sophisticated system)
+      const orderId = `ORD${Date.now()}${user_id}`;
+
+      // For now, we'll just clear the cart and return the order ID
+      // In a full implementation, you'd create order tables and store the order details
+      const clearCartSql = 'DELETE FROM cart WHERE user_id = ?';
+      
+      db.query(clearCartSql, [user_id], (err) => {
+        if (err) {
+          console.error('Database error during cart clear for order:', err);
+          return res.status(500).json({ 
+            success: false,
+            message: 'Server error during order processing' 
+          });
+        }
+
+        console.log(`Order placed successfully for user ${user_id}, Order ID: ${orderId}`);
+        return res.status(200).json({
+          success: true,
+          message: 'Order placed successfully',
+          orderId: orderId,
+          orderDetails: {
+            items: cartItems,
+            totalAmount: parseFloat(totalAmount.toFixed(2)),
+            orderDate: new Date().toISOString()
+          }
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Unexpected error in placeOrder:', error);
+    return res.status(500).json({ 
+      success: false,
+      message: 'Internal server error' 
+    });
+  }
+};
+
 module.exports = {
   addToCart,
   getCartItems,
   removeFromCart,
   updateCartQuantity,
-  clearCart
+  clearCart,
+  saveCart,
+  placeOrder
 };

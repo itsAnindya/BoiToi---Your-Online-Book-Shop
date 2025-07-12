@@ -20,7 +20,7 @@ export const getCart = async (userId) => {
 
     return {
       success: true,
-      cart: data.cart || [],
+      cart: data.cart || [], // Backend now returns cart directly
     };
   } catch (error) {
     return {

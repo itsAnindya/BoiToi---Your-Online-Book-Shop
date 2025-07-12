@@ -173,11 +173,11 @@ const CartPage = () => {
                     {/* Book Thumbnail */}
                     <div className="flex-shrink-0">
                       <img 
-                        src={item.thumbnail || '/placeholder-book.png'} 
+                        src={item.thumbnail || '/images/books/defaultbook.jpg'} 
                         alt={item.title}
                         className="w-20 h-28 object-cover rounded-md border"
                         onError={(e) => {
-                          e.target.src = '/placeholder-book.png';
+                          e.target.src = '/images/books/defaultbook.jpg';
                         }}
                       />
                     </div>

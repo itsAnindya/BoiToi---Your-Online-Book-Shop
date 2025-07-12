@@ -5,6 +5,7 @@ import AuthPage from './pages/AuthPage'
 import BookDetail from './pages/BookDetails' // Ensure this path and file exist and exports a React component
 import BooksSection from './pages/BooksSection' // Ensure this path and file exist and exports a React component
 import CartPage from './pages/CartPage'
+import CartTestPage from './pages/CartTestPage'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -25,6 +26,7 @@ function App() {
               <Route path="/books" element={<BooksSection />}/>
               <Route path="/books/:id" element={<BookDetail />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/cart-test" element={<CartTestPage />} />
             </Routes>
           </div>
           {/* Toast Notifications */}
