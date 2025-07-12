@@ -91,6 +91,7 @@ import { API_BASE_URL } from "../config";
 const apiBaseUrl = `${API_BASE_URL}/api`; // Replace with your backend
 
 // Login API call
+
 export const loginUser = async (credentials) => {
   try {
     const response = await fetch(`${apiBaseUrl}/auth/login`, {
@@ -110,11 +111,17 @@ export const loginUser = async (credentials) => {
       throw new Error(data.message || 'Login failed');
     }
 
+    // Store user info in sessionStorage
+    sessionStorage.setItem('id', data.id);
+    sessionStorage.setItem('role', data.role);
+    sessionStorage.setItem('username', data.username);
+
     return {
       success: true,
-      data: data,
-      token: data.token,
-      user: data.user,
+      id: data.id,
+      role: data.role,
+      username: data.username,
+      message: data.message,
     };
   } catch (error) {
     return {
@@ -123,7 +130,6 @@ export const loginUser = async (credentials) => {
     };
   }
 };
-
 // Signup API call
 export const signupUser = async (userData) => {
   try {
