@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { addToCart } from '../api'; // Adjust path based on your structure
 
 export const formatPrice = (price) => {
   return new Intl.NumberFormat('en-US', {
@@ -7,31 +7,14 @@ export const formatPrice = (price) => {
   }).format(price ?? 0);
 };
 
-import axios from 'axios';
-
 export const handleAddToCart = async (id, title) => {
   console.log(`Add to cart → ${id} (${title})`);
 
-  const token = localStorage.getItem('token'); // or use context/state
-
-  if (!token) {
-    alert("You must be logged in to add items to the cart.");
-    return;
-  }
-
   try {
-    const response = await axios.post(
-      'http://localhost:3000/api/cart',
-      { bookId: id },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log("Added to cart:", response.data);
+    const result = await addToCart(id);
+    console.log("Cart response:", result);
   } catch (err) {
-    console.error("Failed to add to cart:", err.response?.data || err.message);
-    alert("Could not add to cart.");
+    console.error("Add to cart failed:", err.response?.data || err.message);
+    alert("You must be logged in to add items to cart.");
   }
 };
