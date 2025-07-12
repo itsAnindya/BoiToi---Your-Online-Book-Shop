@@ -59,7 +59,7 @@ const AuthPage = () => {
         if (result.success) {
           console.log('Login successful:', result.username);
           // Redirect to personal account page
-          navigate(`/user/${result.id}`);
+          navigate(`/books`);
         } else {
           setError(result.error);
         }
