@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // <-- import useNavigate
 import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building } from 'lucide-react';
 import { loginUser, signupUser } from '../services/api';
 
 const AuthPage = () => {
-  // Additional state variables you'll need in your component
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isLogin, setIsLogin] = useState(true);
@@ -25,6 +25,11 @@ const AuthPage = () => {
     confirmPassword: ''
   });
 
+  const navigate = useNavigate(); // <-- initialize navigate
+
+  // Get user from sessionStorage (null if not logged in)
+  const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -33,7 +38,6 @@ const AuthPage = () => {
     }));
   };
 
-  // Updated handleSubmit function for your React component
   const handleSubmit = async () => {
     setLoading(true);
     setError('');
@@ -53,13 +57,12 @@ const AuthPage = () => {
         });
 
         if (result.success) {
-          // Store token in localStorage or context
-          localStorage.setItem('authToken', result.token);
-          localStorage.setItem('user', JSON.stringify(result.user));
-
+          sessionStorage.setItem('authToken', result.token);
+          sessionStorage.setItem('username', result.user.username);
+          sessionStorage.setItem('user', JSON.stringify(result.user));
           console.log('Login successful:', result.user);
-          // Redirect to dashboard or home page
-          // window.location.href = '/dashboard';
+          // Redirect to personal account page
+          navigate(`/books/user/${result.user.id}`);
         } else {
           setError(result.error);
         }
@@ -74,13 +77,12 @@ const AuthPage = () => {
         const result = await signupUser(formData);
 
         if (result.success) {
-          // Store token in localStorage or context
-          localStorage.setItem('authToken', result.token);
-          localStorage.setItem('user', JSON.stringify(result.user));
-
+          sessionStorage.setItem('authToken', result.token);
+          sessionStorage.setItem('user', JSON.stringify(result.user));
+          sessionStorage.setItem('username', result.user.username);
           console.log('Signup successful:', result.user);
-          // Redirect to dashboard or home page
-          // window.location.href = '/dashboard';
+          // Redirect to personal account page
+          navigate(`/books/user/${result.user.id}`);
         } else {
           setError(result.error);
         }
@@ -115,7 +117,19 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4 relative">
+      {/* Personal Account Button */}
+      {user && user.id && (
+        <div className="absolute top-6 right-8 z-10">
+          <Link
+            to={`/books/user/${user.id}`}
+            className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:scale-105 transition"
+          >
+            Personal Account
+          </Link>
+        </div>
+      )}
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
@@ -189,14 +203,12 @@ const AuthPage = () => {
                 </div>
               </div>
 
-              // Error display component (add this to your JSX)
               {error && (
                 <div className="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-xl mb-4">
                   {error}
                 </div>
               )}
 
-              // Updated button with loading state
               <button
                 type="button"
                 onClick={handleSubmit}
