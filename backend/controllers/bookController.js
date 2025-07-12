@@ -6,6 +6,7 @@ const { router } = require('../routes/bookRoutes');
  * Returns top 5 books based on average rating
  */
 const getHomeBooks = (req, res) => {
+  //console.log(sessionStorage.getItem('id'));
   console.log('Fetching top 5 books based on average rating');
 
   // Get top 5 books based on average rating

@@ -16,6 +16,7 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api', healthRoutes);
+app.use('/api/cart', require('./routes/cartRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

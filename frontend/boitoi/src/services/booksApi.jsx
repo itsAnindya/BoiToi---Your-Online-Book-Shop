@@ -14,27 +14,25 @@ export const booksApi = {
     return response.json();
   }
 };
-
 export const addToCart = async (bookId) => {
   const id = sessionStorage.getItem('id');
-  if(id === null) {
+  if (id === null) {
     throw new Error('User not logged in');
-    return;
   }
   console.log(`Adding book ${bookId} to cart for user ${id}`);
-  const response = await fetch(`${API_BASE_URL}/api/cart`, {
+  const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${id}`,
     },
-    body: JSON.stringify({ bookId }),
+    body: JSON.stringify({ bookId, userId: id }), // Pass userId in body
   });
 
   if (!response.ok) {
     console.log(`Failed to add book ${bookId} to cart:`, response.statusText);
     throw new Error(`HTTP ${response.status}`);
   }
-
+  console.log(`Book ${bookId} added to cart successfully`);
   return response.json();
 };
