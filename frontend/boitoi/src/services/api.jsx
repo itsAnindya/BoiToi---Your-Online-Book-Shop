@@ -166,7 +166,6 @@ export const signupUser = async (userData) => {
     if (!response.ok) {
       throw new Error(data.message || 'Signup failed');
     }
-
     return {
       success: true,
       data: data,
@@ -184,7 +183,7 @@ export const signupUser = async (userData) => {
 
 // Token management utilities
 export const getAuthToken = () => {
-  return localStorage.getItem('authToken');
+  return sessionStorage.getItem('authToken');
 };
 
 export const isAuthenticated = () => {
@@ -193,8 +192,8 @@ export const isAuthenticated = () => {
 };
 
 export const logout = () => {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('user');
+  sessionStorage.removeItem('authToken');
+  sessionStorage.removeItem('user');
   window.location.href = '/login';
 };
 

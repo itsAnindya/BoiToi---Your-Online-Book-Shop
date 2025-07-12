@@ -1,4 +1,4 @@
-import { addToCart } from '../api'; // Adjust path based on your structure
+import { addToCart } from '../services/booksApi'; // Adjust path based on your structure
 
 export const formatPrice = (price) => {
   return new Intl.NumberFormat('en-US', {
