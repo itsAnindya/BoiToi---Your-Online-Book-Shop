@@ -78,7 +78,7 @@ const BookDetails = ({ username }) => {
             {!confirmedRating && rating > 0 && (
               <button
                 onClick={submitRating}
-                className="mt-1 px-3 py-1 bg-blue-600 text-white rounded"
+                className="mt-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
               >
                 Confirm Rating
               </button>
@@ -103,7 +103,7 @@ const BookDetails = ({ username }) => {
             {!commentConfirmed && comment.trim() && (
               <button
                 onClick={submitComment}
-                className="px-3 py-1 bg-green-600 text-white rounded"
+                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium"
               >
                 Submit Comment
               </button>

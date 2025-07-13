@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Star, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import BookCard from './books/BookCard';
 
 const BestsellerBooksSection = ({ apiBaseUrl = API_BASE_URL }) => {
   /* --------------------------- state -------------------------------- */
@@ -42,64 +44,22 @@ const BestsellerBooksSection = ({ apiBaseUrl = API_BASE_URL }) => {
   };
 
   /* ------------------------- helpers ------------------------------- */
-  const formatPrice = p =>
-    new Intl.NumberFormat('en-US', { style:'currency', currency:'USD' })
-      .format(p ?? 0);
-
-  const handleAddToCart = (id, title) =>
-    console.log(`Add to cart → ${id} (${title})`);
+  // Removed formatPrice and handleAddToCart helpers as they're now handled by the BookCard component
 
   /* ------------------ presentational bits -------------------------- */
-  const BookCard = ({ book, rank }) => (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-      {/* cover + rank */}
-      <div className="relative overflow-hidden rounded-t-lg">
-        <img
-          src={book.COVER_URL || '/placeholder-book-cover.jpg'}
-          alt={book.TITLE}
-          className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-          onError={e => { e.target.src = '/placeholder-book-cover.jpg'; }}
-        />
-        <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-semibold flex items-center">
-          <Star className="w-3 h-3 mr-1" />#{rank + 1}
-        </div>
-      </div>
-
-      {/* details */}
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 leading-tight">
-          {book.TITLE}
-        </h3>
-
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-          {book.AUTHORS || 'Unknown author'}
-        </p>
-
-        <div className="mt-auto">
-          <span className="text-lg font-bold text-gray-900">
-            {formatPrice(book.PRICE)}
-          </span>
-
-          <button
-            onClick={() => handleAddToCart(book.ID, book.TITLE)}
-            className="mt-3 w-full py-2 px-4 rounded-lg flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white transition-colors"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   const CategorySection = ({ category }) => (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900">{category.category_name}</h2>
-        <button className="text-blue-600 hover:text-blue-800 font-medium">View All</button>
+        <Link 
+          to="/books" 
+          className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
+        >
+          View All
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {category.top_books.map((b, idx) => (
           <BookCard key={b.ID} book={b} rank={idx} />
         ))}

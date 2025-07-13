@@ -6,14 +6,21 @@ const db = require('../config/database');
  */
 const addToCart = async (req, res) => {
   try {
+    console.log('=== ADD TO CART REQUEST ===');
+    console.log('Request body:', req.body);
+    console.log('Request headers:', req.headers);
+    
     const { bookId, userId, book_id, user_id, quantity = 1 } = req.body;
     
     // Support both naming conventions
     const finalBookId = bookId || book_id;
     const finalUserId = userId || user_id;
     
+    console.log('Processed IDs:', { finalBookId, finalUserId, quantity });
+    
     // Input validation
     if (!finalBookId || !finalUserId) {
+      console.log('Validation failed - missing IDs');
       return res.status(400).json({ 
         success: false,
         message: 'Book ID and User ID are required' 
@@ -23,7 +30,9 @@ const addToCart = async (req, res) => {
     console.log(`Adding book ${finalBookId} to cart for user ${finalUserId}`);
 
     // Check if user exists and is active
-    const userCheckSql = 'SELECT ID FROM USER WHERE ID = ?';
+    const userCheckSql = 'SELECT ID FROM user WHERE ID = ?';
+    
+    console.log('Executing user check query:', userCheckSql, 'with userId:', finalUserId);
     
     db.query(userCheckSql, [finalUserId], (err, userResults) => {
       if (err) {
@@ -42,7 +51,7 @@ const addToCart = async (req, res) => {
       }
 
       // Check if book exists
-      const bookCheckSql = 'SELECT id, title, price FROM book WHERE id = ?';
+      const bookCheckSql = 'SELECT ID, TITLE, PRICE FROM book WHERE ID = ?';
       
       db.query(bookCheckSql, [finalBookId], (err, bookResults) => {
         if (err) {
@@ -63,7 +72,7 @@ const addToCart = async (req, res) => {
         const book = bookResults[0];
 
         // Check if item already exists in cart
-        const checkCartSql = 'SELECT * FROM cart WHERE user_id = ? AND book_id = ?';
+        const checkCartSql = 'SELECT * FROM cart WHERE USER_ID = ? AND BOOK_ID = ?';
         
         db.query(checkCartSql, [finalUserId, finalBookId], (err, cartResults) => {
           if (err) {
@@ -78,8 +87,8 @@ const addToCart = async (req, res) => {
             // Item already exists, update quantity
             const updateCartSql = `
               UPDATE cart 
-              SET quantity = quantity + ? 
-              WHERE user_id = ? AND book_id = ?
+              SET QUANTITY = QUANTITY + ? 
+              WHERE USER_ID = ? AND BOOK_ID = ?
             `;
             
             db.query(updateCartSql, [quantity, finalUserId, finalBookId], (err) => {
@@ -94,19 +103,19 @@ const addToCart = async (req, res) => {
               console.log(`Updated quantity for book ${finalBookId} in user ${finalUserId}'s cart`);
               return res.status(200).json({
                 success: true,
-                message: `Book - ${book.title} quantity updated in your cart`,
+                message: `Book - ${book.TITLE} quantity updated in your cart`,
                 data: {
                   bookId: finalBookId,
                   userId: finalUserId,
                   action: 'quantity_updated',
-                  bookTitle: book.title
+                  bookTitle: book.TITLE
                 }
               });
             });
           } else {
             // Item doesn't exist, add new item to cart
             const addToCartSql = `
-              INSERT INTO cart (user_id, book_id, quantity, added_at) 
+              INSERT INTO cart (USER_ID, BOOK_ID, QUANTITY, ADDED_AT) 
               VALUES (?, ?, ?, NOW())
             `;
             
@@ -117,8 +126,8 @@ const addToCart = async (req, res) => {
                   // If duplicate, try to update instead
                   const updateCartSql = `
                     UPDATE cart 
-                    SET quantity = quantity + ? 
-                    WHERE user_id = ? AND book_id = ?
+                    SET QUANTITY = QUANTITY + ? 
+                    WHERE USER_ID = ? AND BOOK_ID = ?
                   `;
                   
                   db.query(updateCartSql, [quantity, finalUserId, finalBookId], (updateErr) => {
@@ -132,13 +141,13 @@ const addToCart = async (req, res) => {
                     
                     return res.status(200).json({
                       success: true,
-                      message: `Book - ${book.title} quantity updated in your cart`,
+                      message: `Book - ${book.TITLE} quantity updated in your cart`,
                       data: {
                         bookId: finalBookId,
                         userId: finalUserId,
                         quantity: quantity,
                         action: 'quantity_updated',
-                        bookTitle: book.title
+                        bookTitle: book.TITLE
                       }
                     });
                   });
@@ -155,14 +164,14 @@ const addToCart = async (req, res) => {
               console.log(`Added book ${finalBookId} to user ${finalUserId}'s cart`);
               return res.status(201).json({
                 success: true,
-                message: `Book - ${book.title} has been added to your cart`,
+                message: `Book - ${book.TITLE} has been added to your cart`,
                 data: {
                   cartId: result.insertId,
                   bookId: finalBookId,
                   userId: finalUserId,
                   quantity: quantity,
                   action: 'item_added',
-                  bookTitle: book.title
+                  bookTitle: book.TITLE
                 }
               });
             });
@@ -198,24 +207,24 @@ const getCartItems = async (req, res) => {
 
     const getCartSql = `
       SELECT 
-        c.id as cart_id,
-        c.user_id,
-        c.book_id,
-        c.quantity,
-        c.added_at,
-        b.title,
-        b.price,
-        b.isbn,
-        b.cover_url as thumbnail,
-        b.description,
-        COALESCE(GROUP_CONCAT(DISTINCT a.name SEPARATOR ', '), 'Unknown Author') as author
+        c.ID as cart_id,
+        c.USER_ID,
+        c.BOOK_ID,
+        c.QUANTITY,
+        c.ADDED_AT,
+        b.TITLE,
+        b.PRICE,
+        b.ISBN,
+        b.COVER_URL as thumbnail,
+        b.DESCRIPTION,
+        COALESCE(GROUP_CONCAT(DISTINCT a.NAME SEPARATOR ', '), 'Unknown Author') as author
       FROM cart c
-      JOIN book b ON c.book_id = b.id
-      LEFT JOIN book_author ba ON b.id = ba.book_id
-      LEFT JOIN author a ON ba.author_id = a.id
-      WHERE c.user_id = ? AND b.show_book = 1
-      GROUP BY c.id, c.user_id, c.book_id, c.quantity, c.added_at, b.title, b.price, b.isbn, b.cover_url, b.description
-      ORDER BY c.added_at DESC
+      JOIN book b ON c.BOOK_ID = b.ID
+      LEFT JOIN book_author ba ON b.ID = ba.BOOK_ID
+      LEFT JOIN author a ON ba.AUTHOR_ID = a.ID
+      WHERE c.USER_ID = ? AND b.SHOW_BOOK = 1
+      GROUP BY c.ID, c.USER_ID, c.BOOK_ID, c.QUANTITY, c.ADDED_AT, b.TITLE, b.PRICE, b.ISBN, b.COVER_URL, b.DESCRIPTION
+      ORDER BY c.ADDED_AT DESC
     `;
 
     db.query(getCartSql, [userId], (err, results) => {
@@ -230,16 +239,18 @@ const getCartItems = async (req, res) => {
       // Transform results to match frontend expectations
       const cartItems = results.map(item => ({
         cart_id: item.cart_id,
-        book_id: item.book_id,
-        title: item.title,
+        book_id: item.BOOK_ID, // Use uppercase as returned by MySQL
+        title: item.TITLE,
         author: item.author || 'Unknown Author',
-        price: parseFloat(item.price) || 0,
+        price: parseFloat(item.PRICE) || 0,
         thumbnail: item.thumbnail || '/images/books/defaultbook.jpg',
-        quantity: item.quantity,
-        added_at: item.added_at,
-        isbn: item.isbn,
-        description: item.description
+        quantity: item.QUANTITY,
+        added_at: item.ADDED_AT,
+        isbn: item.ISBN,
+        description: item.DESCRIPTION
       }));
+      
+      console.log(`Transformed cart items for user ${userId}:`, cartItems);
 
       const totalItems = results.reduce((sum, item) => sum + item.quantity, 0);
       const totalAmount = results.reduce((sum, item) => sum + (parseFloat(item.price || 0) * item.quantity), 0);
@@ -287,7 +298,7 @@ const removeFromCart = async (req, res) => {
 
     console.log(`Removing book ${finalBookId} from cart for user ${finalUserId}`);
 
-    const removeFromCartSql = 'DELETE FROM cart WHERE user_id = ? AND book_id = ?';
+    const removeFromCartSql = 'DELETE FROM cart WHERE USER_ID = ? AND BOOK_ID = ?';
     
     db.query(removeFromCartSql, [finalUserId, finalBookId], (err, result) => {
       if (err) {
@@ -347,8 +358,8 @@ const updateCartQuantity = async (req, res) => {
 
     const updateQuantitySql = `
       UPDATE cart 
-      SET quantity = ? 
-      WHERE user_id = ? AND book_id = ?
+      SET QUANTITY = ? 
+      WHERE USER_ID = ? AND BOOK_ID = ?
     `;
     
     db.query(updateQuantitySql, [quantity, finalUserId, finalBookId], (err, result) => {

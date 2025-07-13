@@ -42,8 +42,8 @@ const CartTestPage = () => {
         
         {!user?.id ? (
           <div className="text-center">
-            <p className="text-lg text-red-600 mb-4">Please login to test cart functionality</p>
-            <a href="/auth" className="text-blue-600 hover:underline">Go to Login</a>
+            <p className="text-lg text-red-600 mb-4 font-medium">Please login to test cart functionality</p>
+            <a href="/auth" className="text-indigo-600 hover:underline font-medium">Go to Login</a>
           </div>
         ) : (
           <div className="space-y-8">
@@ -66,7 +66,7 @@ const CartTestPage = () => {
                   />
                   <h3 className="text-lg font-semibold mb-2">{book.title}</h3>
                   <p className="text-gray-600 mb-2">by {book.author}</p>
-                  <p className="text-xl font-bold text-blue-600 mb-4">৳{book.price}</p>
+                  <p className="text-xl font-bold text-indigo-700 mb-4">৳{book.price}</p>
                   
                   <div className="space-y-2">
                     <AddToCartButton 

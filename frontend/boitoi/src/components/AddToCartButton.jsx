@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FaShoppingCart, FaSpinner } from 'react-icons/fa';
 import { useCart } from '../contexts/CartContext';
-import { addToCart as addToCartAPI } from '../services/cartApi';
 import toast from 'react-hot-toast';
 
 const AddToCartButton = ({ 
@@ -27,15 +26,16 @@ const AddToCartButton = ({
     setIsLoading(true);
     
     try {
-      // Add to local context first for immediate UI feedback
-      addToCartContext(book, quantity);
-      
-      // Then sync with backend
-      const result = await addToCartAPI(user.id, book.id || book.book_id, quantity);
-      
-      if (!result.success) {
-        toast.error(result.error || 'Failed to add item to cart');
-      }
+      // Log the details for debugging
+      console.log('Adding to cart:', {
+        userId: user.id,
+        bookId: book.id || book.book_id,
+        quantity: quantity,
+        book: book
+      });
+
+      // The CartContext's addToCart now handles both local state and API call
+      await addToCartContext(book, quantity);
     } catch (error) {
       toast.error('Failed to add item to cart');
       console.error('Add to cart error:', error);
@@ -48,15 +48,15 @@ const AddToCartButton = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-blue-600 text-white hover:bg-blue-700 border-blue-600';
+        return 'bg-indigo-600 text-white hover:bg-indigo-700 border-indigo-600';
       case 'secondary':
-        return 'bg-gray-600 text-white hover:bg-gray-700 border-gray-600';
+        return 'bg-slate-600 text-white hover:bg-slate-700 border-slate-600';
       case 'outline':
-        return 'bg-transparent text-blue-600 border-blue-600 hover:bg-blue-50';
+        return 'bg-transparent text-indigo-600 border-indigo-600 hover:bg-indigo-50';
       case 'ghost':
-        return 'bg-transparent text-blue-600 border-transparent hover:bg-blue-50';
+        return 'bg-transparent text-indigo-600 border-transparent hover:bg-indigo-50';
       default:
-        return 'bg-blue-600 text-white hover:bg-blue-700 border-blue-600';
+        return 'bg-indigo-600 text-white hover:bg-indigo-700 border-indigo-600';
     }
   };
 
@@ -84,7 +84,7 @@ const AddToCartButton = ({
       onClick={handleAddToCart}
       disabled={isLoading || !user.id}
       className={finalClassName}
-      title={!user.id ? 'Please login to add items to cart' : `Add ${book.title} to cart`}
+      title={user.id ? `Add ${book.title} to cart` : 'Please login to add items to cart'}
     >
       {isLoading ? (
         <FaSpinner className={`animate-spin ${showIcon && children ? 'mr-2' : ''}`} />

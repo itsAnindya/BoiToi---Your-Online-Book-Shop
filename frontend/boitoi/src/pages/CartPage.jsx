@@ -12,7 +12,9 @@ const CartPage = () => {
     updateItemQuantity, 
     removeFromCart, 
     getCartTotal, 
-    getCurrentUser 
+    getCurrentUser,
+    refreshCart,
+    loadCart
   } = useCart();
   
   const [isSaving, setIsSaving] = useState(false);
@@ -21,6 +23,15 @@ const CartPage = () => {
   const navigate = useNavigate();
   
   const user = getCurrentUser();
+
+  // Refresh cart data when component mounts or user changes
+  useEffect(() => {
+    if (user.id) {
+      refreshCart(); // This will fetch fresh data from backend
+    } else {
+      navigate('/auth'); // Redirect to login if no user
+    }
+  }, [user.id, navigate]); // Removed refreshCart from dependencies to prevent infinite loops
 
   useEffect(() => {
     setLocalCart(cart);
@@ -136,7 +147,7 @@ const CartPage = () => {
           <div className="flex items-center space-x-4">
             <Link 
               to="/" 
-              className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+              className="flex items-center text-slate-600 hover:text-slate-800 transition-colors"
             >
               <FaArrowLeft className="mr-2" />
               Back to Home
@@ -158,7 +169,7 @@ const CartPage = () => {
             <p className="text-gray-500 mb-6">Looks like you haven't added any books to your cart yet.</p>
             <Link 
               to="/books" 
-              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
             >
               Browse Books
             </Link>
@@ -190,7 +201,7 @@ const CartPage = () => {
                       <p className="text-gray-600 mb-2">
                         by {item.author}
                       </p>
-                      <p className="text-lg font-bold text-blue-600">
+                      <p className="text-lg font-bold text-slate-700">
                         ৳{item.price?.toFixed(2)}
                       </p>
                     </div>
@@ -257,7 +268,7 @@ const CartPage = () => {
                   <div className="border-t pt-3">
                     <div className="flex justify-between font-semibold text-lg">
                       <span>Total:</span>
-                      <span className="text-blue-600">৳{calculateTotal().toFixed(2)}</span>
+                      <span className="text-slate-700">৳{calculateTotal().toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
@@ -267,7 +278,7 @@ const CartPage = () => {
                   <button
                     onClick={handleSaveCart}
                     disabled={isSaving}
-                    className="w-full flex items-center justify-center px-4 py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-50"
+                    className="w-full flex items-center justify-center px-4 py-3 border border-slate-600 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50"
                   >
                     <FaSave className="mr-2" />
                     {isSaving ? 'Saving...' : 'Save Cart'}
@@ -276,7 +287,7 @@ const CartPage = () => {
                   <button
                     onClick={handlePlaceOrder}
                     disabled={isPlacingOrder || localCart.length === 0}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                    className="w-full flex items-center justify-center px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
                   >
                     <FaShoppingBag className="mr-2" />
                     {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
@@ -286,7 +297,7 @@ const CartPage = () => {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <Link 
                     to="/books" 
-                    className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
+                    className="text-indigo-600 hover:text-indigo-800 text-sm transition-colors font-medium"
                   >
                     ← Continue Shopping
                   </Link>

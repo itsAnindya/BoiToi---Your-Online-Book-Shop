@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 // Import route modules
-const authRoutes = require('./auth');
-const bookRoutes = require('./books');
+const authRoutes = require('./authRoutes');
+const bookRoutes = require('./bookRoutes');
+const userRoutes = require('./userRoutes');
+const cartRoutes = require('./cartRoutes');
 
 // Use routes
-router.use('/api', authRoutes);
+router.use('/api/auth', authRoutes);
+router.use('/api/user', userRoutes);
+router.use('/api/cart', cartRoutes);
 router.use('/', bookRoutes);
 
 // Health check route

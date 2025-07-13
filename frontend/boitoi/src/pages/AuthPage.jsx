@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // <-- import useNavigate
 import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building } from 'lucide-react';
 import { loginUser, signupUser } from '../services/api';
+import { useCart } from '../contexts/CartContext';
 
 const AuthPage = () => {
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,15 @@ const AuthPage = () => {
   });
 
   const navigate = useNavigate(); // <-- initialize navigate
+  const { getCurrentUser, refreshCart } = useCart();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const user = getCurrentUser();
+    if (user && user.id) {
+      navigate('/profile'); // Redirect to profile if already logged in
+    }
+  }, [navigate, getCurrentUser]);
 
   // Get user from sessionStorage (null if not logged in)
   const user = JSON.parse(sessionStorage.getItem('user') || 'null');
@@ -58,6 +68,10 @@ const AuthPage = () => {
 
         if (result.success) {
           console.log('Login successful:', result.username);
+          
+          // Trigger cart refresh for the new user
+          refreshCart();
+          
           // Redirect to personal account page
           navigate(`/books`);
         } else {
