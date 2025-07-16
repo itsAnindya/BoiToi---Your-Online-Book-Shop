@@ -1,0 +1,11 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Book Cover -->
+  <rect x="2" y="2" width="12" height="12" rx="1" fill="#1e40af"/>
+  <!-- Book Pages -->
+  <rect x="3" y="3" width="10" height="10" fill="#ffffff"/>
+  <!-- Book Spine -->
+  <rect x="2" y="2" width="2" height="12" fill="#1e3a8a"/>
+  <!-- Title -->
+  <circle cx="8" cy="8" r="2" fill="#1e40af"/>
+  <text x="8" y="10" font-family="Arial" font-size="3" font-weight="bold" text-anchor="middle" fill="#ffffff">B</text>
+</svg>

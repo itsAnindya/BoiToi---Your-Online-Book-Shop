@@ -1,6 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Button from '../ui/Button';
+import RangeSlider from '../ui/RangeSlider';
 
 const FilterSidebar = memo(({ 
   priceFilter, 
@@ -9,8 +10,44 @@ const FilterSidebar = memo(({
   activeFilters,
   onClearFilters,
   onClearSearch,
-  onClearPrice
+  onClearPrice,
+  priceRange = { min: 0, max: 1000 } // Add price range prop with default values
 }) => {
+  // Local state for the slider to provide smooth interaction
+  const [localPriceRange, setLocalPriceRange] = useState({
+    min: priceFilter.min ? parseFloat(priceFilter.min) : priceRange.min,
+    max: priceFilter.max ? parseFloat(priceFilter.max) : priceRange.max
+  });
+
+  // Update local state when priceFilter prop changes
+  useEffect(() => {
+    setLocalPriceRange({
+      min: priceFilter.min ? parseFloat(priceFilter.min) : priceRange.min,
+      max: priceFilter.max ? parseFloat(priceFilter.max) : priceRange.max
+    });
+  }, [priceFilter, priceRange]);
+
+  const handleSliderChange = (newRange) => {
+    setLocalPriceRange(newRange);
+    // Immediately update the parent component
+    onPriceFilterChange({
+      min: newRange.min.toString(),
+      max: newRange.max.toString()
+    });
+  };
+
+  const handleApplyFilter = () => {
+    onPriceFilterApply();
+  };
+
+  const formatPrice = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
   return (
     <div className="w-64 bg-white border-r border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
@@ -28,33 +65,23 @@ const FilterSidebar = memo(({
 
       {/* Price Filter */}
       <div className="mb-6">
-        <h3 className="text-sm font-medium text-gray-900 mb-3">Price Range</h3>
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs text-gray-600 mb-1">Min Price ($)</label>
-            <input
-              type="number"
-              placeholder="0"
-              value={priceFilter.min}
-              onChange={(e) => onPriceFilterChange({ ...priceFilter, min: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block text-xs text-gray-600 mb-1">Max Price ($)</label>
-            <input
-              type="number"
-              placeholder="999"
-              value={priceFilter.max}
-              onChange={(e) => onPriceFilterChange({ ...priceFilter, max: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+        <h3 className="text-sm font-medium text-gray-900 mb-4">Price Range</h3>
+        <div className="px-2">
+          <RangeSlider
+            min={priceRange.min}
+            max={priceRange.max}
+            step={5}
+            value={localPriceRange}
+            onChange={handleSliderChange}
+            formatValue={formatPrice}
+            className="mb-4"
+          />
           <Button
-            onClick={onPriceFilterApply}
-            className="w-full"
+            onClick={handleApplyFilter}
+            className="w-full mt-3"
+            size="sm"
           >
-            Apply
+            Apply Filter
           </Button>
         </div>
       </div>
