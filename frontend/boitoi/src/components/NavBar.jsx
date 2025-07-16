@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
-import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog } from 'react-icons/fa';
+import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog, FaUserShield } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import toast from 'react-hot-toast';
@@ -111,6 +111,19 @@ const NavBar = () => {
                     <FaCog className="mr-3 text-gray-600" />
                     <span className="text-gray-800">Account Settings</span>
                   </Link>
+                  
+                  {/* Admin Control Panel - Only show for admins */}
+                  {user.role === 'admin' && (
+                    <Link
+                      to="/admin"
+                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-red-50 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <FaUserShield className="mr-3 text-red-600" />
+                      <span className="text-gray-800">Admin Control Panel</span>
+                    </Link>
+                  )}
+                  
                   <button
                     onClick={handleLogout}
                     className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-red-50 transition-colors"
@@ -179,6 +192,19 @@ const NavBar = () => {
                     <FaCog />
                     <span>Account Settings</span>
                   </Link>
+                  
+                  {/* Admin Control Panel - Mobile */}
+                  {user.role === 'admin' && (
+                    <Link 
+                      to="/admin" 
+                      className="flex items-center justify-center space-x-2 p-2 hover:bg-slate-700 rounded text-white"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <FaUserShield />
+                      <span>Admin Control Panel</span>
+                    </Link>
+                  )}
+                  
                   <button
                     onClick={() => {
                       handleLogout();

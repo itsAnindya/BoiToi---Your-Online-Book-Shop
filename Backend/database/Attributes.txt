@@ -86,6 +86,9 @@ COUNTRY
 ZIP_CODE
 IS_DEFAULT
 
+Table: 'admin'
+Attributes:
+USER_ID
 
 SQL USED:
 SELECT COLUMN_NAME

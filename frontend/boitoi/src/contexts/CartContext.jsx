@@ -93,6 +93,7 @@ export const CartProvider = ({ children }) => {
     return {
       id: sessionStorage.getItem('id'),
       username: sessionStorage.getItem('username'),
+      role: sessionStorage.getItem('role'),
     };
   };
 

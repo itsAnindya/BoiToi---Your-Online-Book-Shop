@@ -8,7 +8,7 @@ const SearchBar = memo(({
   placeholder = "Search books by title or author..."
 }) => {
   return (
-    <div className="sticky top-0 bg-white z-50 border-b border-gray-200 px-6 py-4">
+    <div className="sticky top-16 bg-white z-40 border-b border-gray-200 px-6 py-4 shadow-sm">
       <div className="max-w-2xl mx-auto">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
