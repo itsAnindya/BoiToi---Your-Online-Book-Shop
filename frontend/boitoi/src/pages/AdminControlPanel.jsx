@@ -42,7 +42,7 @@ const AdminControlPanel = () => {
       title: 'User Management',
       description: 'Manage user accounts, permissions, and access',
       icon: FaUsers,
-      color: 'bg-blue-500',
+      color: 'bg-primary-500',
       link: '/admin/users'
     },
     {
@@ -143,8 +143,8 @@ const AdminControlPanel = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-blue-100">
-                <FaUsers className="text-blue-600 text-xl" />
+              <div className="p-3 rounded-full bg-primary-100">
+                <FaUsers className="text-primary-600 text-xl" />
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Total Users</p>
@@ -206,7 +206,7 @@ const AdminControlPanel = () => {
                       <IconComponent className="text-white text-xl" />
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
                     {section.title}
                   </h3>
                   <p className="text-gray-600 text-sm">
@@ -214,7 +214,7 @@ const AdminControlPanel = () => {
                   </p>
                 </div>
                 <div className="px-6 pb-4">
-                  <div className="text-blue-600 text-sm font-medium group-hover:underline">
+                  <div className="text-primary-600 text-sm font-medium group-hover:underline">
                     Manage →
                   </div>
                 </div>

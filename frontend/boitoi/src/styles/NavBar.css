@@ -4,9 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+  background: linear-gradient(90deg, #ec6b16 0%, #f08b38 100%);
   padding: 0.75rem 2rem;
-  box-shadow: 0 2px 8px rgba(78, 84, 200, 0.08);
+  box-shadow: 0 2px 8px rgba(236, 107, 22, 0.08);
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 
@@ -45,14 +45,14 @@
   font-size: 1rem;
   background: #f5f6fa;
   transition: box-shadow 0.2s;
-  box-shadow: 0 1px 4px rgba(78, 84, 200, 0.08);
+  box-shadow: 0 1px 4px rgba(236, 107, 22, 0.08);
 }
 
 .navbar-search button {
   padding: 0.5rem 1.2rem;
   border-radius: 0 20px 20px 0;
   border: none;
-  background: #4e54c8;
+  background: #ec6b16;
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
@@ -60,7 +60,7 @@
 }
 
 .navbar-search button:hover {
-  background: #3b3f99;
+  background: #dd520c;
 }
 
 .navbar-actions {
@@ -81,7 +81,7 @@
 }
 
 .navbar-action:hover {
-  color: #ffd700;
+  color: #f59e0b;
 }
 
 .navbar-cart {
@@ -92,8 +92,8 @@
   position: absolute;
   top: -8px;
   right: -10px;
-  background: #ffd700;
-  color: #4e54c8;
+  background: #f59e0b;
+  color: #292524;
   font-size: 0.8rem;
   font-weight: bold;
   border-radius: 50%;

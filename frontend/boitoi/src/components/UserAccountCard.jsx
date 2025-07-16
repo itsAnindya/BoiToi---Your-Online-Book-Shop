@@ -22,8 +22,8 @@ const UserAccountCard = ({ onLogout }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-md">
       <div className="flex items-center space-x-4 mb-6">
-        <div className="bg-blue-100 p-3 rounded-full">
-          <FaUser className="text-blue-600 text-xl" />
+        <div className="bg-primary-100 p-3 rounded-full">
+          <FaUser className="text-primary-600 text-xl" />
         </div>
         <div>
           <h3 className="text-lg font-semibold text-gray-800">{user.username}</h3>
@@ -36,7 +36,7 @@ const UserAccountCard = ({ onLogout }) => {
           to="/profile"
           className="flex items-center space-x-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
         >
-          <FaCog className="text-blue-600" />
+          <FaCog className="text-primary-600" />
           <span>Account Settings</span>
         </Link>
 

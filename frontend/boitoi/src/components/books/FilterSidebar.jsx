@@ -49,12 +49,12 @@ const FilterSidebar = memo(({
     }).format(value);
   };
   return (
-    <div className="w-64 bg-white border-r border-gray-200 p-6">
+    <div className="w-64 bg-white border-r border-neutral-200 p-6 shadow-soft">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+        <h2 className="text-lg font-semibold text-neutral-900">Filters</h2>
         {(activeFilters.search || activeFilters.price) && (
           <Button
-            variant="link"
+            variant="ghost"
             size="sm"
             onClick={onClearFilters}
           >
@@ -65,7 +65,7 @@ const FilterSidebar = memo(({
 
       {/* Price Filter */}
       <div className="mb-6">
-        <h3 className="text-sm font-medium text-gray-900 mb-4">Price Range</h3>
+        <h3 className="text-sm font-medium text-neutral-900 mb-4">Price Range</h3>
         <div className="px-2">
           <RangeSlider
             min={priceRange.min}
@@ -80,6 +80,7 @@ const FilterSidebar = memo(({
             onClick={handleApplyFilter}
             className="w-full mt-3"
             size="sm"
+            variant="primary"
           >
             Apply Filter
           </Button>
@@ -89,27 +90,27 @@ const FilterSidebar = memo(({
       {/* Active Filters */}
       {(activeFilters.search || activeFilters.price) && (
         <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-900 mb-3">Active Filters</h3>
+          <h3 className="text-sm font-medium text-neutral-900 mb-3">Active Filters</h3>
           <div className="space-y-2">
             {activeFilters.search && (
-              <div className="flex items-center justify-between bg-blue-50 px-3 py-2 rounded-md">
-                <span className="text-sm text-blue-800">Search: "{activeFilters.search}"</span>
+              <div className="flex items-center justify-between bg-primary-50 px-3 py-2 rounded-md border border-primary-200">
+                <span className="text-sm text-primary-800">Search: "{activeFilters.search}"</span>
                 <button
                   onClick={onClearSearch}
-                  className="text-blue-600 hover:text-blue-800"
+                  className="text-primary-600 hover:text-primary-800 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             )}
             {activeFilters.price && (
-              <div className="flex items-center justify-between bg-blue-50 px-3 py-2 rounded-md">
-                <span className="text-sm text-blue-800">
+              <div className="flex items-center justify-between bg-secondary-50 px-3 py-2 rounded-md border border-secondary-200">
+                <span className="text-sm text-secondary-800">
                   Price: ${activeFilters.price.min || '0'} - ${activeFilters.price.max || '∞'}
                 </span>
                 <button
                   onClick={onClearPrice}
-                  className="text-blue-600 hover:text-blue-800"
+                  className="text-secondary-600 hover:text-secondary-800 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>

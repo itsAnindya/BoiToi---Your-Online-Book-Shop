@@ -84,7 +84,7 @@ const RangeSlider = ({
       >
         {/* Active Range */}
         <div
-          className="absolute h-2 bg-blue-600 rounded-full"
+          className="absolute h-2 bg-primary-600 rounded-full"
           style={{
             left: `${minPercentage}%`,
             width: `${maxPercentage - minPercentage}%`
@@ -93,7 +93,7 @@ const RangeSlider = ({
 
         {/* Min Thumb */}
         <div
-          className={`absolute w-5 h-5 bg-white border-2 border-blue-600 rounded-full cursor-grab transform -translate-x-1/2 -translate-y-1/2 top-1/2 shadow-md transition-all duration-150 ${
+          className={`absolute w-5 h-5 bg-white border-2 border-primary-600 rounded-full cursor-grab transform -translate-x-1/2 -translate-y-1/2 top-1/2 shadow-md transition-all duration-150 ${
             isDragging === 'min' ? 'scale-110 shadow-lg cursor-grabbing' : 'hover:scale-105'
           }`}
           style={{ left: `${minPercentage}%` }}
@@ -102,7 +102,7 @@ const RangeSlider = ({
 
         {/* Max Thumb */}
         <div
-          className={`absolute w-5 h-5 bg-white border-2 border-blue-600 rounded-full cursor-grab transform -translate-x-1/2 -translate-y-1/2 top-1/2 shadow-md transition-all duration-150 ${
+          className={`absolute w-5 h-5 bg-white border-2 border-primary-600 rounded-full cursor-grab transform -translate-x-1/2 -translate-y-1/2 top-1/2 shadow-md transition-all duration-150 ${
             isDragging === 'max' ? 'scale-110 shadow-lg cursor-grabbing' : 'hover:scale-105'
           }`}
           style={{ left: `${maxPercentage}%` }}

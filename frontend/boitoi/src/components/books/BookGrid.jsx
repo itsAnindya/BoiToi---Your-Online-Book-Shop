@@ -16,7 +16,7 @@ const BookGrid = memo(({
     return (
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-neutral-900">
             Search Results ({filteredBooks.length})
           </h2>
         </div>
@@ -33,10 +33,11 @@ const BookGrid = memo(({
   return categoriesData.map(category => (
     <div key={category.category_id} className="mb-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">{category.category_name}</h2>
+        <h2 className="text-2xl font-bold text-neutral-900">{category.category_name}</h2>
         <Button
-          variant="link"
+          size="sm"
           onClick={() => onViewAll && onViewAll(category)}
+          className="bg-primary-600 hover:bg-primary-700 text-white"
         >
           View All
         </Button>
