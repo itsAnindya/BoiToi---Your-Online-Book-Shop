@@ -618,33 +618,107 @@ const placeOrder = async (req, res) => {
 
       // Calculate total amount
       const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const itemCount = cartItems.length;
+      const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-      // Generate a simple order ID (in production, you'd want a more sophisticated system)
       const orderId = `ORD${Date.now()}${user_id}`;
-
-      // For now, we'll just clear the cart and return the order ID
-      // In a full implementation, you'd create order tables and store the order details
-      const clearCartSql = 'DELETE FROM cart WHERE user_id = ?';
+      // Get current order count to generate new order ID
+      const getOrderCountSql = 'SELECT COUNT(*) as count FROM `order`';
       
-      db.query(clearCartSql, [user_id], (err) => {
+      db.query(getOrderCountSql, [], (err, countResult) => {
         if (err) {
-          console.error('Database error during cart clear for order:', err);
+          console.error('Database error during order count fetch:', err);
           return res.status(500).json({ 
             success: false,
             message: 'Server error during order processing' 
           });
         }
 
-        console.log(`Order placed successfully for user ${user_id}, Order ID: ${orderId}`);
-        return res.status(200).json({
-          success: true,
-          message: 'Order placed successfully',
-          orderId: orderId,
-          orderDetails: {
-            items: cartItems,
-            totalAmount: parseFloat(totalAmount.toFixed(2)),
-            orderDate: new Date().toISOString()
+        // Generate order ID: total rows + 1000
+        const orderId = countResult[0].count + 1000;
+        const orderIdString = `ORD${orderId}`;
+
+        // Insert into order table
+        const insertOrderSql = `
+          INSERT INTO \`order\` (ID, USER_ID, ORDERD_AT, SHIPPING_ADDRESS, ORDER_STATUS, SHIPPING_FEE, TOTAL_AMOUNT) 
+          VALUES (?, ?, NOW(), ?, 'pending', 0.00, ?)
+        `;
+        
+        // Default shipping address (you might want to get this from user profile or request)
+        const defaultShippingAddress = 'To be provided by customer';
+        
+        db.query(insertOrderSql, [orderId, user_id, defaultShippingAddress, totalAmount], (err, orderResult) => {
+          if (err) {
+            console.error('Database error during order insertion:', err);
+            return res.status(500).json({ 
+              success: false,
+              message: 'Server error during order creation' 
+            });
           }
+
+          // Insert order items into order_book table
+          let completedInserts = 0;
+          let insertError = false;
+
+          cartItems.forEach((item) => {
+            const insertOrderBookSql = `
+              INSERT INTO order_book (ORDER_ID, BOOK_ID, QUANTITY) 
+              VALUES (?, ?, ?)
+            `;
+            
+            db.query(insertOrderBookSql, [orderId, item.book_id, item.quantity], (err) => {
+              if (err && !insertError) {
+                insertError = true;
+                console.error('Database error during order_book insertion:', err);
+                return res.status(500).json({ 
+                  success: false,
+                  message: 'Server error during order item creation' 
+                });
+              }
+              
+              completedInserts++;
+              
+              // If all order items are inserted, clear the cart
+              if (completedInserts === cartItems.length && !insertError) {
+                const clearCartSql = 'DELETE FROM cart WHERE user_id = ?';
+                
+                db.query(clearCartSql, [user_id], (err) => {
+                  if (err) {
+                    console.error('Database error during cart clear for order:', err);
+                    return res.status(500).json({ 
+                      success: false,
+                      message: 'Server error during order processing' 
+                    });
+                  }
+
+                  console.log(`Order placed successfully for user ${user_id}, Order ID: ${orderId}`);
+                  return res.status(200).json({
+                    success: true,
+                    message: 'Order placed successfully',
+                    orderId: orderIdString,
+                    orderDetails: {
+                      orderId: orderIdString,
+                      databaseOrderId: orderId,
+                      items: cartItems.map(item => ({
+                        book_id: item.book_id,
+                        title: item.title,
+                        price: parseFloat(item.price),
+                        quantity: item.quantity,
+                        subtotal: parseFloat((item.price * item.quantity).toFixed(2))
+                      })),
+                      itemCount: itemCount,
+                      totalItems: totalItems,
+                      totalAmount: parseFloat(totalAmount.toFixed(2)),
+                      orderDate: new Date().toISOString(),
+                      status: 'pending',
+                      shippingAddress: defaultShippingAddress,
+                      shippingFee: 0.00
+                    }
+                  });
+                });
+              }
+            });
+          });
         });
       });
     });

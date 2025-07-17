@@ -248,6 +248,7 @@ export const placeOrder = async (userId) => {
       success: true,
       orderId: data.orderId,
       message: data.message,
+      orderDetails: data.orderDetails,
     };
   } catch (error) {
     return {
