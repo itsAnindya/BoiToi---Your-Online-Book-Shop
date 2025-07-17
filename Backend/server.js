@@ -5,6 +5,9 @@ const db = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const healthRoutes = require('./routes/healthRoutes');
+const publisherRoutes = require('./routes/publisherRoutes');
+const adminBookRequestRoutes = require('./routes/adminBookRequestRoutes');
+const adminBookRoutes = require('./routes/adminBookRoutes');
 
 const app = express();
 
@@ -18,6 +21,8 @@ app.use('/api/books', bookRoutes);
 app.use('/api', healthRoutes);
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/publisher', publisherRoutes);
+app.use('/api/admin', adminBookRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -1,0 +1,27 @@
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with BoiToi blue theme -->
+  <circle cx="12" cy="12" r="11" fill="#1e40af"/>
+  
+  <!-- BookOpen icon paths (lucide-react style) with white fill -->
+  <!-- Left page -->
+  <path d="M3 7s1.5-2 4.5-2S12 7 12 7v12s-1.5-2-4.5-2S3 19 3 19V7z" 
+        fill="none" 
+        stroke="white" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Right page -->
+  <path d="M21 7s-1.5-2-4.5-2S12 7 12 7v12s1.5-2 4.5-2S21 19 21 19V7z" 
+        fill="none" 
+        stroke="white" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Book binding -->
+  <line x1="12" y1="7" x2="12" y2="19" 
+        stroke="white" 
+        stroke-width="1.5" 
+        stroke-linecap="round"/>
+</svg>

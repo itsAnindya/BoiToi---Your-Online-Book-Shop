@@ -29,6 +29,7 @@ const ErrorState = ({
             onClearFilters={() => {}}
             onClearSearch={() => {}}
             onClearPrice={() => {}}
+            priceRange={{ min: 0, max: 1000 }}
           />
           <div className="flex-1 p-6">
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">

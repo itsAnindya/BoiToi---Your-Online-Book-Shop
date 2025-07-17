@@ -224,7 +224,141 @@ const signup = async (req, res) => {
   }
 };
 
+/**
+ * Publisher Login Controller
+ * Handles publisher authentication
+ */
+const publisherLogin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // Input validation
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+
+    console.log('Publisher login attempt:', { username });
+
+    // Query publisher by name (not email)
+    const sql = 'SELECT * FROM PUBLISHER WHERE NAME = ? AND STATUS = "ACTIVE"';
+    
+    db.query(sql, [username], async (err, results) => {
+      if (err) {
+        console.error('Database error during publisher login:', err);
+        return res.status(500).json({ message: 'Server error during login' });
+      }
+
+      if (results.length === 0) {
+        return res.status(401).json({ message: 'No such publisher or account inactive' });
+      }
+
+      const publisher = results[0];
+      
+      // Verify password
+      const match = await bcrypt.compare(password, publisher.PASSWORD_HASH);
+      if (!match) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+
+      console.log(`Publisher ${publisher.ID} logged in successfully`);
+      
+      return res.json({ 
+        message: 'Login successful', 
+        role: 'publisher',
+        id: publisher.ID,
+        name: publisher.NAME,
+        email: publisher.EMAIL,
+        username: publisher.NAME // Return name as username for consistency
+      });
+    });
+  } catch (error) {
+    console.error('Publisher login error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+/**
+ * Publisher Signup Controller
+ * Handles publisher registration
+ */
+const publisherSignup = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      phone,
+      password,
+      address,
+      city,
+      state,
+      country,
+      website
+    } = req.body;
+
+    // Input validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
+
+    // Check if publisher already exists
+    const checkSql = 'SELECT * FROM PUBLISHER WHERE EMAIL = ?';
+    
+    db.query(checkSql, [email], async (err, results) => {
+      if (err) {
+        console.error('Database error checking publisher:', err);
+        return res.status(500).json({ message: 'Server error checking publisher' });
+      }
+
+      if (results.length > 0) {
+        return res.status(400).json({ message: 'Publisher with this email already exists' });
+      }
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Get next publisher ID
+      const maxIdSql = 'SELECT MAX(ID) as maxId FROM PUBLISHER';
+      
+      db.query(maxIdSql, (err, results) => {
+        if (err) {
+          console.error('Error getting max publisher ID:', err);
+          return res.status(500).json({ message: 'Server error getting max ID' });
+        }
+
+        const id = (results[0].maxId || 0) + 1;
+
+        // Insert publisher
+        const insertSql = `
+          INSERT INTO PUBLISHER (ID, NAME, EMAIL, PHONE, PASSWORD_HASH, ADDRESS, CITY, STATE, COUNTRY, WEBSITE, CREATED_AT, STATUS)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'ACTIVE')
+        `;
+        
+        const values = [id, name, email, phone, hashedPassword, address, city, state, country, website];
+
+        db.query(insertSql, values, (err) => {
+          if (err) {
+            console.error('Error inserting publisher:', err);
+            return res.status(500).json({ message: 'Server error inserting publisher' });
+          }
+          
+          console.log(`Publisher ${name} successfully registered with ID: ${id}`);
+          res.status(201).json({ 
+            message: 'Publisher signup successful',
+            publisherId: id,
+            name: name
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Publisher signup error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   login,
-  signup
+  signup,
+  publisherLogin,
+  publisherSignup
 };

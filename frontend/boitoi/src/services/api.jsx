@@ -130,6 +130,51 @@ export const loginUser = async (credentials) => {
     };
   }
 };
+
+// Publisher login API call
+export const publisherLogin = async (credentials) => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/auth/publisher/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: credentials.username, // This should be the publisher name
+        password: credentials.password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Publisher login failed');
+    }
+
+    // Store publisher info in sessionStorage
+    sessionStorage.setItem('publisherId', data.id);
+    sessionStorage.setItem('publisherName', data.name);
+    sessionStorage.setItem('publisherEmail', data.email);
+    sessionStorage.setItem('publisherUsername', data.username || data.name); // Use name as username
+    sessionStorage.setItem('userType', 'publisher');
+
+    return {
+      success: true,
+      publisher: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        username: data.username || data.name, // Use name as username
+      },
+      message: data.message,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+};
 //user/:id 
 // Signup API call
 export const signupUser = async (userData) => {

@@ -21,6 +21,7 @@ const LoadingState = ({ searchQuery, onSearchChange, onKeyPress }) => {
             onClearFilters={() => {}}
             onClearSearch={() => {}}
             onClearPrice={() => {}}
+            priceRange={{ min: 0, max: 1000 }}
           />
           <div className="flex-1 p-6">
             <div className="animate-pulse">

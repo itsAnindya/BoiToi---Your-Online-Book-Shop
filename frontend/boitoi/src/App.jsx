@@ -7,6 +7,12 @@ import BooksSection from './pages/BooksSection' // Ensure this path and file exi
 import CartPage from './pages/CartPage'
 import CartTestPage from './pages/CartTestPage'
 import UserProfilePage from './pages/UserProfilePage'
+import AdminControlPanel from './pages/AdminControlPanel'
+import BookRequestsManagement from './pages/BookRequestsManagement'
+import PublisherAuth from './pages/PublisherAuth'
+import PublisherDashboard from './pages/PublisherDashboard'
+import PublisherBookSubmission from './pages/PublisherBookSubmission'
+import PublisherLoginPage from './pages/PublisherLoginPage'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -29,6 +35,14 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/cart-test" element={<CartTestPage />} />
               <Route path="/profile" element={<UserProfilePage />} />
+              <Route path="/admin" element={<AdminControlPanel />} />
+              <Route path="/admin/book-requests" element={<BookRequestsManagement />} />
+              <Route path="/publisher/auth" element={<PublisherAuth />} />
+              <Route path="/publisher-login" element={<PublisherLoginPage />} />
+              <Route path="/publisher/dashboard" element={<PublisherDashboard />} />
+              <Route path="/publisher/:id/dashboard" element={<PublisherDashboard />} />
+              <Route path="/publisher/:id/submit-book" element={<PublisherBookSubmission />} />
+              <Route path="/publisher/submit-book" element={<PublisherBookSubmission />} />
             </Routes>
           </div>
           {/* Toast Notifications */}
@@ -37,13 +51,13 @@ function App() {
             toastOptions={{
               duration: 3000,
               style: {
-                background: '#363636',
+                background: '#292524',
                 color: '#fff',
               },
               success: {
                 duration: 3000,
                 style: {
-                  background: '#10B981',
+                  background: '#14b8a6',
                   color: '#fff',
                 },
               },

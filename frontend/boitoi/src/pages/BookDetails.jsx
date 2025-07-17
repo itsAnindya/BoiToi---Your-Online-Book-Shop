@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import DefaultLayout from '../layouts/DefaultLayout';
+import Button from '../components/ui/Button';
 
 const BookDetails = ({ username }) => {
   const { id } = useParams();
@@ -76,12 +77,14 @@ const BookDetails = ({ username }) => {
               ))}
             </div>
             {!confirmedRating && rating > 0 && (
-              <button
+              <Button
                 onClick={submitRating}
-                className="mt-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                variant="primary"
+                size="sm"
+                className="mt-1"
               >
                 Confirm Rating
-              </button>
+              </Button>
             )}
             {confirmedRating && (
               <p className="text-green-600 mt-1">Rating submitted!</p>
@@ -101,12 +104,13 @@ const BookDetails = ({ username }) => {
               }}
             />
             {!commentConfirmed && comment.trim() && (
-              <button
+              <Button
                 onClick={submitComment}
-                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium"
+                variant="success"
+                size="sm"
               >
                 Submit Comment
-              </button>
+              </Button>
             )}
             {commentConfirmed && (
               <p className="text-green-600 mt-1">Comment submitted!</p>

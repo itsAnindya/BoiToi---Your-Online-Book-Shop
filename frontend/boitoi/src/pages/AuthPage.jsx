@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // <-- import useNavigate
 import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building } from 'lucide-react';
-import { loginUser, signupUser } from '../services/api';
+import { loginUser, signupUser, publisherLogin } from '../services/api';
 import { useCart } from '../contexts/CartContext';
+import Button from '../components/ui/Button';
 
 const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+  const [userType, setUserType] = useState('user'); // 'user' or 'publisher'
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -61,24 +63,65 @@ const AuthPage = () => {
           return;
         }
 
-        const result = await loginUser({
-          username: formData.username,
-          password: formData.password,
-        });
+        let result;
+        if (userType === 'publisher') {
+          // Use publisher login
+          result = await publisherLogin({
+            username: formData.username,
+            password: formData.password,
+          });
+        } else {
+          // Use regular user login
+          result = await loginUser({
+            username: formData.username,
+            password: formData.password,
+          });
+        }
 
         if (result.success) {
-          console.log('Login successful:', result.username);
+          console.log('Login successful:', result);
           
-          // Trigger cart refresh for the new user
-          refreshCart();
-          
-          // Redirect to personal account page
-          navigate(`/books`);
+          if (userType === 'publisher') {
+            // Store publisher data in the same format as regular users
+            const publisherUser = {
+              id: result.publisher.id,
+              username: result.publisher.username || result.publisher.name,
+              email: result.publisher.email,
+              name: result.publisher.name,
+              role: 'publisher'
+            };
+            
+            // Store in sessionStorage like regular users
+            sessionStorage.setItem('user', JSON.stringify(publisherUser));
+            sessionStorage.setItem('id', result.publisher.id);
+            sessionStorage.setItem('username', result.publisher.username || result.publisher.name);
+            sessionStorage.setItem('role', 'publisher');
+            
+            // Store publisher-specific data as well for backwards compatibility
+            sessionStorage.setItem('publisherId', result.publisher.id);
+            sessionStorage.setItem('publisherName', result.publisher.name);
+            sessionStorage.setItem('publisherEmail', result.publisher.email);
+            sessionStorage.setItem('userType', 'publisher');
+            
+            // Redirect to homepage so publishers can access all features
+            navigate('/');
+          } else {
+            // Trigger cart refresh for regular users
+            refreshCart();
+            // Redirect to books page
+            navigate('/books');
+          }
         } else {
           setError(result.error);
         }
       } else {
-        // Signup
+        // Signup (only for regular users, publishers need separate registration)
+        if (userType === 'publisher') {
+          setError('Publisher registration is not available through this form. Please contact support.');
+          setLoading(false);
+          return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
           setError('Passwords do not match');
           setLoading(false);
@@ -144,7 +187,7 @@ const AuthPage = () => {
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-8 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute -bottom-8 -right-4 w-72 h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-500"></div>
       </div>
 
@@ -161,7 +204,7 @@ const AuthPage = () => {
         </div>
 
         {/* Auth Toggle */}
-        <div className="flex bg-white/10 p-1 rounded-2xl mb-8 gap-2">
+        <div className="flex bg-white/10 p-1 rounded-2xl mb-4 gap-2">
           <button
             onClick={() => setIsLogin(true)}
             className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${isLogin
@@ -173,12 +216,34 @@ const AuthPage = () => {
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${!isLogin
-              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
-              : 'text-white/70 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${isLogin
+              ? 'text-white/70 hover:text-white hover:bg-white/5'
+              : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
               }`}
           >
             Sign Up
+          </button>
+        </div>
+
+        {/* User Type Toggle */}
+        <div className="flex bg-white/10 p-1 rounded-2xl mb-8 gap-2">
+          <button
+            onClick={() => setUserType('user')}
+            className={`flex-1 py-2 px-4 rounded-xl font-medium transition-all duration-300 ${userType === 'user'
+              ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+              : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+          >
+            User
+          </button>
+          <button
+            onClick={() => setUserType('publisher')}
+            className={`flex-1 py-2 px-4 rounded-xl font-medium transition-all duration-300 ${userType === 'publisher'
+              ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+              : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+          >
+            Publisher
           </button>
         </div>
 
@@ -193,7 +258,7 @@ const AuthPage = () => {
                   <input
                     type="text"
                     name="username"
-                    placeholder="Username"
+                    placeholder={userType === 'publisher' ? 'Publisher Name' : 'Username'}
                     value={formData.username}
                     onChange={handleInputChange}
                     className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
@@ -220,12 +285,13 @@ const AuthPage = () => {
                 </div>
               )}
 
-              <button
+              <Button
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                className={`w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-[1.02] transition-all duration-300 shadow-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                variant="primary"
+                size="lg"
+                className={`w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -233,9 +299,9 @@ const AuthPage = () => {
                     {isLogin ? 'Logging in...' : 'Creating Account...'}
                   </div>
                 ) : (
-                  isLogin ? 'Login to BoiToi' : 'Create BoiToi Account'
+                  isLogin ? `Login to BoiToi${userType === 'publisher' ? ' (Publisher)' : ''}` : `Create BoiToi Account${userType === 'publisher' ? ' (Publisher)' : ''}`
                 )}
-              </button>
+              </Button>
             </>
           ) : (
             // Signup Form
@@ -249,7 +315,7 @@ const AuthPage = () => {
                   <input
                     type="text"
                     name="username"
-                    placeholder="Username"
+                    placeholder={userType === 'publisher' ? 'Publisher Name' : 'Username'}
                     value={formData.username}
                     onChange={handleInputChange}
                     className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
@@ -443,19 +509,21 @@ const AuthPage = () => {
                 </div>
               </div>
 
-              <button
+              <Button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                variant="primary"
+                size="lg"
+                className="w-full"
               >
                 Create BoiToi Account
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center space-y-3">
           <p className="text-white/70">
             {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
             <button
@@ -465,6 +533,18 @@ const AuthPage = () => {
               {isLogin ? 'Sign Up' : 'Login'}
             </button>
           </p>
+          
+          {/* Publisher Login Link */}
+          <div className="pt-4 border-t border-white/20">
+            <p className="text-white/70 text-sm mb-2">Are you a publisher?</p>
+            <Link
+              to="/publisher-login"
+              className="inline-flex items-center gap-2 text-purple-300 hover:text-purple-200 font-medium transition-colors duration-300"
+            >
+              <BookOpen className="w-4 h-4" />
+              Publisher Login
+            </Link>
+          </div>
         </div>
       </div>
 

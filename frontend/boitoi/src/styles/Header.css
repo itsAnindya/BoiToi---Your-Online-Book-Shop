@@ -2,10 +2,10 @@
 
 .header {
   width: 100%;
-  background: linear-gradient(90deg, #4f8cff 0%, #235390 100%);
+  background: linear-gradient(90deg, #ec6b16 0%, #b83d0c 100%);
   color: #fff;
   padding: 1.5rem 2rem;
-  box-shadow: 0 2px 8px rgba(34, 83, 144, 0.08);
+  box-shadow: 0 2px 8px rgba(236, 107, 22, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,13 +47,13 @@
 
 .header-nav a:hover,
 .header-nav a.active {
-  color: #ffd700;
+  color: #f59e0b;
 }
 
 .header-nav a:hover::after,
 .header-nav a.active::after {
   width: 100%;
-  background: #ffd700;
+  background: #f59e0b;
 }
 
 @media (max-width: 768px) {

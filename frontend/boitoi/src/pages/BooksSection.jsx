@@ -62,7 +62,7 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
   // Main render
   return (
     <DefaultLayout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-neutral-50">
         <SearchBar
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
@@ -78,12 +78,13 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
             onClearFilters={clearFilters}
             onClearSearch={handleClearSearch}
             onClearPrice={handleClearPrice}
+            priceRange={{ min: 0, max: 1000 }}
           />
 
           <div className="flex-1 p-6">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Books</h1>
-              <p className="text-gray-600">
+              <h1 className="text-3xl font-bold text-neutral-900 mb-2">Books</h1>
+              <p className="text-neutral-600">
                 {activeFilters.search || activeFilters.price
                   ? `Found ${filteredBooks.length} books matching your criteria`
                   : 'Discover books across all categories'
