@@ -326,7 +326,7 @@ const UserProfilePage = () => {
                           name="username"
                           value={isEditing ? editFormData.username : profileData.username}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                           required
                         />
                       ) : (
@@ -348,7 +348,7 @@ const UserProfilePage = () => {
                           name="email"
                           value={isEditing ? editFormData.email : profileData.email}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                           required
                         />
                       ) : (
@@ -370,7 +370,7 @@ const UserProfilePage = () => {
                           name="firstName"
                           value={isEditing ? editFormData.firstName : profileData.firstName}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                         />
                       ) : (
                         <div className="bg-slate-50 px-4 py-3 rounded-xl border-2 border-transparent group-hover:border-slate-300 transition-all duration-300">
@@ -391,7 +391,7 @@ const UserProfilePage = () => {
                           name="lastName"
                           value={isEditing ? editFormData.lastName : profileData.lastName}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                         />
                       ) : (
                         <div className="bg-slate-50 px-4 py-3 rounded-xl border-2 border-transparent group-hover:border-slate-300 transition-all duration-300">
@@ -412,7 +412,7 @@ const UserProfilePage = () => {
                           name="phone"
                           value={isEditing ? editFormData.phone : profileData.phone}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                         />
                       ) : (
                         <div className="bg-slate-50 px-4 py-3 rounded-xl border-2 border-transparent group-hover:border-slate-300 transition-all duration-300">
@@ -432,7 +432,7 @@ const UserProfilePage = () => {
                           name="gender"
                           value={isEditing ? editFormData.gender : profileData.gender}
                           onChange={handleProfileChange}
-                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                         >
                           <option value="">Select Gender</option>
                           <option value="male">Male</option>
@@ -459,7 +459,7 @@ const UserProfilePage = () => {
                           name="birthday"
                           value={isEditing ? editFormData.birthday : profileData.birthday}
                           onChange={handleProfileChange}
-                          className="w-full md:w-1/2 px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
+                          className="w-full md:w-1/2 px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-slate-50 hover:bg-white text-slate-900"
                         />
                       ) : (
                         <div className="bg-slate-50 px-4 py-3 rounded-xl border-2 border-transparent group-hover:border-slate-300 transition-all duration-300 w-full md:w-1/2">
@@ -512,7 +512,7 @@ const UserProfilePage = () => {
                               name="currentPassword"
                               value={passwordData.currentPassword}
                               onChange={handlePasswordChange}
-                              className="w-full px-4 py-3 pr-12 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
+                              className="w-full px-4 py-3 pr-12 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
                               required
                             />
                             <button
@@ -537,7 +537,7 @@ const UserProfilePage = () => {
                               name="newPassword"
                               value={passwordData.newPassword}
                               onChange={handlePasswordChange}
-                              className="w-full px-4 py-3 pr-12 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
+                              className="w-full px-4 py-3 pr-12 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
                               required
                             />
                             <button
@@ -561,7 +561,7 @@ const UserProfilePage = () => {
                             name="confirmPassword"
                             value={passwordData.confirmPassword}
                             onChange={handlePasswordChange}
-                            className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
+                            className="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
                             required
                           />
                         </div>

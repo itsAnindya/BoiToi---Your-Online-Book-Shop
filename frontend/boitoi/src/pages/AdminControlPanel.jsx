@@ -10,7 +10,8 @@ import {
   FaDatabase,
   FaUserShield,
   FaStore,
-  FaArrowLeft
+  FaArrowLeft,
+  FaClipboardList
 } from 'react-icons/fa';
 
 const AdminControlPanel = () => {
@@ -52,6 +53,14 @@ const AdminControlPanel = () => {
       icon: FaBook,
       color: 'bg-green-500',
       link: '/admin/books'
+    },
+    {
+      id: 'book-requests',
+      title: 'Book Requests',
+      description: 'Review and approve publisher book submissions',
+      icon: FaClipboardList,
+      color: 'bg-blue-500',
+      link: '/admin/book-requests'
     },
     {
       id: 'orders',
@@ -104,7 +113,13 @@ const AdminControlPanel = () => {
   ];
 
   const handleSectionClick = (link) => {
-    // For now, show placeholder message. Later these can be implemented
+    // Book requests page is implemented
+    if (link === '/admin/book-requests') {
+      navigate('/admin/book-requests');
+      return;
+    }
+    
+    // For other features, show placeholder message
     alert(`This feature will be implemented soon!\nRedirect: ${link}`);
   };
 

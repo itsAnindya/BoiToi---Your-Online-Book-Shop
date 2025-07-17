@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Star } from 'lucide-react';
 import { API_BASE_URL } from '../config'; // Adjust the import path as necessary
+import Button from './ui/Button';
 
 const BookShowcase = () => {
   const [bookData, setBookData] = useState([]);
@@ -57,12 +58,13 @@ const BookShowcase = () => {
         <div className="text-center">
           <div className="text-red-600 text-xl mb-4">Error loading books</div>
           <p className="text-gray-600 mb-4">{error}</p>
-          <button 
+          <Button 
             onClick={fetchBooks}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            variant="primary"
+            size="sm"
           >
             Try Again
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -120,13 +122,15 @@ const BookShowcase = () => {
                       </div>
                     </div>
                     
-                    <button
+                    <Button
                       onClick={() => handleAddToCart(book)}
-                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                      variant="primary"
+                      size="sm"
+                      className="w-full flex items-center justify-center gap-2"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       Add to Cart
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}
