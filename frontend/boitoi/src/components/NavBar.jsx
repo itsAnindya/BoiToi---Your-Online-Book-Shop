@@ -102,39 +102,40 @@ const NavBar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-slate-900 text-white shadow-lg h-16 z-50 border-b border-slate-700">
-      <div className="max-w-6xl mx-5 px-4 h-full flex justify-between items-center">
-        <div className="md:flex space-x-16 flex justify-between items-center">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 hover:text-slate-300 transition-colors">
-            <BookOpen className="text-slate-300" />
-            <span className="font-bold text-xl text-white">BoiToi</span>
-          </Link>
+      <div className="max-w-6xl mx-auto px-4 h-full flex items-center">
+        {/* Logo - Far Left */}
+        <Link to="/" className="flex items-center space-x-2 hover:text-slate-300 transition-colors">
+          <BookOpen className="text-slate-300" />
+          <span className="font-bold text-xl text-white">BoiToi</span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className='md:flex space-x-8 flex justify-between items-center'>
+        {/* Desktop Navigation - Left aligned after logo */}
+        <div className="hidden md:flex space-x-8 ml-16">
           {navItems.map((item) => (
             <Link
-            key={item.id}
-            to={item.link}
-            className="hover:text-slate-100 transition-colors text-slate-100"
+              key={item.id}
+              to={item.link}
+              className="hover:text-slate-100 transition-colors text-slate-100"
             >
               {item.text}
             </Link>
           ))}
-          </div>
         </div>
 
-        {/* Icons */}
-        <div className="hidden md:flex space-x-6 items-center -mr-80">
+        {/* Spacer to push icons to the right */}
+        <div className="flex-1"></div>
+
+        {/* Icons - Far Right */}
+        <div className="hidden md:flex space-x-2 items-center">
           {/* Notification Button - Available for all users */}
           <div className="relative" ref={notificationRef}>
             <button
               onClick={handleNotificationClick}
-              className="relative hover:text-slate-300 transition-colors"
+              className="relative p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group bg-transparent border-none"
             >
-              <FaBell className="text-xl text-white" />
+              <FaBell className="text-xl text-white group-hover:text-slate-200" />
               {unreadNotifications > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg">
                   {unreadNotifications > 99 ? '99+' : unreadNotifications}
                 </span>
               )}
@@ -164,7 +165,7 @@ const NavBar = () => {
                   notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${notification.read ? '' : 'bg-blue-50'
+                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${notification.read ? '' : 'bg-gray-50'
                         }`}
                       onClick={() => markAsRead(notification.id)}
                     >
@@ -173,7 +174,7 @@ const NavBar = () => {
                           <p className="text-sm text-gray-800">{notification.message}</p>
                           <div className="flex items-center mt-1">
                             <span className={`inline-block w-2 h-2 rounded-full mr-2 ${notification.type === 'success' ? 'bg-green-500' :
-                                notification.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+                                notification.type === 'error' ? 'bg-red-500' : 'bg-indigo-500'
                               }`}></span>
                             <span className="text-xs text-gray-500">
                               {notification.read ? 'Read' : 'Unread'}
@@ -199,10 +200,10 @@ const NavBar = () => {
           </div>
 
           {isLoggedIn && (
-            <Link to="/cart" className="relative hover:text-slate-300 transition-colors">
-              <FaShoppingCart className="text-xl text-white" />
+            <Link to="/cart" className="relative p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group">
+              <FaShoppingCart className="text-xl text-white group-hover:text-slate-200" />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg">
                   {cartItemsCount > 99 ? '99+' : cartItemsCount}
                 </span>
               )}
@@ -214,10 +215,10 @@ const NavBar = () => {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center space-x-2 hover:text-slate-300 transition-colors"
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group bg-transparent border-none"
               >
-                <FaUser className="text-xl text-white" />
-                <span className="hidden lg:block text-white">{user.username}</span>
+                <FaUser className="text-xl text-white group-hover:text-slate-200" />
+                <span className="hidden lg:block text-white group-hover:text-slate-200">{user.username}</span>
               </button>
 
               {showUserMenu && (
@@ -247,10 +248,10 @@ const NavBar = () => {
                   {user.role === 'publisher' && (
                     <Link
                       to={`/publisher/${user.id}/dashboard`}
-                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 transition-colors"
+                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 transition-colors"
                       onClick={() => setShowUserMenu(false)}
                     >
-                      <FaBook className="mr-3 text-blue-600" />
+                      <FaBook className="mr-3 text-indigo-600" />
                       <span className="text-gray-800">Publisher Dashboard</span>
                     </Link>
                   )}
@@ -267,8 +268,8 @@ const NavBar = () => {
             </div>
           ) : (
             <Link to="/auth">
-              <button className="hover:text-slate-300 transition-colors">
-                <FaUser className="text-xl text-white" />
+              <button className="p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group">
+                <FaUser className="text-xl text-white group-hover:text-slate-200" />
               </button>
             </Link>
           )}
@@ -322,7 +323,7 @@ const NavBar = () => {
                   notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 ${notification.read ? '' : 'bg-blue-50'
+                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 ${notification.read ? '' : 'bg-gray-50'
                         }`}
                     >
                       <div className="flex items-start justify-between">
@@ -330,7 +331,7 @@ const NavBar = () => {
                           <p className="text-sm text-gray-800">{notification.message}</p>
                           <div className="flex items-center mt-1">
                             <span className={`inline-block w-2 h-2 rounded-full mr-2 ${notification.type === 'success' ? 'bg-green-500' :
-                                notification.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+                                notification.type === 'error' ? 'bg-red-500' : 'bg-indigo-500'
                               }`}></span>
                             <span className="text-xs text-gray-500">
                               {notification.read ? 'Read' : 'Unread'}

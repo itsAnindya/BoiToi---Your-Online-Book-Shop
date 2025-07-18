@@ -3,6 +3,8 @@ import { useCart } from '../contexts/CartContext';
 import { saveCart, placeOrder } from '../services/cartApi';
 import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { BackToHomeButton } from '../components/ui/Button';
+import { FaShoppingCart } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const CartPage = () => {
@@ -145,13 +147,14 @@ const CartPage = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
-            <Link 
+            <BackToHomeButton />
+            {/* <Link 
               to="/" 
               className="flex items-center text-slate-600 hover:text-slate-800 transition-colors"
             >
               <FaArrowLeft className="mr-2" />
               Back to Home
-            </Link>
+            </Link> */}
             <h1 className="text-3xl font-bold text-gray-900">
               {user.username ? `${user.username}'s Cart` : 'Your Cart'}
             </h1>

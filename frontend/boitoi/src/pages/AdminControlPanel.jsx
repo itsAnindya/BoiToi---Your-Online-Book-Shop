@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { BackToHomeButton } from '../components/ui/Button';
 import {
   FaUsers,
   FaBook,
@@ -128,7 +129,8 @@ const AdminControlPanel = () => {
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Back Button */}
-        <div
+        <BackToHomeButton />
+        {/* <div
           className="mb-6 flex items-center"
         >
           <Button
@@ -139,7 +141,7 @@ const AdminControlPanel = () => {
             <FaArrowLeft className="text-sm group-hover:-translate-x-1 transition-transform" />
             <span className="text-sm font-medium">Back to Home</span>
           </Button>
-        </div>
+        </div> */}
 
         {/* Header */}
         <div className="mb-8">
