@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
-import { 
-  FaUsers, 
-  FaBook, 
-  FaShoppingCart, 
-  FaChartBar, 
-  FaCogs, 
+import {
+  FaUsers,
+  FaBook,
+  FaShoppingCart,
+  FaChartBar,
+  FaCogs,
   FaDatabase,
   FaUserShield,
   FaStore,
   FaArrowLeft,
   FaClipboardList
 } from 'react-icons/fa';
+import Button from '../components/ui/Button';
 
 const AdminControlPanel = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AdminControlPanel = () => {
       navigate('/auth');
       return;
     }
-    
+
     if (user.role !== 'admin') {
       navigate('/');
       return;
@@ -118,7 +119,7 @@ const AdminControlPanel = () => {
       navigate('/admin/book-requests');
       return;
     }
-    
+
     // For other features, show placeholder message
     alert(`This feature will be implemented soon!\nRedirect: ${link}`);
   };
@@ -127,14 +128,17 @@ const AdminControlPanel = () => {
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Back Button */}
-        <div className="mb-6">
-          <button
+        <div
+          className="mb-6 flex items-center"
+        >
+          <Button
             onClick={() => navigate('/')}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors group"
+            // className="flex items-center space-x-2 text-white hover:text-gray-800 transition-colors group"
+            variant="outline"
           >
             <FaArrowLeft className="text-sm group-hover:-translate-x-1 transition-transform" />
             <span className="text-sm font-medium">Back to Home</span>
-          </button>
+          </Button>
         </div>
 
         {/* Header */}
@@ -143,7 +147,7 @@ const AdminControlPanel = () => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Admin Control Panel</h1>
               <p className="text-gray-600 mt-2">
-                Welcome back, <span className="font-semibold">{user.username}</span>. 
+                Welcome back, <span className="font-semibold">{user.username}</span>.
                 Manage your BoiToi bookstore from here.
               </p>
             </div>
@@ -167,7 +171,7 @@ const AdminControlPanel = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-green-100">
@@ -179,7 +183,7 @@ const AdminControlPanel = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-purple-100">
@@ -191,7 +195,7 @@ const AdminControlPanel = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-yellow-100">
