@@ -180,15 +180,16 @@ const NavBar = () => {
                             </span>
                           </div>
                         </div>
-                        <button
+                        <Button
                           onClick={(e) => {
                             e.stopPropagation();
                             clearNotification(notification.id);
                           }}
-                          className="text-gray-400 hover:text-gray-600 ml-2"
+                          // className="text-gray-400 hover:text-gray-600 ml-2"
+                          variant='outline'
                         >
                           <FaTimes className="text-xs" />
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   ))

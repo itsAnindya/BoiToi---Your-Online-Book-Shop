@@ -134,7 +134,7 @@ const AdminControlPanel = () => {
           <Button
             onClick={() => navigate('/')}
             // className="flex items-center space-x-2 text-white hover:text-gray-800 transition-colors group"
-            variant="outline"
+            variant="ghost"
           >
             <FaArrowLeft className="text-sm group-hover:-translate-x-1 transition-transform" />
             <span className="text-sm font-medium">Back to Home</span>
