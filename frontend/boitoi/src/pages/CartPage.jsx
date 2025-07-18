@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { saveCart, placeOrder } from '../services/cartApi';
-import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft, FaCheckCircle, FaTimes, FaGift } from 'react-icons/fa';
+import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -17,44 +17,9 @@ const CartPage = () => {
     loadCart
   } = useCart();
   
-  // Add custom CSS for animations
-  React.useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes bounce-in {
-        0% {
-          opacity: 0;
-          transform: translate(-50%, -50%) scale(0.3);
-        }
-        50% {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1.05);
-        }
-        70% {
-          transform: translate(-50%, -50%) scale(0.9);
-        }
-        100% {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1);
-        }
-      }
-      .animate-bounce-in {
-        animation: bounce-in 0.6s ease-out forwards;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
-  
   const [isSaving, setIsSaving] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [localCart, setLocalCart] = useState([]);
-  const [showOrderSuccessModal, setShowOrderSuccessModal] = useState(false);
-  const [orderDetails, setOrderDetails] = useState(null);
   const navigate = useNavigate();
   
   const user = getCurrentUser();
@@ -142,17 +107,9 @@ const CartPage = () => {
       const result = await placeOrder(user.id);
       
       if (result.success) {
-        setOrderDetails({
-          orderId: result.orderId,
-          totalAmount: result.orderDetails.totalAmount,
-          itemCount: result.orderDetails.itemCount,
-          totalItems: result.orderDetails.totalItems,
-          items: result.orderDetails.items,
-          orderDate: result.orderDetails.orderDate,
-          status: result.orderDetails.status
-        });
-        setShowOrderSuccessModal(true);
+        toast.success(`Order placed successfully! Order ID: ${result.orderId}`);
         setLocalCart([]);
+        navigate('/orders'); // Navigate to orders page (you might need to create this)
       } else {
         toast.error(result.error || 'Failed to place order');
       }
@@ -170,105 +127,6 @@ const CartPage = () => {
     }, 0);
   };
 
-  // Order Success Modal Component
-  const OrderSuccessModal = () => {
-    if (!showOrderSuccessModal || !orderDetails) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 animate-bounce-in">
-          {/* Header with close button */}
-          <div className="relative p-6 pb-4">
-            <button
-              onClick={() => setShowOrderSuccessModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <FaTimes className="text-xl" />
-            </button>
-          </div>
-
-          {/* Success Icon and Animation */}
-          <div className="text-center px-6">
-            <div className="relative inline-block">
-              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                <FaCheckCircle className="text-4xl text-emerald-600 animate-bounce" />
-              </div>
-              <div className="absolute inset-0 w-20 h-20 bg-emerald-200 rounded-full mx-auto animate-ping opacity-25"></div>
-            </div>
-
-            {/* Success Message */}
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Order Placed Successfully! 🎉
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Thank you for your purchase. Your order has been confirmed and is being processed.
-            </p>
-
-            {/* Order Details */}
-            <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-600">Order ID:</span>
-                <span className="font-mono font-semibold text-emerald-600">
-                  #{orderDetails.orderId}
-                </span>
-              </div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-600">Items:</span>
-                <span className="font-semibold">
-                  {orderDetails.itemCount} {orderDetails.itemCount === 1 ? 'book' : 'books'}
-                  {orderDetails.totalItems && orderDetails.totalItems !== orderDetails.itemCount && 
-                    ` (${orderDetails.totalItems} total)`
-                  }
-                </span>
-              </div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-600">Order Date:</span>
-                <span className="font-semibold">
-                  {orderDetails.orderDate ? new Date(orderDetails.orderDate).toLocaleDateString() : 'Today'}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Total Amount:</span>
-                <span className="font-bold text-lg text-emerald-600">
-                  ৳{orderDetails.totalAmount.toFixed(2)}
-                </span>
-              </div>
-            </div>
-
-            {/* Gift Icon */}
-            <div className="flex justify-center mb-6">
-              <FaGift className="text-3xl text-yellow-500 animate-bounce" />
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="px-6 pb-6">
-            <div className="space-y-3">
-              <button
-                onClick={() => {
-                  setShowOrderSuccessModal(false);
-                  navigate('/orders');
-                }}
-                className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-emerald-700 transition-colors transform hover:scale-105"
-              >
-                View My Orders
-              </button>
-              <button
-                onClick={() => {
-                  setShowOrderSuccessModal(false);
-                  navigate('/books');
-                }}
-                className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-              >
-                Continue Shopping
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen pt-20 bg-gray-50">
@@ -283,9 +141,6 @@ const CartPage = () => {
 
   return (
     <div className="min-h-screen pt-20 bg-gray-50">
-      {/* Order Success Modal */}
-      <OrderSuccessModal />
-      
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

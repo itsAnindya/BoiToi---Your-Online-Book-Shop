@@ -6,7 +6,6 @@ import BookDetail from './pages/BookDetails' // Ensure this path and file exist 
 import BooksSection from './pages/BooksSection' // Ensure this path and file exist and exports a React component
 import CartPage from './pages/CartPage'
 import CartTestPage from './pages/CartTestPage'
-import OrdersPage from './pages/OrdersPage'
 import UserProfilePage from './pages/UserProfilePage'
 import AdminControlPanel from './pages/AdminControlPanel'
 import BookRequestsManagement from './pages/BookRequestsManagement'
@@ -35,7 +34,6 @@ function App() {
               <Route path="/books/:id" element={<BookDetail />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/cart-test" element={<CartTestPage />} />
-              <Route path="/orders" element={<OrdersPage />} />
               <Route path="/profile" element={<UserProfilePage />} />
               <Route path="/admin" element={<AdminControlPanel />} />
               <Route path="/admin/book-requests" element={<BookRequestsManagement />} />
