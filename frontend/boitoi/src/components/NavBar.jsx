@@ -215,10 +215,9 @@ const NavBar = () => {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group bg-transparent border-none"
+                className="flex items-center p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group bg-transparent border-none"
               >
                 <FaUser className="text-xl text-white group-hover:text-slate-200" />
-                <span className="hidden lg:block text-white group-hover:text-slate-200">{user.username}</span>
               </button>
 
               {showUserMenu && (
