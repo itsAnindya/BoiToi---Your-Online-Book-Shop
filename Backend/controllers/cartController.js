@@ -621,7 +621,6 @@ const placeOrder = async (req, res) => {
       const itemCount = cartItems.length;
       const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-      const orderId = `ORD${Date.now()}${user_id}`;
       // Get current order count to generate new order ID
       const getOrderCountSql = 'SELECT COUNT(*) as count FROM `order`';
       
