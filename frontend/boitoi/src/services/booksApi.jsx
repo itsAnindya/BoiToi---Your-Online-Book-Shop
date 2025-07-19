@@ -12,6 +12,19 @@ export const booksApi = {
     }
     
     return response.json();
+  },
+
+  async fetchAllBooks(apiBaseUrl = `${API_BASE_URL}/api`) {
+    const response = await fetch(`${apiBaseUrl}/books/all`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
+    return response.json();
   }
 };
 export const addToCart = async (bookId) => {

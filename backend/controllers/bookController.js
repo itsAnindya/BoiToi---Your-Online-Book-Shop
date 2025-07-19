@@ -130,8 +130,96 @@ ORDER BY cb.book_count DESC, c.ID;
   });
 };
 
+/**
+ * Get All Books
+ * Returns all books in the database grouped by category
+ */
+const getAllBooks = (req, res) => {
+  console.log('Fetching all books from database');
+
+  const query = `
+    SELECT 
+      c.ID AS category_id,
+      c.NAME AS category_name,
+      b.ID AS book_id,
+      b.TITLE,
+      b.COVER_URL,
+      b.PRICE,
+      b.STOCK_QUANTITY,
+      b.ISBN,
+      b.PAGE_COUNT,
+      b.LANGUAGE,
+      b.EDITION,
+      b.DESCRIPTION,
+      b.GENRE,
+      b.PUBLISHED_DATE,
+      b.ADDED_AT,
+      p.NAME AS publisher_name,
+      GROUP_CONCAT(DISTINCT a.NAME ORDER BY a.NAME SEPARATOR ' · ') AS author_names
+    FROM book b
+    LEFT JOIN publisher p ON b.PUBLISHER_ID = p.ID
+    LEFT JOIN book_author ba ON ba.BOOK_ID = b.ID
+    LEFT JOIN author a ON a.ID = ba.AUTHOR_ID
+    LEFT JOIN book_category bc ON bc.BOOK_ID = b.ID
+    LEFT JOIN category c ON c.ID = bc.CATEGORY_ID
+    WHERE b.SHOW_BOOK = 1
+    GROUP BY b.ID, c.ID
+    ORDER BY c.NAME, b.TITLE
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Database query error: ', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (results.length === 0) {
+      console.log('No books found');
+      return res.status(200).json([]);
+    }
+
+    const response = {};
+    
+    for (const row of results) {
+      const catId = row.category_id || 'uncategorized';
+      const catName = row.category_name || 'Uncategorized';
+
+      if (!response[catId]) {
+        response[catId] = {
+          category_id: catId,
+          category_name: catName,
+          top_books: []
+        };
+      }
+
+      response[catId].top_books.push({
+        ID: row.book_id,
+        TITLE: row.TITLE ?? null,
+        COVER_URL: row.COVER_URL ?? null,
+        PRICE: row.PRICE ?? null,
+        STOCK_QUANTITY: row.STOCK_QUANTITY ?? null,
+        ISBN: row.ISBN ?? null,
+        PAGE_COUNT: row.PAGE_COUNT ?? null,
+        LANGUAGE: row.LANGUAGE ?? null,
+        EDITION: row.EDITION ?? null,
+        DESCRIPTION: row.DESCRIPTION ?? null,
+        GENRE: row.GENRE ?? null,
+        PUBLISHED_DATE: row.PUBLISHED_DATE ?? null,
+        ADDED_AT: row.ADDED_AT ?? null,
+        PUBLISHER_NAME: row.publisher_name ?? null,
+        AUTHORS: row.author_names ?? ''
+      });
+    }
+
+    const finalResponse = Object.values(response);
+    console.log(`Returning ${finalResponse.length} categories with total books`);
+    res.json(finalResponse);
+  });
+};
+
 
 module.exports = {
   getHomeBooks,
-  getBooksByCategory
+  getBooksByCategory,
+  getAllBooks
 };

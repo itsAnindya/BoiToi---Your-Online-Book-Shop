@@ -5,7 +5,7 @@ const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'mysql',
-  database: process.env.DB_NAME || 'BoiToi_DB',
+  database: process.env.DB_NAME || 'boitoi_db',
   port: process.env.DB_PORT || 3306
 };
 

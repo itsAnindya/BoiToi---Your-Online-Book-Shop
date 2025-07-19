@@ -305,16 +305,24 @@ const getAllBookRequests = async (req, res) => {
     const sql = `
       SELECT 
         pr.ID,
+        pr.PUBLISHER_ID,
         pr.REQUEST_TYPE,
         pr.STATUS,
         pr.SUBMITTED_AT,
         pr.REVIEWED_AT,
         pr.NOTES,
+        pr.REVIEWED_BY,
         p.NAME as PUBLISHER_NAME,
         p.EMAIL as PUBLISHER_EMAIL,
         pbd.TITLE,
         pbd.ISBN,
+        pbd.PAGE_COUNT,
+        pbd.LANGUAGE,
+        pbd.EDITION,
         pbd.PRICE,
+        pbd.STOCK_QUANTITY,
+        pbd.DESCRIPTION,
+        pbd.COVER_URL,
         pbd.GENRE,
         admin_user.USERNAME as REVIEWED_BY_USERNAME
       FROM PUBLISHER_REQUEST pr

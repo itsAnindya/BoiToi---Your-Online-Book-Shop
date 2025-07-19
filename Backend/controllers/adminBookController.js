@@ -12,6 +12,7 @@ const getPendingBookRequests = async (req, res) => {
         pr.REQUEST_TYPE,
         pr.STATUS,
         pr.SUBMITTED_AT,
+        pr.REVIEWED_AT,
         pr.NOTES,
         p.NAME as PUBLISHER_NAME,
         p.EMAIL as PUBLISHER_EMAIL,
@@ -35,9 +36,10 @@ const getPendingBookRequests = async (req, res) => {
     db.query(sql, (err, results) => {
       if (err) {
         console.error('Database error fetching pending book requests:', err);
-        return res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error fetching requests: ' + err.message });
       }
 
+      console.log('Fetched pending requests:', results.length);
       return res.json(results);
     });
   } catch (error) {
@@ -59,26 +61,71 @@ const approveBookRequest = async (req, res) => {
       return res.status(400).json({ message: 'Admin ID is required' });
     }
 
-    // Call the stored procedure
-    const sql = 'CALL approve_book_request(?, ?, ?)';
+    console.log('Approving book request:', { requestId, adminId, notes });
+
+    // First, check if the admin user exists
+    const checkAdminSql = 'SELECT a.USER_ID, u.USERNAME FROM ADMIN a JOIN USER u ON a.USER_ID = u.ID WHERE a.USER_ID = ?';
     
-    db.query(sql, [requestId, adminId, notes || 'Request approved'], (err, results) => {
+    db.query(checkAdminSql, [parseInt(adminId)], (err, adminResults) => {
       if (err) {
-        console.error('Database error approving book request:', err);
-        return res.status(500).json({ message: 'Server error approving request' });
+        console.error('Error checking admin:', err);
+        return res.status(500).json({ message: 'Error verifying admin: ' + err.message });
       }
 
-      const newBookId = results[0] && results[0][0] ? results[0][0].book_id : null;
+      if (adminResults.length === 0) {
+        console.log('Admin not found for ID:', adminId);
+        return res.status(400).json({ message: 'Invalid admin ID. User is not an admin or does not exist.' });
+      }
+
+      console.log('Admin verified:', adminResults[0]);
+
+      // Call the stored procedure with a callback approach
+      const sql = 'CALL ApproveBookRequest(?, ?, @result_message, @new_book_id)';
       
-      return res.json({ 
-        message: 'Book request approved successfully',
-        bookId: newBookId,
-        requestId: requestId
+      db.query(sql, [parseInt(requestId), parseInt(adminId)], (err, results) => {
+        if (err) {
+          console.error('Database error calling stored procedure:', err);
+          return res.status(500).json({ message: 'Server error approving request: ' + err.message });
+        }
+
+        console.log('Stored procedure results:', results);
+
+        // Get the output parameters
+        db.query('SELECT @result_message as message, @new_book_id as book_id', (err, outputResults) => {
+          if (err) {
+            console.error('Error getting stored procedure output:', err);
+            return res.status(500).json({ message: 'Error processing request: ' + err.message });
+          }
+
+          console.log('Output results:', outputResults);
+
+          if (!outputResults || outputResults.length === 0) {
+            return res.status(500).json({ message: 'No output from stored procedure' });
+          }
+
+          const { message, book_id } = outputResults[0];
+          
+          console.log('Procedure output:', { message, book_id });
+          
+          if (book_id && book_id > 0) {
+            return res.json({ 
+              message: 'Book request approved successfully',
+              bookId: book_id,
+              requestId: requestId,
+              procedureMessage: message
+            });
+          } else {
+            return res.status(400).json({ 
+              message: message || 'Failed to approve request - no book was created',
+              procedureMessage: message
+            });
+          }
+        });
       });
     });
   } catch (error) {
     console.error('Approve book request error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error: ' + error.message });
   }
 };
 
@@ -95,23 +142,40 @@ const rejectBookRequest = async (req, res) => {
       return res.status(400).json({ message: 'Admin ID and rejection reason are required' });
     }
 
+    console.log('Rejecting book request:', { requestId, adminId, notes });
+
     // Call the stored procedure
-    const sql = 'CALL reject_book_request(?, ?, ?)';
+    const sql = 'CALL RejectBookRequest(?, ?, ?, @result_message)';
     
-    db.query(sql, [requestId, adminId, notes], (err, results) => {
+    db.query(sql, [parseInt(requestId), parseInt(adminId), notes], (err, results) => {
       if (err) {
         console.error('Database error rejecting book request:', err);
-        return res.status(500).json({ message: 'Server error rejecting request' });
+        return res.status(500).json({ message: 'Server error rejecting request: ' + err.message });
       }
 
-      return res.json({ 
-        message: 'Book request rejected successfully',
-        requestId: requestId
+      console.log('Reject procedure results:', results);
+
+      // Get the output parameter
+      db.query('SELECT @result_message as message', (err, outputResults) => {
+        if (err) {
+          console.error('Error getting stored procedure output:', err);
+          return res.status(500).json({ message: 'Error processing request: ' + err.message });
+        }
+
+        console.log('Reject output results:', outputResults);
+
+        const { message } = outputResults[0] || {};
+        
+        return res.json({ 
+          message: 'Book request rejected successfully',
+          details: message,
+          requestId: requestId
+        });
       });
     });
   } catch (error) {
     console.error('Reject book request error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error: ' + error.message });
   }
 };
 
@@ -128,29 +192,36 @@ const getAllBookRequests = async (req, res) => {
         pr.STATUS,
         pr.SUBMITTED_AT,
         pr.REVIEWED_AT,
-        pr.REVIEWED_BY,
         pr.NOTES,
+        pr.REVIEWED_BY,
         p.NAME as PUBLISHER_NAME,
         p.EMAIL as PUBLISHER_EMAIL,
         pbd.TITLE,
         pbd.ISBN,
+        pbd.PAGE_COUNT,
+        pbd.LANGUAGE,
+        pbd.EDITION,
         pbd.PRICE,
+        pbd.STOCK_QUANTITY,
+        pbd.DESCRIPTION,
+        pbd.COVER_URL,
         pbd.GENRE,
         admin_user.USERNAME as REVIEWED_BY_USERNAME
       FROM PUBLISHER_REQUEST pr
       JOIN PUBLISHER p ON pr.PUBLISHER_ID = p.ID
       LEFT JOIN PUBLISHER_BOOK_DRAFT pbd ON pr.ID = pbd.REQUEST_ID
-      LEFT JOIN ADMIN a ON pr.REVIEWED_BY = a.USER_ID
-      LEFT JOIN USER admin_user ON a.USER_ID = admin_user.ID
+      LEFT JOIN ADMIN admin_table ON pr.REVIEWED_BY = admin_table.USER_ID
+      LEFT JOIN USER admin_user ON admin_table.USER_ID = admin_user.ID
       ORDER BY pr.SUBMITTED_AT DESC
     `;
     
     db.query(sql, (err, results) => {
       if (err) {
         console.error('Database error fetching all book requests:', err);
-        return res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error fetching requests: ' + err.message });
       }
 
+      console.log('Fetched all requests:', results.length);
       return res.json(results);
     });
   } catch (error) {

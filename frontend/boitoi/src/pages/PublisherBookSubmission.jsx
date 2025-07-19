@@ -13,13 +13,13 @@ const PublisherBookSubmission = () => {
   const [formData, setFormData] = useState({
     title: '',
     isbn: '',
-    pageCount: '',
+    page_count: '',
     language: 'English',
     edition: '1st',
     price: '',
-    stockQuantity: '',
+    stock_quantity: '',
     description: '',
-    coverUrl: '',
+    cover_url: '',
     genre: '',
     authors: '' // We'll handle this as a comma-separated string for now
   });
@@ -36,8 +36,19 @@ const PublisherBookSubmission = () => {
     e.preventDefault();
     
     // Validation
-    if (!formData.title || !formData.isbn || !formData.price || !formData.stockQuantity) {
-      toast.error('Please fill in all required fields');
+    if (!formData.title || !formData.isbn || !formData.price || !formData.stock_quantity || !formData.genre) {
+      toast.error('Please fill in all required fields (Title, ISBN, Genre, Price, and Stock Quantity)');
+      return;
+    }
+
+    // Validate numeric fields
+    if (isNaN(formData.price) || parseFloat(formData.price) <= 0) {
+      toast.error('Please enter a valid price');
+      return;
+    }
+
+    if (isNaN(formData.stock_quantity) || parseInt(formData.stock_quantity) <= 0) {
+      toast.error('Please enter a valid stock quantity');
       return;
     }
 
@@ -49,7 +60,12 @@ const PublisherBookSubmission = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          price: parseFloat(formData.price),
+          stock_quantity: parseInt(formData.stock_quantity),
+          page_count: formData.page_count ? parseInt(formData.page_count) : null
+        })
       });
 
       const data = await response.json();
@@ -200,8 +216,8 @@ const PublisherBookSubmission = () => {
                   </label>
                   <input
                     type="number"
-                    name="pageCount"
-                    value={formData.pageCount}
+                    name="page_count"
+                    value={formData.page_count}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Number of pages"
@@ -246,7 +262,7 @@ const PublisherBookSubmission = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <DollarSign className="w-4 h-4 inline mr-2" />
-                    Price (USD) *
+                    Price (BDT) *
                   </label>
                   <input
                     type="number"
@@ -267,8 +283,8 @@ const PublisherBookSubmission = () => {
                   </label>
                   <input
                     type="number"
-                    name="stockQuantity"
-                    value={formData.stockQuantity}
+                    name="stock_quantity"
+                    value={formData.stock_quantity}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Available stock"
@@ -284,8 +300,8 @@ const PublisherBookSubmission = () => {
                   </label>
                   <input
                     type="url"
-                    name="coverUrl"
-                    value={formData.coverUrl}
+                    name="cover_url"
+                    value={formData.cover_url}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Enter cover image URL"

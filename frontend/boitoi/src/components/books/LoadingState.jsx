@@ -17,10 +17,14 @@ const LoadingState = ({ searchQuery, onSearchChange, onKeyPress }) => {
             priceFilter={{ min: '', max: '' }}
             onPriceFilterChange={() => {}}
             onPriceFilterApply={() => {}}
-            activeFilters={{ search: '', price: null }}
+            categoriesData={[]}
+            selectedCategories={[]}
+            onCategoryChange={() => {}}
+            activeFilters={{ search: '', price: null, categories: [] }}
             onClearFilters={() => {}}
             onClearSearch={() => {}}
             onClearPrice={() => {}}
+            onClearCategories={() => {}}
             priceRange={{ min: 0, max: 1000 }}
           />
           <div className="flex-1 p-6">

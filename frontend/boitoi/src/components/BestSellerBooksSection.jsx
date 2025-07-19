@@ -51,12 +51,6 @@ const BestsellerBooksSection = ({ apiBaseUrl = API_BASE_URL }) => {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900">{category.category_name}</h2>
-        <Link 
-          to="/books" 
-          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-md transition-colors"
-        >
-          View All
-        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

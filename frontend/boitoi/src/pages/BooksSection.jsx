@@ -20,10 +20,12 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
     setSearchQuery,
     priceFilter,
     setPriceFilter,
+    selectedCategories,
+    setSelectedCategories,
     activeFilters,
     clearFilters,
     applyFilters
-  } = useFilters(allBooks);
+  } = useFilters(allBooks, categoriesData);
 
   // Event handlers
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
@@ -31,6 +33,7 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
   const handlePriceFilterApply = () => applyFilters();
   const handleClearSearch = () => setSearchQuery('');
   const handleClearPrice = () => setPriceFilter({ min: '', max: '' });
+  const handleClearCategories = () => setSelectedCategories([]);
   const handleViewAll = (category) => {
     console.log('View all books for category:', category.category_name);
   };
@@ -74,10 +77,14 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
             priceFilter={priceFilter}
             onPriceFilterChange={setPriceFilter}
             onPriceFilterApply={handlePriceFilterApply}
+            categoriesData={categoriesData}
+            selectedCategories={selectedCategories}
+            onCategoryChange={setSelectedCategories}
             activeFilters={activeFilters}
             onClearFilters={clearFilters}
             onClearSearch={handleClearSearch}
             onClearPrice={handleClearPrice}
+            onClearCategories={handleClearCategories}
             priceRange={{ min: 0, max: 1000 }}
           />
 
@@ -85,7 +92,7 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-neutral-900 mb-2">Books</h1>
               <p className="text-neutral-600">
-                {activeFilters.search || activeFilters.price
+                {activeFilters.search || activeFilters.price || activeFilters.categories?.length > 0
                   ? `Found ${filteredBooks.length} books matching your criteria`
                   : 'Discover books across all categories'
                 }
@@ -97,7 +104,6 @@ const BooksSection = ({ apiBaseUrl = `${API_BASE_URL}/api` }) => {
                 categoriesData={categoriesData}
                 filteredBooks={filteredBooks}
                 activeFilters={activeFilters}
-                onViewAll={handleViewAll}
               />
             ) : (
               <EmptyState activeFilters={activeFilters} />

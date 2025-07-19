@@ -113,8 +113,17 @@ const submitBookRequest = async (req, res) => {
     } = req.body;
 
     // Input validation
-    if (!title || !isbn || !price || !stock_quantity) {
-      return res.status(400).json({ message: 'Title, ISBN, price, and stock quantity are required' });
+    if (!title || !isbn || !price || !stock_quantity || !genre) {
+      return res.status(400).json({ message: 'Title, ISBN, genre, price, and stock quantity are required' });
+    }
+
+    // Validate numeric fields
+    if (isNaN(price) || parseFloat(price) <= 0) {
+      return res.status(400).json({ message: 'Price must be a valid positive number' });
+    }
+
+    if (isNaN(stock_quantity) || parseInt(stock_quantity) <= 0) {
+      return res.status(400).json({ message: 'Stock quantity must be a valid positive integer' });
     }
 
     // Start transaction

@@ -28,18 +28,26 @@ const BookRequestsManagement = () => {
   const [actionType, setActionType] = useState(''); // 'approve' or 'reject'
   const [notes, setNotes] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [viewType, setViewType] = useState('pending'); // 'pending', 'all', or 'approved'
+  const [allRequests, setAllRequests] = useState([]); // Store all requests
+  const [filteredRequests, setFilteredRequests] = useState([]); // Store filtered results
 
   useEffect(() => {
-    fetchPendingRequests();
+    fetchAllRequests();
   }, []);
 
-  const fetchPendingRequests = async () => {
+  useEffect(() => {
+    filterRequests();
+  }, [viewType, allRequests]);
+
+  const fetchAllRequests = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/book-requests/pending`);
+      // Always fetch all requests and then filter client-side
+      const response = await fetch(`${API_BASE_URL}/api/admin/book-requests`);
       const data = await response.json();
       
       if (response.ok) {
-        setRequests(data);
+        setAllRequests(data);
       } else {
         throw new Error(data.message || 'Failed to fetch requests');
       }
@@ -51,6 +59,29 @@ const BookRequestsManagement = () => {
     }
   };
 
+  const filterRequests = () => {
+    let filtered = [...allRequests];
+    
+    switch (viewType) {
+      case 'pending':
+        filtered = allRequests.filter(req => req.STATUS === 'PENDING');
+        break;
+      case 'approved':
+        filtered = allRequests.filter(req => req.STATUS === 'APPROVED');
+        break;
+      case 'rejected':
+        filtered = allRequests.filter(req => req.STATUS === 'REJECTED');
+        break;
+      case 'all':
+      default:
+        filtered = allRequests;
+        break;
+    }
+    
+    setFilteredRequests(filtered);
+    setRequests(filtered); // Keep compatibility with existing code
+  };
+
   const handleAction = async (request, action) => {
     setSelectedRequest(request);
     setActionType(action);
@@ -58,7 +89,7 @@ const BookRequestsManagement = () => {
     setShowModal(true);
   };
 
-  const confirmAction = async () => {
+    const confirmAction = async () => {
     if (!selectedRequest) return;
 
     // Validate notes for rejection
@@ -71,20 +102,39 @@ const BookRequestsManagement = () => {
 
     try {
       const adminId = sessionStorage.getItem('id'); // Get admin ID from session
+      
+      if (!adminId) {
+        toast.error('Admin session not found. Please log in again.');
+        return;
+      }
+
+      console.log('Sending request with adminId:', adminId, 'for request:', selectedRequest.ID);
+      
       const endpoint = actionType === 'approve' ? 'approve' : 'reject';
+      
+      const requestBody = {
+        admin_id: parseInt(adminId),
+        notes: notes.trim() || (actionType === 'approve' ? 'Request approved by admin' : 'Request rejected by admin')
+      };
+
+      // For rejection, we need to use the right parameter name
+      if (actionType === 'reject') {
+        requestBody.rejection_reason = requestBody.notes;
+        delete requestBody.notes;
+      }
+
+      console.log('Request body:', requestBody);
       
       const response = await fetch(`${API_BASE_URL}/api/admin/book-requests/${selectedRequest.ID}/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          adminId: parseInt(adminId),
-          notes: notes.trim() || (actionType === 'approve' ? 'Request approved' : 'Request rejected')
-        })
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (response.ok) {
         toast.success(`Request ${actionType === 'approve' ? 'approved' : 'rejected'} successfully`);
@@ -92,7 +142,7 @@ const BookRequestsManagement = () => {
         setSelectedRequest(null);
         setNotes('');
         // Refresh the requests list
-        fetchPendingRequests();
+        await fetchAllRequests();
       } else {
         throw new Error(data.message || `Failed to ${actionType} request`);
       }
@@ -128,9 +178,10 @@ const BookRequestsManagement = () => {
   };
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-BD', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'BDT',
+      minimumFractionDigits: 0
     }).format(price);
   };
 
@@ -166,9 +217,54 @@ const BookRequestsManagement = () => {
                   Review and manage book contribution requests from publishers
                 </p>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Pending Requests</p>
-                <p className="text-2xl font-bold text-primary-600">{requests.length}</p>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => setViewType('pending')}
+                    variant={viewType === 'pending' ? 'primary' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <FaClock className="text-sm" />
+                    Pending Only
+                  </Button>
+                  <Button
+                    onClick={() => setViewType('approved')}
+                    variant={viewType === 'approved' ? 'success' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <FaCheckCircle className="text-sm" />
+                    Approved Only
+                  </Button>
+                  <Button
+                    onClick={() => setViewType('rejected')}
+                    variant={viewType === 'rejected' ? 'danger' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <FaTimesCircle className="text-sm" />
+                    Rejected Only
+                  </Button>
+                  <Button
+                    onClick={() => setViewType('all')}
+                    variant={viewType === 'all' ? 'neutral' : 'outline'}
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <FaFileAlt className="text-sm" />
+                    All Requests
+                  </Button>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-gray-500">
+                    {viewType === 'pending' ? 'Pending Requests' : 
+                     viewType === 'approved' ? 'Approved Requests' : 
+                     viewType === 'rejected' ? 'Rejected Requests' :
+                     'Total Requests'}
+                  </p>
+                  <p className="text-2xl font-bold text-primary-600">{requests.length}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -176,14 +272,29 @@ const BookRequestsManagement = () => {
           {/* Requests List */}
           <div className="bg-white rounded-lg shadow">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Pending Book Requests</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {viewType === 'pending' ? 'Pending Book Requests' : 
+                 viewType === 'approved' ? 'Approved Book Requests' :
+                 viewType === 'rejected' ? 'Rejected Book Requests' :
+                 'All Book Requests'}
+              </h2>
             </div>
 
             {requests.length === 0 ? (
               <div className="text-center py-12">
                 <FaBook className="mx-auto text-4xl text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No pending requests</h3>
-                <p className="text-gray-600">All book requests have been processed.</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {viewType === 'pending' ? 'No pending requests' :
+                   viewType === 'approved' ? 'No approved requests' :
+                   viewType === 'rejected' ? 'No rejected requests' :
+                   'No requests found'}
+                </h3>
+                <p className="text-gray-600">
+                  {viewType === 'pending' ? 'All book requests have been processed.' :
+                   viewType === 'approved' ? 'No book requests have been approved yet.' :
+                   viewType === 'rejected' ? 'No book requests have been rejected yet.' :
+                   'No book requests have been submitted yet.'}
+                </p>
               </div>
             ) : (
               <div className="divide-y divide-gray-200">
@@ -247,24 +358,35 @@ const BookRequestsManagement = () => {
                         )}
 
                         <div className="flex items-center gap-4">
-                          <Button
-                            onClick={() => handleAction(request, 'approve')}
-                            variant="success"
-                            size="sm"
-                            className="flex items-center gap-2"
-                          >
-                            <FaCheckCircle />
-                            Approve
-                          </Button>
-                          <Button
-                            onClick={() => handleAction(request, 'reject')}
-                            variant="danger"
-                            size="sm"
-                            className="flex items-center gap-2"
-                          >
-                            <FaTimesCircle />
-                            Reject
-                          </Button>
+                          {request.STATUS === 'PENDING' ? (
+                            <>
+                              <Button
+                                onClick={() => handleAction(request, 'approve')}
+                                variant="success"
+                                size="sm"
+                                className="flex items-center gap-2"
+                              >
+                                <FaCheckCircle />
+                                Approve
+                              </Button>
+                              <Button
+                                onClick={() => handleAction(request, 'reject')}
+                                variant="danger"
+                                size="sm"
+                                className="flex items-center gap-2"
+                              >
+                                <FaTimesCircle />
+                                Reject
+                              </Button>
+                            </>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <FaEye className="text-gray-400" />
+                              <span className="text-sm text-gray-600">
+                                {request.STATUS === 'APPROVED' ? 'Request approved and book added to catalog' : 'Request has been rejected'}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
 

@@ -12,7 +12,7 @@ export const useBooks = (apiBaseUrl) => {
       setLoading(true);
       setError(null);
       
-      const data = await booksApi.fetchBooksByCategories(apiBaseUrl);
+      const data = await booksApi.fetchAllBooks(apiBaseUrl);
 
       // Flatten books from all categories
       const books = data.reduce((acc, category) => {
