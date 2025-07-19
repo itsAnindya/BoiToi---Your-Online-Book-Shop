@@ -3,6 +3,7 @@ import { AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import BookCard from './books/BookCard';
+import Button from './ui/Button';
 
 const BestsellerBooksSection = ({ apiBaseUrl = API_BASE_URL }) => {
   /* --------------------------- state -------------------------------- */
@@ -90,12 +91,12 @@ const BestsellerBooksSection = ({ apiBaseUrl = API_BASE_URL }) => {
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-red-800 mb-2">Error Loading Books</h3>
           <p className="text-red-600 mb-4">{error}</p>
-          <button
+          <Button
             onClick={fetchBestsellerBooks}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+            variant="danger"
           >
             Try Again
-          </button>
+          </Button>
         </div>
       </div>
     );
