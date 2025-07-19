@@ -20,7 +20,12 @@ const Button = ({
     neutral: 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-500 border border-neutral-300',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
     link: 'text-primary-600 hover:text-primary-700 focus:ring-primary-500 underline-offset-4 hover:underline bg-transparent',
-    success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm hover:shadow-md'
+    success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm hover:shadow-md',
+    // Auth page specific variants
+    authPrimary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm hover:shadow-md transition-all duration-300',
+    authSecondary: 'bg-white/10 text-primary-600 hover:bg-white/20 focus:ring-primary-500 border border-primary-600/30 transition-all duration-300',
+    authToggle: 'bg-neutral-50 text-primary-600 hover:bg-primary-600 hover:text-white focus:ring-primary-500 border border-neutral-200 transition-all duration-300',
+    authToggleActive: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-md transition-all duration-300'
   };
 
   const sizes = {
