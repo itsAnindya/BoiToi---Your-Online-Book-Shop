@@ -321,21 +321,21 @@ const UserProfilePage = () => {
                       <h2 className="text-2xl font-bold text-white">Profile Information</h2>
                     </div>
                     {isEditing ? (
-                      <div className="flex space-x-3">
+                      <div className="flex space-x-2">
                         <Button
                           onClick={handleSaveProfile}
                           disabled={isSavingProfile}
                           variant="success"
                         >
-                          <FaSave />
-                          {isSavingProfile ? 'Saving...' : 'Save'}
+                          <FaSave className="text-sm group-hover:-translate-x-1 transition-transform" />
+                          <span>{isSavingProfile ? 'Saving...' : 'Save'}</span>
                         </Button>
                         <Button
                           onClick={cancelEdit}
                           variant="neutral"
                         >
-                          <FaTimes />
-                          Cancel
+                          <FaTimes className="text-sm group-hover:-translate-x-1 transition-transform" />
+                          <span>Cancel</span>
                         </Button>
                       </div>
                     ) : (
@@ -533,8 +533,8 @@ const UserProfilePage = () => {
                     size="lg"
                     className="w-full"
                   >
-                    <FaLock />
-                    Change Password
+                    <FaLock className="text-sm group-hover:-translate-x-1 transition-transform" />
+                   <span>Change Password</span>
                   </Button>
 
                   {showPasswordSection && (
