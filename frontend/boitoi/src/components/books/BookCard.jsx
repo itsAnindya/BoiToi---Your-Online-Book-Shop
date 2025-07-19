@@ -75,7 +75,7 @@ const BookCard = memo(({ book, rank }) => {
               onClick={handleAddToCart}
               className="mt-3 w-full flex items-center justify-center gap-2"
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-4 h-4 text-sm group-hover:-translate-x-1 transition-transform"/>
               Add to Cart
             </Button>
           </div>
