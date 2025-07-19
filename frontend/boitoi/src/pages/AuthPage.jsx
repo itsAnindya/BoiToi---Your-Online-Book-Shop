@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building } from 'lucide-react';
+import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building, Lock } from 'lucide-react';
 import { loginUser, signupUser, publisherLogin } from '../services/api';
 import { useCart } from '../contexts/CartContext';
 import Button, { BackToHomeButton } from '../components/ui/Button';
@@ -257,7 +257,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4">🔒</div>
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="password"
                     name="password"
@@ -474,7 +474,7 @@ const AuthPage = () => {
 
                 <div className="space-y-3">
                   <div className="relative">
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4">🔒</div>
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                     <input
                       type="password"
                       name="password"
@@ -486,7 +486,7 @@ const AuthPage = () => {
                     />
                   </div>
                   <div className="relative">
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4">🔒</div>
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                     <input
                       type="password"
                       name="confirmPassword"
