@@ -16,7 +16,7 @@ import {
 } from 'react-icons/fa';
 import { API_BASE_URL } from '../config';
 import DefaultLayout from '../layouts/DefaultLayout';
-import Button from '../components/ui/Button';
+import Button, { BackToAdminButton } from '../components/ui/Button';
 import toast from 'react-hot-toast';
 
 const BookRequestsManagement = () => {
@@ -199,17 +199,11 @@ const BookRequestsManagement = () => {
     <DefaultLayout>
       <div className="min-h-screen bg-gray-50 pt-20">
         <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Back Button */}
+          <BackToAdminButton />
+          
           {/* Header */}
           <div className="mb-6">
-            <Button
-              onClick={() => navigate('/admin')}
-              variant="ghost"
-              size="sm"
-              className="flex items-center gap-2 mb-4"
-            >
-              <FaArrowLeft className="text-sm" />
-              Back to Admin Panel
-            </Button>
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">Book Requests Management</h1>
@@ -221,7 +215,7 @@ const BookRequestsManagement = () => {
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={() => setViewType('pending')}
-                    variant={viewType === 'pending' ? 'primary' : 'outline'}
+                    variant={viewType === 'pending' ? 'authToggleActive' : 'authToggle'}
                     size="sm"
                     className="flex items-center gap-2"
                   >
@@ -230,7 +224,7 @@ const BookRequestsManagement = () => {
                   </Button>
                   <Button
                     onClick={() => setViewType('approved')}
-                    variant={viewType === 'approved' ? 'success' : 'outline'}
+                    variant={viewType === 'approved' ? 'authToggleActive' : 'authToggle'}
                     size="sm"
                     className="flex items-center gap-2"
                   >
@@ -239,7 +233,7 @@ const BookRequestsManagement = () => {
                   </Button>
                   <Button
                     onClick={() => setViewType('rejected')}
-                    variant={viewType === 'rejected' ? 'danger' : 'outline'}
+                    variant={viewType === 'rejected' ? 'authToggleActive' : 'authToggle'}
                     size="sm"
                     className="flex items-center gap-2"
                   >
@@ -248,7 +242,7 @@ const BookRequestsManagement = () => {
                   </Button>
                   <Button
                     onClick={() => setViewType('all')}
-                    variant={viewType === 'all' ? 'neutral' : 'outline'}
+                    variant={viewType === 'all' ? 'authToggleActive' : 'authToggle'}
                     size="sm"
                     className="flex items-center gap-2"
                   >
