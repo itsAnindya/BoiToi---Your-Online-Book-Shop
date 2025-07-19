@@ -115,7 +115,7 @@ const NavBar = () => {
             <Link
               key={item.id}
               to={item.link}
-              className="hover:text-slate-100 transition-colors text-slate-100"
+              className="hover:text-slate-100 focus:text-slate-100 transition-colors text-slate-100"
             >
               {item.text}
             </Link>
