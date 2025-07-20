@@ -79,26 +79,7 @@ const UserProfilePage = () => {
         const result = await getUserProfile(user.id);
         
         if (result.success) {
-          // Fix birthday timezone issue - ensure we get the local date without timezone conversion
-          let birthdayValue = '';
-          if (result.user.birthday) {
-            if (typeof result.user.birthday === 'string') {
-              if (result.user.birthday.includes('T')) {
-                // If birthday comes as datetime string, extract date part
-                birthdayValue = result.user.birthday.split('T')[0];
-              } else {
-                // If birthday is already just a date string, use as-is
-                birthdayValue = result.user.birthday;
-              }
-            } else {
-              // If birthday comes as Date object, format it properly
-              const date = new Date(result.user.birthday);
-              if (!isNaN(date.getTime())) {
-                birthdayValue = date.toISOString().split('T')[0];
-              }
-            }
-          }
-
+          // Birthday now comes as clean YYYY-MM-DD string from backend
           const userData = {
             username: result.user.username || '',
             email: result.user.email || '',
@@ -106,7 +87,7 @@ const UserProfilePage = () => {
             lastName: result.user.lastName || '',
             phone: result.user.phone || '',
             gender: result.user.gender || '',
-            birthday: birthdayValue,
+            birthday: result.user.birthday || '', // Clean date string from backend
           };
           
           setProfileData(userData);

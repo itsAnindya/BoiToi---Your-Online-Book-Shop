@@ -19,7 +19,9 @@ const getUserProfile = async (req, res) => {
     const userSql = `
       SELECT 
         ID, USERNAME, EMAIL, FIRST_NAME, LAST_NAME, 
-        PHONE, CREATED_AT, GENDER, BIRTHDAY, IS_ACTIVE
+        PHONE, CREATED_AT, GENDER, 
+        DATE_FORMAT(BIRTHDAY, '%Y-%m-%d') as BIRTHDAY, 
+        IS_ACTIVE
       FROM USER 
       WHERE ID = ?
     `;
@@ -63,7 +65,7 @@ const getUserProfile = async (req, res) => {
           lastName: user.LAST_NAME,
           phone: user.PHONE,
           gender: user.GENDER,
-          birthday: user.BIRTHDAY ? user.BIRTHDAY.toISOString().split('T')[0] : null, // Format as YYYY-MM-DD string
+          birthday: user.BIRTHDAY, // Now already formatted as YYYY-MM-DD string from MySQL
           createdAt: user.CREATED_AT,
           isActive: user.IS_ACTIVE,
           addresses: addressResults.map(addr => ({
