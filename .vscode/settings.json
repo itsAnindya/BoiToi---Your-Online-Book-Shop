@@ -25,7 +25,7 @@
   "explorer.autoReveal": true,
   "editor.letterSpacing": 0,
   "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.fontFamily": "JetBrains Mono, Consolas, 'Courier New', monospace",
+  "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "terminal.integrated.fontSize": 12,
   "terminal.integrated.lineHeight": 1.2,
   "terminal.integrated.scrollback": 10000,
