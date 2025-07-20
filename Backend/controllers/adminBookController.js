@@ -14,6 +14,7 @@ const getPendingBookRequests = async (req, res) => {
         pr.SUBMITTED_AT,
         pr.REVIEWED_AT,
         pr.NOTES,
+        pr.admin_feedback,
         p.NAME as PUBLISHER_NAME,
         p.EMAIL as PUBLISHER_EMAIL,
         pbd.TITLE,
@@ -54,14 +55,17 @@ const getPendingBookRequests = async (req, res) => {
 const approveBookRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
-    const { adminId, notes } = req.body;
+    const { adminId, notes, admin_feedback } = req.body;
     
     // Input validation
     if (!adminId) {
       return res.status(400).json({ message: 'Admin ID is required' });
     }
 
-    console.log('Approving book request:', { requestId, adminId, notes });
+    // Use admin_feedback if provided, otherwise fall back to notes, or use default message
+    const feedbackText = admin_feedback || notes || 'Request approved by admin';
+
+    console.log('Approving book request:', { requestId, adminId, notes, admin_feedback: feedbackText });
 
     // First, check if the admin user exists
     const checkAdminSql = 'SELECT a.USER_ID, u.USERNAME FROM ADMIN a JOIN USER u ON a.USER_ID = u.ID WHERE a.USER_ID = ?';
@@ -79,10 +83,10 @@ const approveBookRequest = async (req, res) => {
 
       console.log('Admin verified:', adminResults[0]);
 
-      // Call the stored procedure with a callback approach
-      const sql = 'CALL ApproveBookRequest(?, ?, @result_message, @new_book_id)';
+      // Call the updated stored procedure with admin feedback
+      const sql = 'CALL ApproveBookRequest(?, ?, ?, @result_message, @new_book_id)';
       
-      db.query(sql, [parseInt(requestId), parseInt(adminId)], (err, results) => {
+      db.query(sql, [parseInt(requestId), parseInt(adminId), feedbackText], (err, results) => {
         if (err) {
           console.error('Database error calling stored procedure:', err);
           return res.status(500).json({ message: 'Server error approving request: ' + err.message });
@@ -130,46 +134,66 @@ const approveBookRequest = async (req, res) => {
 };
 
 /**
- * Reject a book request
+ * Reject a book request - Rejection reason goes to admin_feedback column
  */
 const rejectBookRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
-    const { adminId, notes } = req.body;
+    const { adminId, notes, rejection_reason, admin_feedback } = req.body;
+    
+    // The rejection reason becomes the admin feedback (as per requirement)
+    const rejectionReason = rejection_reason || admin_feedback || notes || 'Request rejected by admin';
     
     // Input validation
-    if (!adminId || !notes) {
+    if (!adminId || !rejectionReason) {
       return res.status(400).json({ message: 'Admin ID and rejection reason are required' });
     }
 
-    console.log('Rejecting book request:', { requestId, adminId, notes });
+    console.log('Rejecting book request:', { requestId, adminId, rejectionReason });
 
-    // Call the stored procedure
-    const sql = 'CALL RejectBookRequest(?, ?, ?, @result_message)';
+    // First, check if the admin user exists
+    const checkAdminSql = 'SELECT a.USER_ID, u.USERNAME FROM ADMIN a JOIN USER u ON a.USER_ID = u.ID WHERE a.USER_ID = ?';
     
-    db.query(sql, [parseInt(requestId), parseInt(adminId), notes], (err, results) => {
+    db.query(checkAdminSql, [parseInt(adminId)], (err, adminResults) => {
       if (err) {
-        console.error('Database error rejecting book request:', err);
-        return res.status(500).json({ message: 'Server error rejecting request: ' + err.message });
+        console.error('Error checking admin:', err);
+        return res.status(500).json({ message: 'Error verifying admin: ' + err.message });
       }
 
-      console.log('Reject procedure results:', results);
+      if (adminResults.length === 0) {
+        console.log('Admin not found for ID:', adminId);
+        return res.status(400).json({ message: 'Invalid admin ID. User is not an admin or does not exist.' });
+      }
 
-      // Get the output parameter
-      db.query('SELECT @result_message as message', (err, outputResults) => {
+      console.log('Admin verified:', adminResults[0]);
+
+      // Call the corrected stored procedure - rejection reason goes to admin_feedback
+      const sql = 'CALL RejectBookRequest(?, ?, ?, @result_message)';
+      
+      db.query(sql, [parseInt(requestId), parseInt(adminId), rejectionReason], (err, results) => {
         if (err) {
-          console.error('Error getting stored procedure output:', err);
-          return res.status(500).json({ message: 'Error processing request: ' + err.message });
+          console.error('Database error rejecting book request:', err);
+          return res.status(500).json({ message: 'Server error rejecting request: ' + err.message });
         }
 
-        console.log('Reject output results:', outputResults);
+        console.log('Reject procedure results:', results);
 
-        const { message } = outputResults[0] || {};
-        
-        return res.json({ 
-          message: 'Book request rejected successfully',
-          details: message,
-          requestId: requestId
+        // Get the output parameter
+        db.query('SELECT @result_message as message', (err, outputResults) => {
+          if (err) {
+            console.error('Error getting stored procedure output:', err);
+            return res.status(500).json({ message: 'Error processing request: ' + err.message });
+          }
+
+          console.log('Reject output results:', outputResults);
+
+          const { message } = outputResults[0] || {};
+          
+          return res.json({ 
+            message: 'Book request rejected successfully',
+            details: message,
+            requestId: requestId
+          });
         });
       });
     });
@@ -193,6 +217,7 @@ const getAllBookRequests = async (req, res) => {
         pr.SUBMITTED_AT,
         pr.REVIEWED_AT,
         pr.NOTES,
+        pr.admin_feedback,
         pr.REVIEWED_BY,
         p.NAME as PUBLISHER_NAME,
         p.EMAIL as PUBLISHER_EMAIL,

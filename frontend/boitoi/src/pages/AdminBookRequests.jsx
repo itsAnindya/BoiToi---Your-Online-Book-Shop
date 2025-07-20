@@ -11,7 +11,9 @@ const AdminBookRequests = () => {
   const [showModal, setShowModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
   const [rejectionReason, setRejectionReason] = useState('');
+  const [adminFeedback, setAdminFeedback] = useState('');
   const [showRejectionModal, setShowRejectionModal] = useState(false);
+  const [showApprovalModal, setShowApprovalModal] = useState(false);
 
   useEffect(() => {
     fetchRequests();
@@ -39,7 +41,10 @@ const AdminBookRequests = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ admin_id: adminId })
+        body: JSON.stringify({ 
+          admin_id: adminId,
+          admin_feedback: adminFeedback || 'Request approved by admin'
+        })
       });
 
       const data = await response.json();
@@ -48,7 +53,8 @@ const AdminBookRequests = () => {
       
       toast.success('Book request approved successfully!');
       fetchRequests();
-      setShowModal(false);
+      setShowApprovalModal(false);
+      setAdminFeedback('');
     } catch (error) {
       toast.error(error.message);
     }
@@ -69,7 +75,8 @@ const AdminBookRequests = () => {
         },
         body: JSON.stringify({ 
           admin_id: adminId,
-          rejection_reason: rejectionReason
+          rejection_reason: rejectionReason,
+          admin_feedback: adminFeedback || rejectionReason
         })
       });
 
@@ -81,6 +88,7 @@ const AdminBookRequests = () => {
       fetchRequests();
       setShowRejectionModal(false);
       setRejectionReason('');
+      setAdminFeedback('');
     } catch (error) {
       toast.error(error.message);
     }
@@ -122,8 +130,16 @@ const AdminBookRequests = () => {
     setShowModal(true);
   };
 
+  const openApprovalModal = (request) => {
+    setSelectedRequest(request);
+    setAdminFeedback('');
+    setShowApprovalModal(true);
+  };
+
   const openRejectionModal = (request) => {
     setSelectedRequest(request);
+    setRejectionReason('');
+    setAdminFeedback('');
     setShowRejectionModal(true);
   };
 
@@ -271,7 +287,7 @@ const AdminBookRequests = () => {
                         {request.STATUS === 'PENDING' && (
                           <>
                             <Button
-                              onClick={() => handleApprove(request.ID)}
+                              onClick={() => openApprovalModal(request)}
                               variant="success"
                               size="xs"
                               className="flex items-center space-x-1"
@@ -436,6 +452,32 @@ const AdminBookRequests = () => {
                           </div>
                         </div>
                       )}
+                      {selectedRequest.admin_feedback && (
+                        <div className="space-y-2">
+                          <div className="flex items-start space-x-3">
+                            <FileText className="w-5 h-5 text-neutral-500 mt-0.5" />
+                            <div className="flex-1">
+                              <p className="text-sm text-neutral-500">Admin Feedback</p>
+                              <div className="bg-neutral-50 p-3 rounded-lg mt-1">
+                                <p className="text-sm text-neutral-700">{selectedRequest.admin_feedback}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {selectedRequest.NOTES && selectedRequest.NOTES !== selectedRequest.admin_feedback && (
+                        <div className="space-y-2">
+                          <div className="flex items-start space-x-3">
+                            <FileText className="w-5 h-5 text-neutral-500 mt-0.5" />
+                            <div className="flex-1">
+                              <p className="text-sm text-neutral-500">Notes</p>
+                              <div className="bg-neutral-50 p-3 rounded-lg mt-1">
+                                <p className="text-sm text-neutral-700">{selectedRequest.NOTES}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -467,7 +509,7 @@ const AdminBookRequests = () => {
                     <span>Reject Request</span>
                   </Button>
                   <Button
-                    onClick={() => handleApprove(selectedRequest.ID)}
+                    onClick={() => openApprovalModal(selectedRequest)}
                     variant="success"
                     className="flex items-center space-x-2"
                   >
@@ -476,6 +518,62 @@ const AdminBookRequests = () => {
                   </Button>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Approval Modal */}
+      {showApprovalModal && selectedRequest && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full">
+            <div className="p-6 border-b">
+              <h2 className="text-xl font-semibold text-neutral-900">Approve Book Request</h2>
+            </div>
+            
+            <div className="p-6">
+              <p className="text-sm text-neutral-600 mb-4">
+                You are about to approve this book request and add it to the catalog:
+              </p>
+              
+              <div className="bg-neutral-50 p-3 rounded-lg mb-4">
+                <p className="text-sm font-medium text-neutral-900">{selectedRequest.TITLE}</p>
+                <p className="text-sm text-neutral-600">by {selectedRequest.PUBLISHER_NAME}</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  Admin Feedback (Optional)
+                </label>
+                <textarea
+                  value={adminFeedback}
+                  onChange={(e) => setAdminFeedback(e.target.value)}
+                  placeholder="Enter approval feedback (e.g., excellent submission, minor formatting improvements suggested, etc.)..."
+                  rows="3"
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+                <p className="text-xs text-neutral-500 mt-1">
+                  This feedback will be stored in the database for future reference.
+                </p>
+              </div>
+              
+              <div className="mt-6 flex justify-end space-x-4">
+                <Button
+                  onClick={() => {
+                    setShowApprovalModal(false);
+                    setAdminFeedback('');
+                  }}
+                  variant="outline"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => handleApprove(selectedRequest.ID)}
+                  variant="success"
+                >
+                  Approve & Add to Catalog
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -493,19 +591,46 @@ const AdminBookRequests = () => {
               <p className="text-sm text-neutral-600 mb-4">
                 Please provide a reason for rejecting this book request:
               </p>
-              <textarea
-                value={rejectionReason}
-                onChange={(e) => setRejectionReason(e.target.value)}
-                placeholder="Enter rejection reason..."
-                rows="4"
-                className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
+              
+              <div className="space-y-4">
+                {/* Rejection Reason */}
+                <div>
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Rejection Reason *
+                  </label>
+                  <textarea
+                    value={rejectionReason}
+                    onChange={(e) => setRejectionReason(e.target.value)}
+                    placeholder="Enter rejection reason (e.g., Quality issues, incorrect information, etc.)..."
+                    rows="3"
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+
+                {/* Admin Feedback */}
+                <div>
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Additional Admin Feedback (Optional)
+                  </label>
+                  <textarea
+                    value={adminFeedback}
+                    onChange={(e) => setAdminFeedback(e.target.value)}
+                    placeholder="Enter detailed feedback for the publisher (e.g., suggestions for improvement, specific issues found, etc.)..."
+                    rows="3"
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                  <p className="text-xs text-neutral-500 mt-1">
+                    This feedback will be stored in the database and can be used for future reference.
+                  </p>
+                </div>
+              </div>
               
               <div className="mt-6 flex justify-end space-x-4">
                 <Button
                   onClick={() => {
                     setShowRejectionModal(false);
                     setRejectionReason('');
+                    setAdminFeedback('');
                   }}
                   variant="outline"
                 >
