@@ -7,7 +7,7 @@
   "editor.fontFamily": "Courier New",
   "editor.fontSize": 10,
   "editor.fontWeight": "bold",
-  "editor.lineHeight": 20,
+  "editor.lineHeight": 15,
   "editor.tabSize": 2,
   // "editor.wordWrap": "on",
   "editor.minimap.enabled": true,
