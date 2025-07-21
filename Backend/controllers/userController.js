@@ -9,6 +9,8 @@ const getUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
 
+    console.log('getUserProfile called for userId:', userId);
+
     if (!userId) {
       return res.status(400).json({ message: 'User ID is required' });
     }
@@ -17,24 +19,29 @@ const getUserProfile = async (req, res) => {
     const userSql = `
       SELECT 
         ID, USERNAME, EMAIL, FIRST_NAME, LAST_NAME, 
-        PHONE, CREATED_AT, GENDER, BIRTHDAY, IS_ACTIVE
+        PHONE, CREATED_AT, GENDER, 
+        DATE_FORMAT(BIRTHDAY, '%Y-%m-%d') as BIRTHDAY, 
+        IS_ACTIVE
       FROM USER 
       WHERE ID = ?
     `;
 
-    db.query(userSql, [userId], (err, userResults) => {
-      if (err) {
-        console.error('Database error fetching user profile:', err);
-        return res.status(500).json({ message: 'Server error fetching user profile' });
-      }
+      db.query(userSql, [userId], (err, userResults) => {
+        if (err) {
+          console.error('Database error fetching user profile:', err);
+          return res.status(500).json({ message: 'Server error fetching user profile' });
+        }
 
-      if (userResults.length === 0) {
-        return res.status(404).json({ message: 'User not found' });
-      }
+        console.log('User query results:', userResults);
 
-      const user = userResults[0];
+        if (userResults.length === 0) {
+          console.log('No user found with ID:', userId);
+          return res.status(404).json({ message: 'User not found' });
+        }
 
-      // Query user addresses
+        const user = userResults[0];
+        console.log('User found:', user);
+        console.log('Original birthday:', user.BIRTHDAY, typeof user.BIRTHDAY);      // Query user addresses
       const addressSql = `
         SELECT 
           ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
@@ -58,7 +65,7 @@ const getUserProfile = async (req, res) => {
           lastName: user.LAST_NAME,
           phone: user.PHONE,
           gender: user.GENDER,
-          birthday: user.BIRTHDAY,
+          birthday: user.BIRTHDAY, // Now already formatted as YYYY-MM-DD string from MySQL
           createdAt: user.CREATED_AT,
           isActive: user.IS_ACTIVE,
           addresses: addressResults.map(addr => ({
@@ -72,6 +79,9 @@ const getUserProfile = async (req, res) => {
             isDefault: addr.IS_DEFAULT
           }))
         };
+
+        console.log('Formatted user profile birthday:', userProfile.birthday);
+        console.log('Sending response:', userProfile);
 
         res.json({
           message: 'User profile retrieved successfully',
@@ -215,10 +225,29 @@ const updateUserProfile = async (req, res) => {
           updateValues.push(gender);
         }
         if (birthday !== undefined) {
-          // Ensure birthday is stored as date-only to avoid timezone issues
-          const birthdayDate = birthday ? new Date(birthday + 'T00:00:00').toISOString().split('T')[0] : null;
+          // Store birthday as-is without timezone manipulation to avoid offset issues
+          // Ensure we handle the birthday as a pure date string without timezone conversion
+          let birthdayDate = null;
+          if (birthday) {
+            console.log('Received birthday:', birthday, typeof birthday);
+            // If birthday is a date string like "1990-05-15", validate it and use directly
+            // This prevents timezone conversion issues that can shift the date by one day
+            if (typeof birthday === 'string' && birthday.match(/^\d{4}-\d{2}-\d{2}$/)) {
+              birthdayDate = birthday; // Use the date string directly
+              console.log('Using birthday string directly:', birthdayDate);
+            } else {
+              // If it's not in the expected format, try to parse and format it correctly
+              const date = new Date(birthday);
+              if (!isNaN(date.getTime())) {
+                // Format as YYYY-MM-DD to avoid timezone issues
+                birthdayDate = date.toISOString().split('T')[0];
+                console.log('Formatted birthday from date:', birthdayDate);
+              }
+            }
+          }
           updateFields.push('BIRTHDAY = ?');
           updateValues.push(birthdayDate);
+          console.log('Final birthday value to store:', birthdayDate);
         }
 
         if (updateFields.length === 0) {

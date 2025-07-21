@@ -4,7 +4,7 @@ import { saveCart, placeOrder } from '../services/cartApi';
 import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { BackToHomeButton } from '../components/ui/Button';
-import { FaShoppingCart, FaCheckCircle, FaTimes } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const CartPage = () => {
@@ -185,12 +185,13 @@ const CartPage = () => {
             <FaShoppingBag className="mx-auto text-6xl text-gray-400 mb-4" />
             <h2 className="text-2xl font-semibold text-gray-600 mb-2">Your cart is empty</h2>
             <p className="text-gray-500 mb-6">Looks like you haven't added any books to your cart yet.</p>
-            <Link 
-              to="/books" 
-              className="inline-flex items-center px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+            <Button
+              onClick={() => navigate('/books')}
+              variant="primary"
+              size="lg"
             >
               Browse Books
-            </Link>
+            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -226,34 +227,37 @@ const CartPage = () => {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center space-x-3">
-                      <button
+                      <Button
                         onClick={() => handleQuantityChange(item.book_id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
-                        className="p-2 rounded-md border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                        variant="neutral"
+                        size="sm"
                       >
                         <FaMinus className="text-sm" />
-                      </button>
+                      </Button>
                       
                       <span className="font-semibold text-lg min-w-[2rem] text-center">
                         {item.quantity}
                       </span>
                       
-                      <button
+                      <Button
                         onClick={() => handleQuantityChange(item.book_id, item.quantity + 1)}
-                        className="p-2 rounded-md border border-gray-300 hover:bg-gray-100"
+                        variant="neutral"
+                        size="sm"
                       >
                         <FaPlus className="text-sm" />
-                      </button>
+                      </Button>
                     </div>
 
                     {/* Remove Button */}
-                    <button
+                    <Button
                       onClick={() => handleRemoveItem(item.book_id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                      variant="danger"
+                      size="sm"
                       title="Remove item"
                     >
                       <FaTrash />
-                    </button>
+                    </Button>
                   </div>
 
                   {/* Item Total */}
@@ -293,23 +297,25 @@ const CartPage = () => {
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
-                  <button
+                  <Button
                     onClick={handleSaveCart}
                     disabled={isSaving}
-                    className="w-full flex items-center justify-center px-4 py-3 border border-slate-600 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50"
+                    variant="outline"
+                    className="w-full"
                   >
                     <FaSave className="mr-2" />
                     {isSaving ? 'Saving...' : 'Save Cart'}
-                  </button>
+                  </Button>
                   
-                  <button
+                  <Button
                     onClick={handlePlaceOrder}
                     disabled={isPlacingOrder || localCart.length === 0}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                    variant="success"
+                    className="w-full"
                   >
                     <FaShoppingBag className="mr-2" />
                     {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-gray-200">

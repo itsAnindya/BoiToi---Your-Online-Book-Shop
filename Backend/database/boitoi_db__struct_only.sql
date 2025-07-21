@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 17/07/2025 21:41:46
+ Date: 20/07/2025 07:30:59
 */
 
 SET NAMES utf8mb4;
@@ -81,12 +81,15 @@ CREATE TABLE `book`  (
   `COVER_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ADDED_AT` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `GENRE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_ID` int NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ISBN`(`ISBN` ASC) USING BTREE,
   INDEX `PUBLISHER_ID`(`PUBLISHER_ID` ASC) USING BTREE,
   INDEX `idx_book_title`(`TITLE` ASC) USING BTREE,
   INDEX `idx_book_isbn`(`ISBN` ASC) USING BTREE,
-  CONSTRAINT `book_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `fk_book_category`(`CATEGORY_ID` ASC) USING BTREE,
+  CONSTRAINT `book_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_book_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -131,7 +134,7 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for category
@@ -230,7 +233,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID` DESC) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order
@@ -331,7 +334,7 @@ CREATE TABLE `publisher`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `publisher_book_draft`;
 CREATE TABLE `publisher_book_draft`  (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `TITLE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ISBN` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PAGE_COUNT` int NULL DEFAULT NULL,
@@ -342,13 +345,17 @@ CREATE TABLE `publisher_book_draft`  (
   `DESCRIPTION` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `COVER_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `GENRE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `AUTHORS` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `CATEGORY_ID` int NULL DEFAULT NULL,
   `REQUEST_ID` int NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_book_title`(`TITLE` ASC) USING BTREE,
   INDEX `idx_book_isbn`(`ISBN` ASC) USING BTREE,
   INDEX `REQUEST_ID`(`REQUEST_ID` ASC) USING BTREE,
-  CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  INDEX `fk_publisher_book_draft_category`(`CATEGORY_ID` ASC) USING BTREE,
+  CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_publisher_book_draft_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 2006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for publisher_request
@@ -363,6 +370,7 @@ CREATE TABLE `publisher_request`  (
   `REVIEWED_AT` timestamp NULL DEFAULT NULL,
   `REVIEWED_BY` int NULL DEFAULT NULL,
   `NOTES` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `ADMIN_FEEDBACK` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `PUBLISHER_ID`(`PUBLISHER_ID` ASC) USING BTREE,
   INDEX `REVIEWED_BY`(`REVIEWED_BY` ASC) USING BTREE,
@@ -473,7 +481,9 @@ CREATE TABLE `user`  (
   `BIRTHDAY` date NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_user_email`(`EMAIL` ASC) USING BTREE,
-  INDEX `idx_user_username`(`USERNAME` ASC) USING BTREE
+  INDEX `idx_user_username`(`USERNAME` ASC) USING BTREE,
+  UNIQUE INDEX `USERNAME`(`USERNAME` ASC) USING BTREE,
+  UNIQUE INDEX `EMAIL`(`EMAIL` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -510,5 +520,316 @@ CREATE TABLE `wishlist`  (
   CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Procedure structure for ApproveBookRequest
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `ApproveBookRequest`;
+delimiter ;;
+CREATE PROCEDURE `ApproveBookRequest`(IN request_id INT,
+    IN admin_id INT,
+    IN admin_feedback_text TEXT,
+    OUT result_message VARCHAR(255),
+    OUT new_book_id INT)
+BEGIN
+    DECLARE publisher_id INT DEFAULT NULL;
+    DECLARE book_title VARCHAR(255) DEFAULT NULL;
+    DECLARE book_isbn VARCHAR(50) DEFAULT NULL;
+    DECLARE book_published_date DATE DEFAULT NULL;
+    DECLARE book_pages INT DEFAULT NULL;
+    DECLARE book_language VARCHAR(20) DEFAULT 'English';
+    DECLARE book_edition VARCHAR(20) DEFAULT '1st';
+    DECLARE book_price DECIMAL(12,2) DEFAULT 0.00;
+    DECLARE book_stock INT DEFAULT 0;
+    DECLARE book_description TEXT DEFAULT '';
+    DECLARE book_cover_url VARCHAR(300) DEFAULT '/images/books/defaultbook.jpg';
+    DECLARE book_genre VARCHAR(255) DEFAULT 'General';
+    DECLARE request_status VARCHAR(20) DEFAULT NULL;
+    DECLARE exit_handler BOOLEAN DEFAULT FALSE;
+    
+    
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        SET exit_handler = TRUE;
+        ROLLBACK;
+        SET result_message = 'SQL Error occurred while processing request';
+        SET new_book_id = 0;
+    END;
+    
+    
+    SET result_message = '';
+    SET new_book_id = 0;
+    
+    START TRANSACTION;
+    
+    
+    IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
+        SET result_message = 'Admin not found';
+        ROLLBACK;
+    ELSE
+        
+        SELECT STATUS INTO request_status
+        FROM PUBLISHER_REQUEST 
+        WHERE ID = request_id;
+        
+        IF request_status IS NULL THEN
+            SET result_message = 'Request not found';
+            ROLLBACK;
+        ELSEIF request_status != 'PENDING' THEN
+            SET result_message = CONCAT('Request already processed with status: ', request_status);
+            ROLLBACK;
+        ELSE
+            
+            SELECT pr.PUBLISHER_ID INTO publisher_id
+            FROM PUBLISHER_REQUEST pr
+            WHERE pr.ID = request_id;
+            
+            
+            SELECT 
+                COALESCE(TITLE, 'Untitled') as title,
+                COALESCE(ISBN, '') as isbn,
+                COALESCE(PUBLISHED_DATE, CURDATE()) as pub_date,
+                COALESCE(PAGE_COUNT, 0) as pages,
+                COALESCE(LANGUAGE, 'English') as lang,
+                COALESCE(EDITION, '1st') as ed,
+                COALESCE(PRICE, 0.00) as pr,
+                COALESCE(STOCK_QUANTITY, 0) as stock,
+                COALESCE(DESCRIPTION, '') as desc_text,
+                COALESCE(COVER_URL, '/images/books/defaultbook.jpg') as cover,
+                COALESCE(GENRE, 'General') as genre_text
+            INTO 
+                book_title, book_isbn, book_published_date, book_pages, 
+                book_language, book_edition, book_price, book_stock, 
+                book_description, book_cover_url, book_genre
+            FROM PUBLISHER_BOOK_DRAFT 
+            WHERE REQUEST_ID = request_id;
+            
+            
+            SELECT COALESCE(MAX(ID), 0) + 1 INTO new_book_id FROM BOOK;
+            
+            
+            INSERT INTO BOOK (
+                ID, TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, 
+                LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, 
+                COVER_URL, GENRE, ADDED_AT, SHOW_BOOK
+            ) VALUES (
+                new_book_id, book_title, book_isbn, book_published_date, publisher_id, book_pages,
+                book_language, book_edition, book_price, book_stock, book_description,
+                book_cover_url, book_genre, NOW(), 1
+            );
+            
+            
+            UPDATE PUBLISHER_REQUEST 
+            SET STATUS = 'APPROVED',
+                REVIEWED_AT = NOW(),
+                REVIEWED_BY = admin_id,
+                admin_feedback = admin_feedback_text
+            WHERE ID = request_id;
+            
+            SET result_message = CONCAT('Book approved successfully with ID: ', new_book_id);
+        END IF;
+    END IF;
+    
+    IF exit_handler = FALSE THEN
+        COMMIT;
+    END IF;
+    
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Function structure for GetNextAuthorId
+-- ----------------------------
+DROP FUNCTION IF EXISTS `GetNextAuthorId`;
+delimiter ;;
+CREATE FUNCTION `GetNextAuthorId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(ID), 0) + 1 INTO next_id FROM author;
+    RETURN next_id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Function structure for GetNextBookId
+-- ----------------------------
+DROP FUNCTION IF EXISTS `GetNextBookId`;
+delimiter ;;
+CREATE FUNCTION `GetNextBookId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(ID), 0) + 1 INTO next_id FROM book;
+    RETURN next_id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Function structure for GetNextCategoryId
+-- ----------------------------
+DROP FUNCTION IF EXISTS `GetNextCategoryId`;
+delimiter ;;
+CREATE FUNCTION `GetNextCategoryId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(ID), 0) + 1 INTO next_id FROM category;
+    RETURN next_id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Function structure for GetNextPublisherBookDraftId
+-- ----------------------------
+DROP FUNCTION IF EXISTS `GetNextPublisherBookDraftId`;
+delimiter ;;
+CREATE FUNCTION `GetNextPublisherBookDraftId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(ID), 0) + 1 INTO next_id FROM publisher_book_draft;
+    RETURN next_id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for ProcessBookAuthors
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `ProcessBookAuthors`;
+delimiter ;;
+CREATE PROCEDURE `ProcessBookAuthors`(IN book_id INT,
+    IN authors_text TEXT)
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE author_name VARCHAR(255);
+    DECLARE author_id INT;
+    DECLARE authors_cursor CURSOR FOR 
+        SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(authors_text, ',', numbers.n), ',', -1)) as author
+        FROM (
+            SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+        ) numbers
+        WHERE numbers.n <= 1 + (LENGTH(authors_text) - LENGTH(REPLACE(authors_text, ',', '')))
+        AND TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(authors_text, ',', numbers.n), ',', -1)) != '';
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    IF authors_text IS NOT NULL AND TRIM(authors_text) != '' THEN
+        OPEN authors_cursor;
+        
+        read_loop: LOOP
+            FETCH authors_cursor INTO author_name;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
+            
+            SET author_name = TRIM(author_name);
+            
+            IF author_name != '' THEN
+                
+                SELECT ID INTO author_id FROM author WHERE NAME = author_name LIMIT 1;
+                
+                IF author_id IS NULL THEN
+                    
+                    SET author_id = GetNextAuthorId();
+                    INSERT INTO author (ID, NAME) VALUES (author_id, author_name);
+                END IF;
+                
+                
+                INSERT IGNORE INTO book_author (BOOK_ID, AUTHOR_ID, CONTRIBUTION) 
+                VALUES (book_id, author_id, 'Author');
+            END IF;
+        END LOOP;
+        
+        CLOSE authors_cursor;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for RejectBookRequest
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `RejectBookRequest`;
+delimiter ;;
+CREATE PROCEDURE `RejectBookRequest`(IN request_id INT,
+    IN admin_id INT,
+    IN admin_feedback_text TEXT,
+    OUT result_message VARCHAR(500))
+BEGIN
+    DECLARE publisher_id INT DEFAULT NULL;
+    DECLARE book_title VARCHAR(255) DEFAULT '';
+    DECLARE request_status VARCHAR(20) DEFAULT NULL;
+    DECLARE exit_handler BOOLEAN DEFAULT FALSE;
+    
+    
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        SET exit_handler = TRUE;
+        ROLLBACK;
+        SET result_message = 'SQL Error occurred while processing request';
+    END;
+    
+    
+    SET result_message = '';
+    
+    START TRANSACTION;
+    
+    
+    IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
+        SET result_message = 'Admin not found';
+        ROLLBACK;
+    ELSE
+        
+        SELECT STATUS INTO request_status
+        FROM PUBLISHER_REQUEST 
+        WHERE ID = request_id;
+        
+        IF request_status IS NULL THEN
+            SET result_message = 'Request not found';
+            ROLLBACK;
+        ELSEIF request_status != 'PENDING' THEN
+            SET result_message = CONCAT('Request already processed with status: ', request_status);
+            ROLLBACK;
+        ELSE
+            
+            SELECT COALESCE(pbd.TITLE, 'Unknown Title') INTO book_title
+            FROM PUBLISHER_REQUEST pr
+            LEFT JOIN PUBLISHER_BOOK_DRAFT pbd ON pr.ID = pbd.REQUEST_ID
+            WHERE pr.ID = request_id;
+            
+            
+            UPDATE PUBLISHER_REQUEST 
+            SET STATUS = 'REJECTED',
+                REVIEWED_AT = NOW(),
+                REVIEWED_BY = admin_id,
+                admin_feedback = admin_feedback_text
+            WHERE ID = request_id;
+            
+            SET result_message = CONCAT('Book request for "', book_title, '" rejected successfully');
+        END IF;
+    END IF;
+    
+    IF exit_handler = FALSE THEN
+        COMMIT;
+    END IF;
+    
+END
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;

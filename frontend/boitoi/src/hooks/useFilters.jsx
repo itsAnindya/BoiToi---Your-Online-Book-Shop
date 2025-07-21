@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 
-export const useFilters = (allBooks) => {
+export const useFilters = (allBooks, categoriesData = []) => {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [priceFilter, setPriceFilter] = useState({ min: '', max: '' });
-  const [activeFilters, setActiveFilters] = useState({ search: '', price: null });
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [activeFilters, setActiveFilters] = useState({ search: '', price: null, categories: [] });
 
   const applyFilters = () => {
     let filtered = [...allBooks];
@@ -27,24 +28,34 @@ export const useFilters = (allBooks) => {
       });
     }
 
+    // Apply category filter
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(book => 
+        selectedCategories.includes(book.category_id) || 
+        selectedCategories.includes(book.category_name)
+      );
+    }
+
     setFilteredBooks(filtered);
 
     // Update active filters for display
     setActiveFilters({
       search: searchQuery,
-      price: (priceFilter.min !== '' || priceFilter.max !== '') ? priceFilter : null
+      price: (priceFilter.min !== '' || priceFilter.max !== '') ? priceFilter : null,
+      categories: selectedCategories
     });
   };
 
   const clearFilters = () => {
     setSearchQuery('');
     setPriceFilter({ min: '', max: '' });
-    setActiveFilters({ search: '', price: null });
+    setSelectedCategories([]);
+    setActiveFilters({ search: '', price: null, categories: [] });
   };
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery, priceFilter, allBooks]);
+  }, [searchQuery, priceFilter, selectedCategories, allBooks]);
 
   useEffect(() => {
     setFilteredBooks(allBooks);
@@ -56,6 +67,8 @@ export const useFilters = (allBooks) => {
     setSearchQuery,
     priceFilter,
     setPriceFilter,
+    selectedCategories,
+    setSelectedCategories,
     activeFilters,
     clearFilters,
     applyFilters

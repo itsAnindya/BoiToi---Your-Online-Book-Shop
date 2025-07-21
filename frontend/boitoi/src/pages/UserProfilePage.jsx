@@ -18,6 +18,7 @@ import {
   FaShieldAlt
 } from 'react-icons/fa';
 import DefaultLayout from '../layouts/DefaultLayout';
+import Button from '../components/ui/Button';
 import { useCart } from '../contexts/CartContext';
 import { getUserProfile, updateUserProfile, changeUserPassword } from '../services/userApi';
 import toast from 'react-hot-toast';
@@ -78,6 +79,7 @@ const UserProfilePage = () => {
         const result = await getUserProfile(user.id);
         
         if (result.success) {
+          // Birthday now comes as clean YYYY-MM-DD string from backend
           const userData = {
             username: result.user.username || '',
             email: result.user.email || '',
@@ -85,7 +87,7 @@ const UserProfilePage = () => {
             lastName: result.user.lastName || '',
             phone: result.user.phone || '',
             gender: result.user.gender || '',
-            birthday: result.user.birthday ? result.user.birthday.split('T')[0] : '',
+            birthday: result.user.birthday || '', // Clean date string from backend
           };
           
           setProfileData(userData);
@@ -123,6 +125,21 @@ const UserProfilePage = () => {
   const handleSaveProfile = async () => {
     setIsSavingProfile(true);
     try {
+      // Ensure birthday is sent as a pure date string to avoid timezone issues
+      let birthdayToSend = editFormData.birthday;
+      if (birthdayToSend) {
+        // If it's already in YYYY-MM-DD format, use it as-is
+        if (typeof birthdayToSend === 'string' && birthdayToSend.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          // Already in correct format
+        } else {
+          // Convert to YYYY-MM-DD format if needed
+          const date = new Date(birthdayToSend);
+          if (!isNaN(date.getTime())) {
+            birthdayToSend = date.toISOString().split('T')[0];
+          }
+        }
+      }
+
       const result = await updateUserProfile(user.id, {
         username: editFormData.username,
         email: editFormData.email,
@@ -130,7 +147,7 @@ const UserProfilePage = () => {
         last_name: editFormData.lastName,
         phone: editFormData.phone,
         gender: editFormData.gender,
-        birthday: editFormData.birthday,
+        birthday: birthdayToSend,
       });
 
       if (result.success) {
@@ -140,7 +157,7 @@ const UserProfilePage = () => {
         }
         
         // Update the main profile data with the saved data
-        setProfileData(editFormData);
+        setProfileData({...editFormData, birthday: birthdayToSend});
         
         toast.success('Profile updated successfully!');
         setIsEditing(false);
@@ -261,13 +278,15 @@ const UserProfilePage = () => {
                     </div>
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mt-4 md:mt-0 font-medium"
+                  variant="danger"
+                  size="lg"
+                  className="mt-4 md:mt-0"
                 >
-                  <FaSignOutAlt className="text-white" />
-                  <span className="text-white font-medium">Logout</span>
-                </button>
+                  <FaSignOutAlt />
+                  Logout
+                </Button>
               </div>
             </div>
           </div>
@@ -284,30 +303,30 @@ const UserProfilePage = () => {
                     </div>
                     {isEditing ? (
                       <div className="flex space-x-3">
-                        <button
+                        <Button
                           onClick={handleSaveProfile}
                           disabled={isSavingProfile}
-                          className="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 shadow-lg font-medium"
+                          variant="success"
                         >
-                          <FaSave className="text-white" />
-                          <span className="text-white">{isSavingProfile ? 'Saving...' : 'Save'}</span>
-                        </button>
-                        <button
+                          <FaSave />
+                          {isSavingProfile ? 'Saving...' : 'Save'}
+                        </Button>
+                        <Button
                           onClick={cancelEdit}
-                          className="flex items-center space-x-2 bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg font-medium"
+                          variant="neutral"
                         >
-                          <FaTimes className="text-white" />
-                          <span className="text-white">Cancel</span>
-                        </button>
+                          <FaTimes />
+                          Cancel
+                        </Button>
                       </div>
                     ) : (
-                      <button
+                      <Button
                         onClick={startEdit}
-                        className="flex items-center space-x-2 bg-white text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-xl transition-all duration-300 transform hover:scale-105 font-medium shadow-lg border border-slate-300"
+                        variant="outline"
                       >
-                        <FaEdit className="text-slate-700" />
-                        <span className="text-slate-700">Edit Profile</span>
-                      </button>
+                        <FaEdit />
+                        Edit Profile
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -489,13 +508,15 @@ const UserProfilePage = () => {
                 </div>
 
                 <div className="p-6">
-                  <button
+                  <Button
                     onClick={() => setShowPasswordSection(!showPasswordSection)}
-                    className="w-full flex items-center justify-center space-x-3 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white px-6 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
+                    variant="primary"
+                    size="lg"
+                    className="w-full"
                   >
-                    <FaLock className="text-white" />
-                    <span className="text-white">Change Password</span>
-                  </button>
+                    <FaLock />
+                    Change Password
+                  </Button>
 
                   {showPasswordSection && (
                     <div className="mt-6 bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl border border-slate-200">
@@ -515,13 +536,15 @@ const UserProfilePage = () => {
                               className="w-full px-4 py-3 pr-12 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
                               required
                             />
-                            <button
+                            <Button
                               type="button"
                               onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors"
+                              variant="ghost"
+                              size="xs"
+                              className="absolute right-1 top-1/2 transform -translate-y-1/2"
                             >
                               {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
@@ -540,13 +563,15 @@ const UserProfilePage = () => {
                               className="w-full px-4 py-3 pr-12 border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-white text-slate-900"
                               required
                             />
-                            <button
+                            <Button
                               type="button"
                               onClick={() => setShowNewPassword(!showNewPassword)}
-                              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors"
+                              variant="ghost"
+                              size="xs"
+                              className="absolute right-1 top-1/2 transform -translate-y-1/2"
                             >
                               {showNewPassword ? <FaEyeSlash /> : <FaEye />}
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
@@ -567,14 +592,17 @@ const UserProfilePage = () => {
                         </div>
 
                         <div className="flex flex-col space-y-3 pt-4">
-                          <button
+                          <Button
                             onClick={handleChangePassword}
                             disabled={isChangingPassword || !passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword}
-                            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl font-medium"
+                            variant="primary"
+                            size="lg"
+                            className="w-full"
                           >
-                            <span className="text-white">{isChangingPassword ? 'Changing...' : 'Change Password'}</span>
-                          </button>
-                          <button
+                            <FaLock className="mr-2" />
+                            {isChangingPassword ? 'Changing...' : 'Change Password'}
+                          </Button>
+                          <Button
                             onClick={() => {
                               setShowPasswordSection(false);
                               setPasswordData({
@@ -583,10 +611,13 @@ const UserProfilePage = () => {
                                 confirmPassword: '',
                               });
                             }}
-                            className="w-full bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
+                            variant="neutral"
+                            size="lg"
+                            className="w-full"
                           >
-                            <span className="text-white">Cancel</span>
-                          </button>
+                            <FaTimes className="mr-2" />
+                            Cancel
+                          </Button>
                         </div>
                       </div>
                     </div>

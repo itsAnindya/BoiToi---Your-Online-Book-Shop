@@ -7,6 +7,7 @@ import Button from './ui/Button';
 import toast from 'react-hot-toast';
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -16,7 +17,6 @@ const NavBar = () => {
     { id: 3, message: "Your order has been shipped", type: "info", read: true },
   ]);
   const { getCartItemsCount, getCurrentUser, clearCart } = useCart();
-  const navigate = useNavigate();
   const userMenuRef = useRef(null);
   const notificationRef = useRef(null);
 
@@ -115,7 +115,7 @@ const NavBar = () => {
             <Link
               key={item.id}
               to={item.link}
-              className="hover:text-slate-100 transition-colors text-slate-100"
+              className="hover:text-slate-100 focus:text-slate-100 transition-colors text-slate-100"
             >
               {item.text}
             </Link>
@@ -129,17 +129,19 @@ const NavBar = () => {
         <div className="hidden md:flex space-x-2 items-center">
           {/* Notification Button - Available for all users */}
           <div className="relative" ref={notificationRef}>
-            <button
+            <Button
               onClick={handleNotificationClick}
-              className="relative p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group bg-transparent border-none"
+              variant="ghost"
+              size="sm"
+              className="relative text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
             >
-              <FaBell className="text-xl text-white group-hover:text-slate-200" />
+              <FaBell className="text-xl group-hover:text-slate-200" />
               {unreadNotifications > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg">
                   {unreadNotifications > 99 ? '99+' : unreadNotifications}
                 </span>
               )}
-            </button>
+            </Button>
 
             {/* Notification Dropdown */}
             {showNotifications && (
@@ -200,25 +202,32 @@ const NavBar = () => {
           </div>
 
           {isLoggedIn && (
-            <Link to="/cart" className="relative p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group">
-              <FaShoppingCart className="text-xl text-white group-hover:text-slate-200" />
+            <Button
+              onClick={() => navigate('/cart')}
+              variant="ghost"
+              size="sm"
+              className="relative text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
+            >
+              <FaShoppingCart className="text-xl" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg">
                   {cartItemsCount > 99 ? '99+' : cartItemsCount}
                 </span>
               )}
-            </Link>
+            </Button>
           )}
 
           {/* User Account Menu */}
           {isLoggedIn ? (
             <div className="relative" ref={userMenuRef}>
-              <button
+              <Button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group bg-transparent border-none"
+                variant="ghost"
+                size="sm"
+                className="text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
               >
-                <FaUser className="text-xl text-white group-hover:text-slate-200" />
-              </button>
+                <FaUser className="text-xl" />
+              </Button>
 
               {showUserMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
@@ -255,32 +264,40 @@ const NavBar = () => {
                     </Link>
                   )}
 
-                  <button
+                  <Button
                     onClick={handleLogout}
-                    className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-red-50 transition-colors"
+                    variant="danger"
+                    size="sm"
+                    className="w-full justify-start"
                   >
-                    <FaSignOutAlt className="mr-3 text-gray-600" />
-                    <span className="text-gray-800">Logout</span>
-                  </button>
+                    <FaSignOutAlt className="mr-3" />
+                    Logout
+                  </Button>
                 </div>
               )}
             </div>
           ) : (
             <Link to="/auth">
-              <button className="p-2 rounded-lg hover:bg-slate-700 transition-all duration-200 group">
-                <FaUser className="text-xl text-white group-hover:text-slate-200" />
-              </button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
+              >
+                <FaUser className="text-xl" />
+              </Button>
             </Link>
           )}
         </div>
 
         {/* Mobile menu button */}
-        <button
-          className="md:hidden focus:outline-none text-white"
+        <Button
           onClick={() => setIsOpen(!isOpen)}
+          variant="ghost"
+          size="sm"
+          className="md:hidden text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
         >
-          {isOpen ? <FaTimes size={24} className="text-white" /> : <FaBars size={24} className="text-white" />}
-        </button>
+          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </Button>
       </div>
 
       {/* Mobile Navigation */}
@@ -337,12 +354,16 @@ const NavBar = () => {
                             </span>
                           </div>
                         </div>
-                        <button
-                          onClick={() => clearNotification(notification.id)}
-                          className="text-gray-400 hover:text-gray-600 ml-2"
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            clearNotification(notification.id);
+                          }}
+                          variant="outline"
+                          size="xs"
                         >
                           <FaTimes className="text-xs" />
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   ))
@@ -351,9 +372,11 @@ const NavBar = () => {
             )}
             <div className="flex space-x-6 pt-4 justify-center">
               {/* Mobile Notification Button */}
-              <button
+              <Button
                 onClick={handleNotificationClick}
-                className="relative p-2 hover:bg-slate-700 rounded-full text-white"
+                variant="ghost"
+                size="sm"
+                className="relative text-white hover:text-slate-200 bg-transparent hover:bg-slate-700 rounded-full"
               >
                 <FaBell />
                 {unreadNotifications > 0 && (
@@ -361,17 +384,22 @@ const NavBar = () => {
                     {unreadNotifications > 9 ? '9+' : unreadNotifications}
                   </span>
                 )}
-              </button>
+              </Button>
 
               {isLoggedIn && (
-                <Link to="/cart" className="relative p-2 hover:bg-slate-700 rounded-full text-white">
+                <Button
+                  onClick={() => navigate('/cart')}
+                  variant="ghost"
+                  size="sm"
+                  className="relative text-white hover:text-slate-200 bg-transparent hover:bg-slate-700 rounded-full"
+                >
                   <FaShoppingCart />
                   {cartItemsCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
                       {cartItemsCount > 9 ? '9+' : cartItemsCount}
                     </span>
                   )}
-                </Link>
+                </Button>
               )}
 
               {/* Mobile User Menu */}
@@ -413,21 +441,28 @@ const NavBar = () => {
                     </Link>
                   )}
 
-                  <button
+                  <Button
                     onClick={() => {
                       handleLogout();
                       setIsOpen(false);
                     }}
-                    className="flex items-center justify-center space-x-2 p-2 hover:bg-slate-700 rounded text-white"
+                    variant="ghost"
+                    size="sm"
+                    className="w-full text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
                   >
-                    <FaSignOutAlt />
+                    <FaSignOutAlt className="mr-2" />
                     <span>Logout</span>
-                  </button>
+                  </Button>
                 </div>
               ) : (
-                <Link to="/auth" className="p-2 hover:bg-slate-700 rounded-full text-white">
+                <Button
+                  onClick={() => navigate('/auth')}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:text-slate-200 bg-transparent hover:bg-slate-700 rounded-full"
+                >
                   <FaUser />
-                </Link>
+                </Button>
               )}
             </div>
           </div>

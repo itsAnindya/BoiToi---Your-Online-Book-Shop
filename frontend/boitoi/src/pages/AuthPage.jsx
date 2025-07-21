@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // <-- import useNavigate
-import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BookOpen, User, Mail, Phone, Calendar, MapPin, Home, Building, Lock } from 'lucide-react';
 import { loginUser, signupUser, publisherLogin } from '../services/api';
 import { useCart } from '../contexts/CartContext';
-import Button from '../components/ui/Button';
+import Button, { BackToHomeButton } from '../components/ui/Button';
 
 const AuthPage = () => {
   const [loading, setLoading] = useState(false);
@@ -171,80 +171,71 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
       {/* Personal Account Button */}
       {user && user.id && (
         <div className="absolute top-6 right-8 z-10">
-          <Link
-            to={`/books/user/${user.id}`}
-            className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:scale-105 transition"
-          >
-            Personal Account
+          <Link to={`/books/user/${user.id}`}>
+            <Button variant="primary" size="md">
+              Personal Account
+            </Button>
           </Link>
         </div>
       )}
 
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-8 -right-4 w-72 h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-500"></div>
-      </div>
-
-      <div className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 w-full max-w-2xl shadow-2xl border border-white/20">
+      <div className="bg-white rounded-2xl shadow-soft p-8 w-full max-w-lg border border-neutral-200">
+        {/* Back to Home Button */}
+        <BackToHomeButton className="mb-4" />
+        
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex justify-center items-center mb-6">
-            <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-3 rounded-2xl">
-              <BookOpen className="w-8 h-8 text-white" />
+          <div className="flex justify-center items-center mb-4">
+            <div className="bg-primary-600 p-3 rounded-xl">
+              <BookOpen className="w-6 h-6 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">BoiToi</h1>
-          <p className="text-white/70">Your Online Bookshop</p>
+          <h1 className="text-2xl font-bold text-neutral-900 mb-1">Welcome to BoiToi</h1>
+          <p className="text-neutral-600 text-sm">Your Online Bookshop</p>
         </div>
 
         {/* Auth Toggle */}
-        <div className="flex bg-white/10 p-1 rounded-2xl mb-4 gap-2">
-          <button
+        <div className="flex bg-neutral-100 p-1 rounded-xl mb-6 gap-1">
+          <Button
             onClick={() => setIsLogin(true)}
-            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${isLogin
-              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
-              : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
+            variant={isLogin ? 'authToggleActive' : 'authToggle'}
+            size="md"
+            className="flex-1"
           >
             Login
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setIsLogin(false)}
-            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${isLogin
-              ? 'text-white/70 hover:text-white hover:bg-white/5'
-              : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
-              }`}
+            variant={isLogin ? 'authToggle' : 'authToggleActive'}
+            size="md"
+            className="flex-1"
           >
             Sign Up
-          </button>
+          </Button>
         </div>
 
         {/* User Type Toggle */}
-        <div className="flex bg-white/10 p-1 rounded-2xl mb-8 gap-2">
-          <button
+        <div className="flex bg-neutral-100 p-1 rounded-xl mb-8 gap-1">
+          <Button
             onClick={() => setUserType('user')}
-            className={`flex-1 py-2 px-4 rounded-xl font-medium transition-all duration-300 ${userType === 'user'
-              ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-              : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
+            variant={userType === 'user' ? 'authToggleActive' : 'authToggle'}
+            size="md"
+            className="flex-1"
           >
             User
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setUserType('publisher')}
-            className={`flex-1 py-2 px-4 rounded-xl font-medium transition-all duration-300 ${userType === 'publisher'
-              ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-              : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
+            variant={userType === 'publisher' ? 'authToggleActive' : 'authToggle'}
+            size="md"
+            className="flex-1"
           >
             Publisher
-          </button>
+          </Button>
         </div>
 
         {/* Form */}
@@ -254,33 +245,33 @@ const AuthPage = () => {
             <>
               <div className="space-y-4">
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="text"
                     name="username"
                     placeholder={userType === 'publisher' ? 'Publisher Name' : 'Username'}
                     value={formData.username}
                     onChange={handleInputChange}
-                    className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5">🔒</div>
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="password"
                     name="password"
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
               </div>
 
               {error && (
-                <div className="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-xl mb-4">
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                   {error}
                 </div>
               )}
@@ -289,13 +280,13 @@ const AuthPage = () => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                variant="primary"
+                variant="authPrimary"
                 size="lg"
                 className={`w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                     {isLogin ? 'Logging in...' : 'Creating Account...'}
                   </div>
                 ) : (
@@ -305,20 +296,22 @@ const AuthPage = () => {
             </>
           ) : (
             // Signup Form
-            <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+            <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar"
+              style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgb(37 99 235) #f5f5f4' }}
+            >
               {/* Personal Information */}
               <div className="space-y-4">
-                <h3 className="text-white font-semibold text-lg">Personal Information</h3>
+                <h3 className="text-neutral-900 font-semibold text-lg">Personal Information</h3>
 
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="text"
                     name="username"
                     placeholder={userType === 'publisher' ? 'Publisher Name' : 'Username'}
                     value={formData.username}
                     onChange={handleInputChange}
-                    className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
@@ -330,7 +323,7 @@ const AuthPage = () => {
                     placeholder="First Name"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                   <input
@@ -339,45 +332,45 @@ const AuthPage = () => {
                     placeholder="Last Name"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
 
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="email"
                     name="email"
                     placeholder="Email Address"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
 
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="tel"
                     name="phone"
                     placeholder="Phone Number"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
 
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                   <input
                     type="date"
                     name="birthday"
                     value={formData.birthday}
                     onChange={handleInputChange}
-                    className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
@@ -386,7 +379,7 @@ const AuthPage = () => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Gender</option>
@@ -398,43 +391,41 @@ const AuthPage = () => {
               </div>
 
               {/* Address Information */}
-              <div className="space-y-4 pt-4 border-t border-white/20">
-                <h3 className="text-white font-semibold text-lg">Address Information</h3>
+              <div className="space-y-4 pt-4 border-t border-neutral-200">
+                <h3 className="text-neutral-900 font-semibold text-lg">Address Information</h3>
 
-                <div className="flex space-x-3">
-                  <button
+                <div className="flex space-x-2">
+                  <Button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, addressType: 'home' }))}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${formData.addressType === 'home'
-                      ? 'bg-purple-500 text-white'
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
-                      }`}
+                    variant={formData.addressType === 'home' ? 'authToggleActive' : 'authToggle'}
+                    size="sm"
+                    className="flex-1"
                   >
                     <Home className="w-4 h-4" />
                     <span>Home</span>
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, addressType: 'office' }))}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${formData.addressType === 'office'
-                      ? 'bg-purple-500 text-white'
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
-                      }`}
+                    variant={formData.addressType === 'office' ? 'authToggleActive' : 'authToggle'}
+                    size="sm"
+                    className="flex-1"
                   >
                     <Building className="w-4 h-4" />
                     <span>Office</span>
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-4 text-white/50 w-5 h-5" />
+                  <MapPin className="absolute left-3 top-4 text-neutral-400 w-4 h-4" />
                   <textarea
                     name="address"
                     placeholder="Full Address"
                     value={formData.address}
                     onChange={handleInputChange}
                     rows="3"
-                    className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 resize-none"
                     required
                   />
                 </div>
@@ -446,7 +437,7 @@ const AuthPage = () => {
                     placeholder="City"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                   <input
@@ -455,7 +446,7 @@ const AuthPage = () => {
                     placeholder="State"
                     value={formData.state}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
@@ -467,7 +458,7 @@ const AuthPage = () => {
                     placeholder="Country"
                     value={formData.country}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                   <input
@@ -476,43 +467,49 @@ const AuthPage = () => {
                     placeholder="Zip Code"
                     value={formData.zipCode}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                     required
                   />
                 </div>
 
                 <div className="space-y-3">
                   <div className="relative">
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5">🔒</div>
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                     <input
                       type="password"
                       name="password"
                       placeholder="Password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                      className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                       required
                     />
                   </div>
                   <div className="relative">
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5">🔒</div>
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-4 h-4" />
                     <input
                       type="password"
                       name="confirmPassword"
                       placeholder="Confirm Password"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                      className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                       required
                     />
                   </div>
                 </div>
               </div>
 
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
+
               <Button
                 type="button"
                 onClick={handleSubmit}
-                variant="primary"
+                variant="authPrimary"
                 size="lg"
                 className="w-full"
               >
@@ -524,25 +521,30 @@ const AuthPage = () => {
 
         {/* Footer */}
         <div className="mt-8 text-center space-y-3">
-          <p className="text-white/70">
+          <p className="text-neutral-600 text-sm">
             {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
-            <button
+            <Button
               onClick={toggleAuthMode}
-              className="text-purple-300 hover:text-purple-200 font-medium transition-colors duration-300"
+              variant="link"
+              size="sm"
+              className="p-0 h-auto font-medium"
             >
               {isLogin ? 'Sign Up' : 'Login'}
-            </button>
+            </Button>
           </p>
           
           {/* Publisher Login Link */}
-          <div className="pt-4 border-t border-white/20">
-            <p className="text-white/70 text-sm mb-2">Are you a publisher?</p>
-            <Link
-              to="/publisher-login"
-              className="inline-flex items-center gap-2 text-purple-300 hover:text-purple-200 font-medium transition-colors duration-300"
-            >
-              <BookOpen className="w-4 h-4" />
-              Publisher Login
+          <div className="pt-4 border-t border-neutral-200">
+            <p className="text-neutral-600 text-sm mb-2">Are you a publisher?</p>
+            <Link to="/publisher-login">
+              <Button
+                variant="link"
+                size="sm"
+                className="inline-flex items-center gap-2 p-0 h-auto font-medium"
+              >
+                <BookOpen className="w-4 h-4" />
+                Publisher Login
+              </Button>
             </Link>
           </div>
         </div>
@@ -550,18 +552,18 @@ const AuthPage = () => {
 
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
+          width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
+          background: #f5f5f4;
+          border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(147, 51, 234, 0.5);
-          border-radius: 10px;
+          background: rgb(37 99 235);
+          border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(147, 51, 234, 0.7);
+          background: rgb(29 78 216);
         }
       `}</style>
     </div>
