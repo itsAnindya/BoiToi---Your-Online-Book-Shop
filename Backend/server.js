@@ -21,6 +21,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api', healthRoutes);
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/publisher', publisherRoutes);
 app.use('/api/admin', adminBookRoutes);
 
