@@ -3,7 +3,7 @@ import { useCart } from '../contexts/CartContext';
 import { saveCart, placeOrder } from '../services/cartApi';
 import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import Button, { BackToHomeButton } from '../components/ui/Button';
+import { BackToHomeButton } from '../components/ui/Button';
 import { FaShoppingCart } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -22,6 +22,8 @@ const CartPage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [localCart, setLocalCart] = useState([]);
+  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
   const navigate = useNavigate();
   
   const user = getCurrentUser();
@@ -109,9 +111,17 @@ const CartPage = () => {
       const result = await placeOrder(user.id);
       
       if (result.success) {
+        // Store order details for confirmation dialog
+        setOrderDetails({
+          orderId: result.orderId,
+          total: calculateTotal(),
+          itemCount: localCart.length,
+          items: [...localCart]
+        });
+        
         toast.success(`Order placed successfully! Order ID: ${result.orderId}`);
         setLocalCart([]);
-        navigate('/orders'); // Navigate to orders page (you might need to create this)
+        setShowOrderConfirmation(true); // Show confirmation dialog instead of navigating
       } else {
         toast.error(result.error || 'Failed to place order');
       }
@@ -120,6 +130,11 @@ const CartPage = () => {
     } finally {
       setIsPlacingOrder(false);
     }
+  };
+
+  const closeOrderConfirmation = () => {
+    setShowOrderConfirmation(false);
+    setOrderDetails(null);
   };
 
   // Calculate total from local cart
@@ -316,6 +331,105 @@ const CartPage = () => {
           </div>
         )}
       </div>
+
+      {/* Order Confirmation Dialog */}
+      {showOrderConfirmation && orderDetails && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-2xl p-8 max-w-lg mx-4 transform animate-scale-in shadow-2xl">
+            {/* Close button */}
+            <button
+              onClick={closeOrderConfirmation}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <FaTimes className="w-6 h-6" />
+            </button>
+
+            {/* Success content */}
+            <div className="text-center">
+              {/* Animated checkmark */}
+              <div className="mx-auto mb-6 w-24 h-24 bg-green-100 rounded-full flex items-center justify-center animate-bounce">
+                <FaCheckCircle className="w-16 h-16 text-green-500 animate-pulse" />
+              </div>
+
+              {/* Success message */}
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                🎉 Order Placed Successfully!
+              </h3>
+              
+              <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                <p className="text-lg text-gray-700 mb-2">
+                  <strong>Order ID: #{orderDetails.orderId}</strong>
+                </p>
+                <p className="text-gray-600 mb-2">
+                  {orderDetails.itemCount} {orderDetails.itemCount === 1 ? 'book' : 'books'} ordered
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  Total: ৳{orderDetails.total.toFixed(2)}
+                </p>
+              </div>
+
+              <p className="text-gray-600 mb-8">
+                Your order has been confirmed and will be processed shortly. 
+                You'll receive an email confirmation with tracking details.
+              </p>
+
+              {/* Action buttons */}
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={() => {
+                    closeOrderConfirmation();
+                    navigate('/books');
+                  }}
+                  className="px-8 py-3 border-2 border-slate-600 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors font-semibold"
+                >
+                  Continue Shopping
+                </button>
+                <button
+                  onClick={() => {
+                    closeOrderConfirmation();
+                    navigate('/orders');
+                  }}
+                  className="px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-semibold flex items-center gap-2"
+                >
+                  <FaShoppingBag className="w-5 h-5" />
+                  Your Orders
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add custom styles for animations */}
+      <style jsx>{`
+        .animate-fade-in {
+          animation: fadeIn 0.3s ease-out;
+        }
+        
+        .animate-scale-in {
+          animation: scaleIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        @keyframes scaleIn {
+          from {
+            transform: scale(0.9);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 };
