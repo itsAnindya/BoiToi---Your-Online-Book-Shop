@@ -43,7 +43,7 @@
   border: none;
   outline: none;
   font-size: 1rem;
-  background: #f5f6fa;
+  background: #fef6ee;  /* Updated to use warm secondary background */
   transition: box-shadow 0.2s;
   box-shadow: 0 1px 4px rgba(236, 107, 22, 0.08);
 }

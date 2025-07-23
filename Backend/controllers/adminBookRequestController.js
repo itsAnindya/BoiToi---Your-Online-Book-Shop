@@ -50,8 +50,8 @@ const getPendingBookRequests = async (req, res) => {
  */
 const approveBookRequest = async (req, res) => {
   try {
-    const requestId = req.params.requestId;
-    const adminId = req.body.admin_id;
+    const { requestId } = req.params;
+    const { admin_id: adminId } = req.body;
     
     if (!adminId) {
       return res.status(400).json({ message: 'Admin ID is required' });
@@ -99,36 +99,26 @@ const approveBookRequest = async (req, res) => {
 
           const request = requestResults[0];
 
-          // Get next book ID
-          const getMaxBookIdSql = 'SELECT COALESCE(MAX(ID), 0) + 1 as next_id FROM BOOK';
+          // Insert new book (AUTO_INCREMENT will handle ID)
+          const insertBookSql = `
+            INSERT INTO BOOK 
+            (TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE, SHOW_BOOK, ADDED_AT)
+            VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, NOW())
+          `;
           
-          db.query(getMaxBookIdSql, (err, bookIdResults) => {
+          db.query(insertBookSql, [
+            request.TITLE, request.ISBN, request.PUBLISHER_ID,
+            request.PAGE_COUNT, request.LANGUAGE, request.EDITION,
+            request.PRICE, request.STOCK_QUANTITY, request.DESCRIPTION,
+            request.COVER_URL, request.GENRE
+          ], (err, bookResult) => {
             if (err) {
               return db.rollback(() => {
-                res.status(500).json({ message: 'Error generating book ID' });
+                res.status(500).json({ message: 'Error creating book' });
               });
             }
 
-            const bookId = bookIdResults[0].next_id;
-
-            // Insert new book
-            const insertBookSql = `
-              INSERT INTO BOOK 
-              (ID, TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE, SHOW_BOOK, ADDED_AT)
-              VALUES (?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, NOW())
-            `;
-            
-            db.query(insertBookSql, [
-              bookId, request.TITLE, request.ISBN, request.PUBLISHER_ID,
-              request.PAGE_COUNT, request.LANGUAGE, request.EDITION,
-              request.PRICE, request.STOCK_QUANTITY, request.DESCRIPTION,
-              request.COVER_URL, request.GENRE
-            ], (err) => {
-              if (err) {
-                return db.rollback(() => {
-                  res.status(500).json({ message: 'Error creating book' });
-                });
-              }
+            const bookId = bookResult.insertId; // Get auto-generated book ID
 
               // Update request status
               const updateRequestSql = `
@@ -179,7 +169,6 @@ const approveBookRequest = async (req, res) => {
                 });
               });
             });
-          });
         });
       } catch (error) {
         db.rollback(() => {
@@ -199,7 +188,7 @@ const approveBookRequest = async (req, res) => {
  */
 const rejectBookRequest = async (req, res) => {
   try {
-    const requestId = req.params.requestId;
+    const { requestId } = req.params;
     const { admin_id, rejection_reason } = req.body;
     
     if (!admin_id || !rejection_reason) {

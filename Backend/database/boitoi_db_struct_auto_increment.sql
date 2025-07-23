@@ -1,17 +1,10 @@
 /*
- Navicat Premium Dump SQL
-
- Source Server         : BoiToi Database
- Source Server Type    : MySQL
- Source Server Version : 80041 (8.0.41)
- Source Host           : localhost:3306
- Source Schema         : boitoi_db
-
- Target Server Type    : MySQL
- Target Server Version : 80041 (8.0.41)
- File Encoding         : 65001
-
- Date: 24/07/2025 02:49:53
+ BoiToi Database Structure with AUTO_INCREMENT IDs
+ 
+ This file contains the complete database structure with all ID columns
+ set to AUTO_INCREMENT to eliminate manual ID management in the application.
+ 
+ Date: 24/07/2025
 */
 
 SET NAMES utf8mb4;
@@ -44,7 +37,7 @@ CREATE TABLE `admin_permission`  (
   CONSTRAINT `admin_permission_ibfk_1` FOREIGN KEY (`ADMIN_USER_ID`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `admin_permission_ibfk_2` FOREIGN KEY (`PERMISSION_ID`) REFERENCES `permission` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `permitted_by` FOREIGN KEY (`GRANTED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for author
@@ -59,7 +52,7 @@ CREATE TABLE `author`  (
   `WEBSITE` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PHOTO_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 476 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for book
@@ -79,7 +72,7 @@ CREATE TABLE `book`  (
   `DESCRIPTION` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `SHOW_BOOK` tinyint(1) NULL DEFAULT 1,
   `COVER_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `ADDED_AT` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `ADDED_AT` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `GENRE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CATEGORY_ID` int NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
@@ -90,7 +83,7 @@ CREATE TABLE `book`  (
   INDEX `fk_book_category`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `book_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_book_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 406 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for book_author
@@ -134,7 +127,7 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for category
@@ -148,7 +141,7 @@ CREATE TABLE `category`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `PARENT_ID`(`PARENT_ID` ASC) USING BTREE,
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`PARENT_ID`) REFERENCES `category` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 264 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for category_bestseller
@@ -182,12 +175,12 @@ CREATE TABLE `discount`  (
   `END_DATE` date NULL DEFAULT NULL,
   `MAX_USAGE` int NULL DEFAULT NULL,
   `TIMES_USED` int NULL DEFAULT NULL,
-  `ADDED_AT` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `ADDED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ADDED_BY` int NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `DISCOUNT_ADMIN`(`ADDED_BY` ASC) USING BTREE,
   CONSTRAINT `DISCOUNT_ADMIN` FOREIGN KEY (`ADDED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for favourite
@@ -217,7 +210,7 @@ CREATE TABLE `inventory_log`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `inventory_log_ibfk_1` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for notifications
@@ -229,11 +222,11 @@ CREATE TABLE `notifications`  (
   `MESSAGE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `TYPE` enum('ORDER','PAYMENT','PROMOTION','SYSTEM','DELIVERY') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `IS_READ` tinyint(1) NULL DEFAULT 0,
-  `CREATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `CREATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order
@@ -250,7 +243,7 @@ CREATE TABLE `order`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_order_user_id`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order_book
@@ -279,7 +272,7 @@ CREATE TABLE `order_discount`  (
   INDEX `DISCOUNT_ID`(`DISCOUNT_ID` ASC) USING BTREE,
   CONSTRAINT `order_discount_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_discount_ibfk_2` FOREIGN KEY (`DISCOUNT_ID`) REFERENCES `discount` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for payment
@@ -296,7 +289,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for permission
@@ -307,7 +300,7 @@ CREATE TABLE `permission`  (
   `NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DESCRIPTION` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for publisher
@@ -327,7 +320,7 @@ CREATE TABLE `publisher`  (
   `CREATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `STATUS` enum('ACTIVE','INACTIVE','BANNED') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'ACTIVE',
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for publisher_book_draft
@@ -353,9 +346,9 @@ CREATE TABLE `publisher_book_draft`  (
   INDEX `idx_book_isbn`(`ISBN` ASC) USING BTREE,
   INDEX `REQUEST_ID`(`REQUEST_ID` ASC) USING BTREE,
   INDEX `fk_publisher_book_draft_category`(`CATEGORY_ID` ASC) USING BTREE,
-  CONSTRAINT `fk_publisher_book_draft_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_publisher_book_draft_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for publisher_request
@@ -376,7 +369,7 @@ CREATE TABLE `publisher_request`  (
   INDEX `REVIEWED_BY`(`REVIEWED_BY` ASC) USING BTREE,
   CONSTRAINT `publisher_request_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `publisher_request_ibfk_2` FOREIGN KEY (`REVIEWED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for return_request
@@ -397,7 +390,7 @@ CREATE TABLE `return_request`  (
   CONSTRAINT `return_request_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `return_request_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `return_request_ibfk_3` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for review
@@ -416,7 +409,7 @@ CREATE TABLE `review`  (
   INDEX `idx_review_book_id`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `review_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `review_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for review_reaction
@@ -444,7 +437,7 @@ CREATE TABLE `search_log`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `search_log_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shipping
@@ -460,7 +453,7 @@ CREATE TABLE `shipping`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `shipping_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user
@@ -480,11 +473,11 @@ CREATE TABLE `user`  (
   `GENDER` enum('UNSPECIFIED','MALE','FEMALE','NON-BINARY') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'UNSPECIFIED',
   `BIRTHDAY` date NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
-  UNIQUE INDEX `USERNAME`(`USERNAME` ASC) USING BTREE,
-  UNIQUE INDEX `EMAIL`(`EMAIL` ASC) USING BTREE,
   INDEX `idx_user_email`(`EMAIL` ASC) USING BTREE,
-  INDEX `idx_user_username`(`USERNAME` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  INDEX `idx_user_username`(`USERNAME` ASC) USING BTREE,
+  UNIQUE INDEX `USERNAME`(`USERNAME` ASC) USING BTREE,
+  UNIQUE INDEX `EMAIL`(`EMAIL` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user_address
@@ -503,7 +496,7 @@ CREATE TABLE `user_address`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wishlist
@@ -519,10 +512,14 @@ CREATE TABLE `wishlist`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Procedure structure for ApproveBookRequest
+-- Updated Procedures for AUTO_INCREMENT compatibility
+-- ----------------------------
+
+-- ----------------------------
+-- Procedure structure for ApproveBookRequest (Updated)
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ApproveBookRequest`;
 delimiter ;;
@@ -598,7 +595,7 @@ BEGIN
             FROM PUBLISHER_BOOK_DRAFT 
             WHERE REQUEST_ID = request_id;
             
-            -- Let AUTO_INCREMENT handle the ID automatically
+            -- AUTO_INCREMENT will handle the ID automatically
             INSERT INTO BOOK (
                 TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, 
                 LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, 
@@ -632,7 +629,56 @@ END
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for ProcessBookAuthors
+-- Updated Function structure for Auto-Generated IDs
+-- ----------------------------
+
+-- Note: These functions are no longer needed since AUTO_INCREMENT handles ID generation
+-- But keeping them for backward compatibility if needed
+
+DROP FUNCTION IF EXISTS `GetNextAuthorId`;
+delimiter ;;
+CREATE FUNCTION `GetNextAuthorId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    -- This function is now deprecated since AUTO_INCREMENT handles ID generation
+    -- Return 0 to indicate AUTO_INCREMENT should be used instead
+    RETURN 0;
+END
+;;
+delimiter ;
+
+DROP FUNCTION IF EXISTS `GetNextBookId`;
+delimiter ;;
+CREATE FUNCTION `GetNextBookId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    -- This function is now deprecated since AUTO_INCREMENT handles ID generation
+    -- Return 0 to indicate AUTO_INCREMENT should be used instead
+    RETURN 0;
+END
+;;
+delimiter ;
+
+DROP FUNCTION IF EXISTS `GetNextCategoryId`;
+delimiter ;;
+CREATE FUNCTION `GetNextCategoryId`()
+ RETURNS int
+  READS SQL DATA 
+  DETERMINISTIC
+BEGIN
+    -- This function is now deprecated since AUTO_INCREMENT handles ID generation
+    -- Return 0 to indicate AUTO_INCREMENT should be used instead
+    RETURN 0;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Updated Procedure structure for ProcessBookAuthors
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ProcessBookAuthors`;
 delimiter ;;
@@ -685,20 +731,19 @@ END
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for RejectBookRequest
+-- Updated Procedure structure for RejectBookRequest
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `RejectBookRequest`;
 delimiter ;;
 CREATE PROCEDURE `RejectBookRequest`(IN request_id INT,
     IN admin_id INT,
-    IN rejection_reason TEXT,
-    OUT result_message VARCHAR(255))
+    IN admin_feedback_text TEXT,
+    OUT result_message VARCHAR(500))
 BEGIN
     DECLARE publisher_id INT DEFAULT NULL;
     DECLARE book_title VARCHAR(255) DEFAULT '';
     DECLARE request_status VARCHAR(20) DEFAULT NULL;
     DECLARE exit_handler BOOLEAN DEFAULT FALSE;
-    
     
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
     BEGIN
@@ -707,17 +752,14 @@ BEGIN
         SET result_message = 'SQL Error occurred while processing request';
     END;
     
-    
     SET result_message = '';
     
     START TRANSACTION;
-    
     
     IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
         SET result_message = 'Admin not found';
         ROLLBACK;
     ELSE
-        
         SELECT STATUS INTO request_status
         FROM PUBLISHER_REQUEST 
         WHERE ID = request_id;
@@ -729,19 +771,16 @@ BEGIN
             SET result_message = CONCAT('Request already processed with status: ', request_status);
             ROLLBACK;
         ELSE
-            
             SELECT COALESCE(pbd.TITLE, 'Unknown Title') INTO book_title
             FROM PUBLISHER_REQUEST pr
             LEFT JOIN PUBLISHER_BOOK_DRAFT pbd ON pr.ID = pbd.REQUEST_ID
             WHERE pr.ID = request_id;
             
-            
             UPDATE PUBLISHER_REQUEST 
             SET STATUS = 'REJECTED',
                 REVIEWED_AT = NOW(),
                 REVIEWED_BY = admin_id,
-                ADMIN_FEEDBACK = rejection_reason,
-                NOTES = CONCAT('Rejected: ', rejection_reason)
+                admin_feedback = admin_feedback_text
             WHERE ID = request_id;
             
             SET result_message = CONCAT('Book request for "', book_title, '" rejected successfully');
@@ -752,67 +791,6 @@ BEGIN
         COMMIT;
     END IF;
     
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Triggers structure for table publisher_request
--- ----------------------------
-DROP TRIGGER IF EXISTS `notify_admins_new_request`;
-delimiter ;;
-CREATE TRIGGER `notify_admins_new_request` AFTER INSERT ON `publisher_request` FOR EACH ROW BEGIN
-    DECLARE publisher_name VARCHAR(255) DEFAULT 'Unknown Publisher';
-    DECLARE book_title VARCHAR(255) DEFAULT '';
-    
-    SELECT COALESCE(NAME, 'Unknown Publisher') INTO publisher_name
-    FROM publisher WHERE ID = NEW.PUBLISHER_ID;
-    
-    SELECT COALESCE(TITLE, '') INTO book_title
-    FROM publisher_book_draft WHERE REQUEST_ID = NEW.ID LIMIT 1;
-    
-    INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT)
-    SELECT 
-        a.USER_ID,
-        CONCAT('New book request from "', publisher_name, '" for "', book_title, '" (ID: ', NEW.ID, ')'),
-        'SYSTEM',
-        0,
-        NOW()
-    FROM admin a;
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Triggers structure for table publisher_request
--- ----------------------------
-DROP TRIGGER IF EXISTS `notify_publisher_request_update`;
-delimiter ;;
-CREATE TRIGGER `notify_publisher_request_update` AFTER UPDATE ON `publisher_request` FOR EACH ROW BEGIN
-    DECLARE publisher_name VARCHAR(255);
-    DECLARE book_title VARCHAR(255);
-    
-    IF OLD.STATUS != NEW.STATUS AND NEW.STATUS IN ('APPROVED', 'REJECTED') THEN
-        
-        SELECT COALESCE(NAME, 'Publisher') INTO publisher_name
-        FROM publisher WHERE ID = NEW.PUBLISHER_ID;
-        
-        SELECT COALESCE(TITLE, 'Book') INTO book_title
-        FROM publisher_book_draft WHERE REQUEST_ID = NEW.ID LIMIT 1;
-        
-        INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT)
-        SELECT 
-            a.USER_ID,
-            CONCAT('[PUBLISHER: ', publisher_name, '] Book "', book_title, '" ', NEW.STATUS, 
-                   CASE WHEN NEW.ADMIN_FEEDBACK IS NOT NULL 
-                        THEN CONCAT(' - ', NEW.ADMIN_FEEDBACK) 
-                        ELSE '' END),
-            'SYSTEM',
-            0,
-            NOW()
-        FROM admin a LIMIT 1;
-        
-    END IF;
 END
 ;;
 delimiter ;

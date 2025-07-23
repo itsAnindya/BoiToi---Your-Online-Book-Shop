@@ -438,47 +438,37 @@ const updateUserAddress = async (req, res) => {
           return res.status(400).json({ message: 'All address fields are required for new address' });
         }
 
-        // Get new address ID
-        const countAddressSql = 'SELECT COUNT(*) AS count FROM USER_ADDRESS';
-        
-        db.query(countAddressSql, (err, countResult) => {
-          if (err) {
-            console.error('Error counting user addresses:', err);
-            return res.status(500).json({ message: 'Server error counting addresses' });
-          }
+        // Insert new address (AUTO_INCREMENT will handle ID)
+        const insertAddressSql = `
+          INSERT INTO USER_ADDRESS (
+            USER_ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
 
-          const newAddressId = countResult[0].count + 1;
+        const addressValues = [
+          userId,
+          addressType,
+          address,
+          city,
+          state,
+          country,
+          zipCode,
+          isDefault || 0
+        ];
 
-          const insertAddressSql = `
-            INSERT INTO USER_ADDRESS (
-              ID, USER_ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `;
-
-          const addressValues = [
-            newAddressId,
-            userId,
-            addressType,
-            address,
-            city,
-            state,
-            country,
-            zipCode,
-            isDefault || 0
-          ];
-
-          db.query(insertAddressSql, addressValues, (err) => {
+        db.query(insertAddressSql, addressValues, (err, result) => {
             if (err) {
               console.error('Error inserting new address:', err);
               return res.status(500).json({ message: 'Server error creating new address' });
             }
+
+            const newAddressId = result.insertId; // Get auto-generated address ID
 
             res.status(201).json({ 
               message: 'New address created successfully',
               addressId: newAddressId
             });
           });
-        });
       }
     });
   } catch (error) {

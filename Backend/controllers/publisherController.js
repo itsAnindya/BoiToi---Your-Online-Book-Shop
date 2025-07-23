@@ -133,97 +133,75 @@ const submitBookRequest = async (req, res) => {
       }
 
       try {
-        // Get next request ID
-        const getMaxRequestIdSql = 'SELECT COALESCE(MAX(ID), 0) + 1 as next_id FROM PUBLISHER_REQUEST';
+        // Insert publisher request (AUTO_INCREMENT will handle ID)
+        const insertRequestSql = `
+          INSERT INTO PUBLISHER_REQUEST 
+          (PUBLISHER_ID, REQUEST_TYPE, STATUS, SUBMITTED_AT, NOTES)
+          VALUES (?, 'ADD_BOOK', 'PENDING', NOW(), ?)
+        `;
         
-        db.query(getMaxRequestIdSql, (err, requestIdResults) => {
+        const notes = `New book contribution request: ${title}`;
+        
+        db.query(insertRequestSql, [publisherId, notes], (err, requestResult) => {
           if (err) {
             return db.rollback(() => {
-              res.status(500).json({ message: 'Error generating request ID' });
+              res.status(500).json({ message: 'Error creating request' });
             });
           }
 
-          const requestId = requestIdResults[0].next_id;
+          const requestId = requestResult.insertId; // Get auto-generated request ID
 
-          // Insert publisher request
-          const insertRequestSql = `
-            INSERT INTO PUBLISHER_REQUEST 
-            (ID, PUBLISHER_ID, REQUEST_TYPE, STATUS, SUBMITTED_AT, NOTES)
-            VALUES (?, ?, 'ADD_BOOK', 'PENDING', NOW(), ?)
+          // Insert book draft (AUTO_INCREMENT will handle ID)
+          const insertDraftSql = `
+            INSERT INTO PUBLISHER_BOOK_DRAFT 
+            (TITLE, ISBN, PAGE_COUNT, LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE, REQUEST_ID)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `;
-          
-          const notes = `New book contribution request: ${title}`;
-          
-          db.query(insertRequestSql, [requestId, publisherId, notes], (err) => {
+              
+          db.query(insertDraftSql, [
+            title, isbn, page_count, language || 'English', 
+            edition || '1st', price, stock_quantity, description, 
+            cover_url, genre, requestId
+          ], (err, draftResult) => {
             if (err) {
               return db.rollback(() => {
-                res.status(500).json({ message: 'Error creating request' });
+                res.status(500).json({ message: 'Error creating book draft' });
               });
             }
 
-            // Get next book draft ID
-            const getMaxDraftIdSql = 'SELECT COALESCE(MAX(ID), 0) + 1 as next_id FROM PUBLISHER_BOOK_DRAFT';
+            const draftId = draftResult.insertId; // Get auto-generated draft ID
+
+            // Create notification for all admins
+            const notificationSql = `
+              INSERT INTO NOTIFICATIONS (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT)
+              SELECT a.USER_ID, 
+                     CONCAT('New book contribution request: "', ?, '" by ', p.NAME), 
+                     'SYSTEM', 
+                     0, 
+                     NOW()
+              FROM ADMIN a
+              CROSS JOIN PUBLISHER p
+              WHERE p.ID = ?
+            `;
             
-            db.query(getMaxDraftIdSql, (err, draftIdResults) => {
+            db.query(notificationSql, [title, publisherId], (err) => {
               if (err) {
-                return db.rollback(() => {
-                  res.status(500).json({ message: 'Error generating draft ID' });
-                });
+                console.error('Error creating notification:', err);
+                // Don't rollback for notification error, just log it
               }
 
-              const draftId = draftIdResults[0].next_id;
-
-              // Insert book draft
-              const insertDraftSql = `
-                INSERT INTO PUBLISHER_BOOK_DRAFT 
-                (ID, TITLE, ISBN, PAGE_COUNT, LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE, REQUEST_ID)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-              `;
-              
-              db.query(insertDraftSql, [
-                draftId, title, isbn, page_count, language || 'English', 
-                edition || '1st', price, stock_quantity, description, 
-                cover_url, genre, requestId
-              ], (err) => {
+              // Commit transaction
+              db.commit((err) => {
                 if (err) {
                   return db.rollback(() => {
-                    res.status(500).json({ message: 'Error creating book draft' });
+                    res.status(500).json({ message: 'Error committing transaction' });
                   });
                 }
 
-                // Create notification for all admins
-                const notificationSql = `
-                  INSERT INTO NOTIFICATIONS (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT)
-                  SELECT a.USER_ID, 
-                         CONCAT('New book contribution request: "', ?, '" by ', p.NAME), 
-                         'SYSTEM', 
-                         0, 
-                         NOW()
-                  FROM ADMIN a
-                  CROSS JOIN PUBLISHER p
-                  WHERE p.ID = ?
-                `;
-                
-                db.query(notificationSql, [title, publisherId], (err) => {
-                  if (err) {
-                    console.error('Error creating notification:', err);
-                    // Don't rollback for notification error, just log it
-                  }
-
-                  // Commit transaction
-                  db.commit((err) => {
-                    if (err) {
-                      return db.rollback(() => {
-                        res.status(500).json({ message: 'Error committing transaction' });
-                      });
-                    }
-
-                    res.json({ 
-                      message: 'Book contribution request submitted successfully',
-                      request_id: requestId,
-                      draft_id: draftId
-                    });
-                  });
+                res.json({ 
+                  message: 'Book contribution request submitted successfully',
+                  request_id: requestId,
+                  draft_id: draftId
                 });
               });
             });

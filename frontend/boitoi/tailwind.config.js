@@ -21,19 +21,19 @@ export default {
           900: '#762912',
           950: '#401207',
         },
-        // Secondary colors - complementary teal/blue-green
+        // Secondary colors - harmonized with primary (deeper amber/burnt orange)
         secondary: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
-          950: '#042f2e',
+          50: '#fef6ee',
+          100: '#fdeadc',
+          200: '#fbd1b8',
+          300: '#f7b189',
+          400: '#f28958',
+          500: '#ee6935',
+          600: '#df4f1f',
+          700: '#b93c1b',
+          800: '#94321e',
+          900: '#762b1c',
+          950: '#40140b',
         },
         // Neutral colors - warm grays
         neutral: {
@@ -49,12 +49,12 @@ export default {
           900: '#1c1917',
           950: '#0c0a09',
         },
-        // Accent colors
+        // Accent colors - variations of primary theme
         accent: {
-          gold: '#f59e0b',
-          emerald: '#10b981',
-          rose: '#f43f5e',
-          amber: '#f97316',
+          gold: '#f59e0b',      // Slightly more yellow-gold (similar to your primary but more golden)
+          emerald: '#ea580c',   // Orange-red variation of your primary
+          rose: '#dc2626',      // Deep red that complements orange
+          amber: '#ec6b16',     // Your primary color as amber accent
         }
       },
       fontFamily: {

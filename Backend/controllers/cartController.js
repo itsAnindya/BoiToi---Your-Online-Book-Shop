@@ -621,39 +621,26 @@ const placeOrder = async (req, res) => {
       const itemCount = cartItems.length;
       const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-      // Get current order count to generate new order ID
-      const getOrderCountSql = 'SELECT COUNT(*) as count FROM `order`';
+      // Insert into order table (AUTO_INCREMENT will handle ID)
+      const insertOrderSql = `
+        INSERT INTO \`order\` (USER_ID, ORDERD_AT, SHIPPING_ADDRESS, ORDER_STATUS, SHIPPING_FEE, TOTAL_AMOUNT) 
+        VALUES (?, NOW(), ?, 'pending', 0.00, ?)
+      `;
       
-      db.query(getOrderCountSql, [], (err, countResult) => {
+      // Default shipping address (you might want to get this from user profile or request)
+      const defaultShippingAddress = 'To be provided by customer';
+      
+      db.query(insertOrderSql, [user_id, defaultShippingAddress, totalAmount], (err, orderResult) => {
         if (err) {
-          console.error('Database error during order count fetch:', err);
+          console.error('Database error during order insertion:', err);
           return res.status(500).json({ 
             success: false,
-            message: 'Server error during order processing' 
+            message: 'Server error during order creation' 
           });
         }
 
-        // Generate order ID: total rows + 1000
-        const orderId = countResult[0].count + 1000;
+        const orderId = orderResult.insertId; // Get auto-generated order ID
         const orderIdString = `ORD${orderId}`;
-
-        // Insert into order table
-        const insertOrderSql = `
-          INSERT INTO \`order\` (ID, USER_ID, ORDERD_AT, SHIPPING_ADDRESS, ORDER_STATUS, SHIPPING_FEE, TOTAL_AMOUNT) 
-          VALUES (?, ?, NOW(), ?, 'pending', 0.00, ?)
-        `;
-        
-        // Default shipping address (you might want to get this from user profile or request)
-        const defaultShippingAddress = 'To be provided by customer';
-        
-        db.query(insertOrderSql, [orderId, user_id, defaultShippingAddress, totalAmount], (err, orderResult) => {
-          if (err) {
-            console.error('Database error during order insertion:', err);
-            return res.status(500).json({ 
-              success: false,
-              message: 'Server error during order creation' 
-            });
-          }
 
           // Insert order items into order_book table
           let completedInserts = 0;
@@ -720,7 +707,6 @@ const placeOrder = async (req, res) => {
           });
         });
       });
-    });
 
   } catch (error) {
     console.error('Unexpected error in placeOrder:', error);

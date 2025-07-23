@@ -1,7 +1,7 @@
 const db = require('../config/database');
 
 const getBookById = (req, res) => {
-  const bookId = req.params.bookId;
+  const { bookId } = req.params;
   console.log(`Fetching book with ID: ${bookId}`);
 
   const query = `

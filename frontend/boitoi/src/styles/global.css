@@ -9,13 +9,13 @@
   padding: 0;
 }
 
-/* Root variables for easy theming */
+/* Root variables for easy theming - Updated to harmonize with primary orange theme */
 :root {
-  --primary-color: #2d6cdf;
-  --secondary-color: #f5f7fa;
-  --accent-color: #ff00cc;
-  --text-color: #222;
-  --background-color: #fff;
+  --primary-color: #ec6b16;       /* Your primary orange */
+  --secondary-color: #fef6ee;     /* Light secondary from your palette */
+  --accent-color: #ee6935;        /* Your secondary 500 as accent */
+  --text-color: #1c1917;          /* Warm dark from neutral palette */
+  --background-color: #fafaf9;    /* Warm light from neutral palette */
   --border-radius: 4px;
   --font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
@@ -67,7 +67,7 @@ button:hover, button:focus {
 /* Forms */
 input, textarea, select {
   font-family: inherit;
-  border: 1px solid #ccc;
+  border: 1px solid #d6d3d1;  /* Warm neutral instead of #ccc */
   border-radius: var(--border-radius);
   padding: 0.5em;
   outline: none;
@@ -110,15 +110,15 @@ table {
 }
 th, td {
   padding: 0.75em;
-  border: 1px solid #eaeaea;
+  border: 1px solid #e7e5e4;  /* Warm neutral instead of #eaeaea */
 }
 
 /* Scrollbar styling (optional) */
 ::-webkit-scrollbar {
   width: 8px;
-  background: #f1f1f1;
+  background: #f5f5f4;  /* Warm neutral instead of #f1f1f1 */
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d1d1;
+  background: #a8a29e;  /* Warm neutral instead of #d1d1d1 */
   border-radius: 4px;
 }

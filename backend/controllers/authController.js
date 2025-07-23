@@ -132,92 +132,69 @@ const signup = async (req, res) => {
         return res.status(409).json({ message: 'Username or email already exists' });
       }
 
-      // Get new user ID
-      const countUserSql = 'SELECT COUNT(*) AS count FROM USER';
-      
-      db.query(countUserSql, async (err, countResult) => {
+      // Hash password and insert new user (AUTO_INCREMENT will handle ID)
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const insertUserSql = `
+        INSERT INTO USER (
+          USERNAME, EMAIL, PASSWORD_HASH, FIRST_NAME, LAST_NAME, PHONE,
+          CREATED_AT, LAST_ACTIVE, IS_ACTIVE, GENDER, BIRTHDAY
+        ) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)
+      `;
+
+      const userValues = [
+        username,
+        email,
+        hashedPassword,
+        first_name || null,
+        last_name || null,
+        phone || null,
+        0, // is_active initial value
+        gender || 'UNSPECIFIED',
+        birthday || null
+      ];
+
+      db.query(insertUserSql, userValues, (err, userResult) => {
         if (err) {
-          console.error('Error counting users:', err);
-          return res.status(500).json({ message: 'Server error counting users' });
+          console.error('Error inserting user:', err);
+          return res.status(500).json({ message: 'Server error inserting user' });
         }
+        
+        const userId = userResult.insertId; // Get auto-generated user ID
 
-        const id = countResult[0].count + 1;
-        const hashedPassword = await bcrypt.hash(password, 10);
+          // Insert address (AUTO_INCREMENT will handle ID)
+          const insertAddressSql = `
+            INSERT INTO USER_ADDRESS (
+              USER_ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          `;
 
-        // Insert new user
-        const insertUserSql = `
-          INSERT INTO USER (
-            ID, USERNAME, EMAIL, PASSWORD_HASH, FIRST_NAME, LAST_NAME, PHONE,
-            CREATED_AT, LAST_ACTIVE, IS_ACTIVE, GENDER, BIRTHDAY
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)
-        `;
+          const addressValues = [
+            userId,
+            address_type,
+            address,
+            city,
+            state,
+            country,
+            zipCode,
+            1 // IS_DEFAULT always 1
+          ];
 
-        const userValues = [
-          id,
-          username,
-          email,
-          hashedPassword,
-          first_name || null,
-          last_name || null,
-          phone || null,
-          0, // is_active initial value
-          gender || 'UNSPECIFIED',
-          birthday || null
-        ];
-
-        db.query(insertUserSql, userValues, (err) => {
-          if (err) {
-            console.error('Error inserting user:', err);
-            return res.status(500).json({ message: 'Server error inserting user' });
-          }
-          
-          // Get new address ID
-          const countAddressSql = 'SELECT COUNT(*) AS count FROM USER_ADDRESS';
-          
-          db.query(countAddressSql, (err, addressCountResult) => {
+          db.query(insertAddressSql, addressValues, (err, addressResult) => {
             if (err) {
-              console.error('Error counting user addresses:', err);
-              return res.status(500).json({ message: 'Server error counting addresses' });
+              console.error('Error inserting address:', err);
+              return res.status(500).json({ message: 'Server error inserting address' });
             }
-
-            const userAddressId = addressCountResult[0].count + 1;
-
-            // Insert address
-            const insertAddressSql = `
-              INSERT INTO USER_ADDRESS (
-                ID, USER_ID, ADDRESS_TYPE, ADDRESS, CITY, STATE, COUNTRY, ZIP_CODE, IS_DEFAULT
-              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `;
-
-            const addressValues = [
-              userAddressId,
-              id,
-              address_type,
-              address,
-              city,
-              state,
-              country,
-              zipCode,
-              1 // IS_DEFAULT always 1
-            ];
-
-            db.query(insertAddressSql, addressValues, (err) => {
-              if (err) {
-                console.error('Error inserting address:', err);
-                return res.status(500).json({ message: 'Server error inserting address' });
-              }
-              
-              console.log(`User ${username} successfully registered with ID: ${id}`);
-              res.status(201).json({ 
-                message: 'Signup successful',
-                userId: id,
-                username: username
-              });
+            
+            console.log(`User ${username} successfully registered with ID: ${userId}`);
+            res.status(201).json({ 
+              message: 'Signup successful',
+              userId: userId,
+              username: username
             });
           });
         });
       });
-    });
   } catch (error) {
     console.error('Signup error:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -316,37 +293,26 @@ const publisherSignup = async (req, res) => {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Get next publisher ID
-      const maxIdSql = 'SELECT MAX(ID) as maxId FROM PUBLISHER';
+      // Insert publisher (AUTO_INCREMENT will handle ID)
+      const insertSql = `
+        INSERT INTO PUBLISHER (NAME, EMAIL, PHONE, PASSWORD_HASH, ADDRESS, CITY, STATE, COUNTRY, WEBSITE, CREATED_AT, STATUS)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'ACTIVE')
+      `;
       
-      db.query(maxIdSql, (err, results) => {
+      const values = [name, email, phone, hashedPassword, address, city, state, country, website];
+
+      db.query(insertSql, values, (err, result) => {
         if (err) {
-          console.error('Error getting max publisher ID:', err);
-          return res.status(500).json({ message: 'Server error getting max ID' });
+          console.error('Error inserting publisher:', err);
+          return res.status(500).json({ message: 'Server error inserting publisher' });
         }
-
-        const id = (results[0].maxId || 0) + 1;
-
-        // Insert publisher
-        const insertSql = `
-          INSERT INTO PUBLISHER (ID, NAME, EMAIL, PHONE, PASSWORD_HASH, ADDRESS, CITY, STATE, COUNTRY, WEBSITE, CREATED_AT, STATUS)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'ACTIVE')
-        `;
         
-        const values = [id, name, email, phone, hashedPassword, address, city, state, country, website];
-
-        db.query(insertSql, values, (err) => {
-          if (err) {
-            console.error('Error inserting publisher:', err);
-            return res.status(500).json({ message: 'Server error inserting publisher' });
-          }
-          
-          console.log(`Publisher ${name} successfully registered with ID: ${id}`);
-          res.status(201).json({ 
-            message: 'Publisher signup successful',
-            publisherId: id,
-            name: name
-          });
+        const publisherId = result.insertId; // Get auto-generated ID
+        console.log(`Publisher ${name} successfully registered with ID: ${publisherId}`);
+        res.status(201).json({ 
+          message: 'Publisher signup successful',
+          publisherId: publisherId,
+          name: name
         });
       });
     });
