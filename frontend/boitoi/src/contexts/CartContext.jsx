@@ -97,6 +97,11 @@ export const CartProvider = ({ children }) => {
     };
   };
 
+  // Check if user can access cart (exclude publishers)
+  const canAccessCart = (user) => {
+    return user && user.id && user.role !== 'publisher';
+  };
+
   // Load cart from API with rate limiting
   const loadCart = useCallback(async (userId) => {
     if (!userId) return;
@@ -148,11 +153,11 @@ export const CartProvider = ({ children }) => {
   const refreshCart = useCallback(() => {
     console.log('RefreshCart called');
     const user = getCurrentUser();
-    if (user.id) {
+    if (canAccessCart(user)) {
       console.log('Refreshing cart for user:', user.id);
       loadCart(user.id);
     } else {
-      console.log('No user found, clearing cart');
+      console.log('User cannot access cart (not logged in or is publisher), clearing cart');
       dispatch({ type: CART_ACTIONS.CLEAR_CART });
     }
   }, [loadCart]);
@@ -160,7 +165,7 @@ export const CartProvider = ({ children }) => {
   // Load cart on mount and when user changes
   useEffect(() => {
     const user = getCurrentUser();
-    if (user.id) {
+    if (canAccessCart(user)) {
       loadCart(user.id);
     }
   }, []); // Remove loadCart dependency to prevent infinite loop
@@ -174,7 +179,7 @@ export const CartProvider = ({ children }) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         const user = getCurrentUser();
-        if (user.id) {
+        if (canAccessCart(user)) {
           console.log('Storage change detected, loading cart for user:', user.id);
           loadCart(user.id);
         } else {
@@ -190,7 +195,7 @@ export const CartProvider = ({ children }) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         const user = getCurrentUser();
-        if (user.id) {
+        if (canAccessCart(user)) {
           loadCart(user.id);
         } else {
           dispatch({ type: CART_ACTIONS.CLEAR_CART });
@@ -214,9 +219,13 @@ export const CartProvider = ({ children }) => {
   // Add item to cart
   const addToCart = async (book, quantity = 1) => {
     const user = getCurrentUser();
-    if (!user.id) {
-      toast.error('Please login to add items to cart');
-      return;
+    if (!canAccessCart(user)) {
+      if (user.role === 'publisher') {
+        toast.error('Publishers cannot add items to cart. Please login with a customer account to purchase books.');
+      } else {
+        toast.error('Please login to add items to cart');
+      }
+      return false;
     }
 
     try {
@@ -225,7 +234,7 @@ export const CartProvider = ({ children }) => {
       
       if (!result.success) {
         toast.error(result.error || 'Failed to add item to cart');
-        return;
+        return false;
       }
 
       // Update local state only if API call succeeds
@@ -240,9 +249,11 @@ export const CartProvider = ({ children }) => {
       
       dispatch({ type: CART_ACTIONS.ADD_ITEM, payload: cartItem });
       toast.success(`Added "${book.title}" to cart`);
+      return true;
     } catch (error) {
       console.error('Error adding item to cart:', error);
       toast.error(error.message || 'Failed to add item to cart');
+      return false;
     }
   };
 
@@ -262,8 +273,12 @@ export const CartProvider = ({ children }) => {
   // Remove item from cart
   const removeFromCart = async (bookId) => {
     const user = getCurrentUser();
-    if (!user.id) {
-      toast.error('Please login to remove items from cart');
+    if (!canAccessCart(user)) {
+      if (user.role === 'publisher') {
+        toast.error('Publishers cannot modify cart items.');
+      } else {
+        toast.error('Please login to remove items from cart');
+      }
       return;
     }
 
@@ -311,6 +326,7 @@ export const CartProvider = ({ children }) => {
     getCartTotal,
     getCartItemsCount,
     getCurrentUser,
+    canAccessCart,
   };
 
   return (

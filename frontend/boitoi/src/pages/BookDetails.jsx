@@ -302,12 +302,14 @@ const BookDetails = ({ username }) => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-white rounded-3xl p-8 max-w-md mx-4 transform animate-scale-in shadow-2xl border border-neutral-200">
             {/* Close button */}
-            <button
+            <Button
               onClick={closeSuccessDialog}
-              className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600 transition-colors p-2 hover:bg-neutral-100 rounded-full"
+              variant="ghost"
+              size="sm"
+              className="absolute top-6 right-6 rounded-full"
             >
               <X className="w-6 h-6" />
-            </button>
+            </Button>
 
             {/* Success content */}
             <div className="text-center pt-4">

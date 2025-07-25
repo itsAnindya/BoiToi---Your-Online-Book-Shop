@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { saveCart, placeOrder } from '../services/cartApi';
-import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
+import { FaPlus, FaMinus, FaTrash, FaSave, FaShoppingBag, FaArrowLeft, FaTimes, FaCheckCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { BackToHomeButton } from '../components/ui/Button';
+import Button, { BackToHomeButton } from '../components/ui/Button';
 import { FaShoppingCart } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -337,12 +337,14 @@ const CartPage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-white rounded-2xl p-8 max-w-lg mx-4 transform animate-scale-in shadow-2xl">
             {/* Close button */}
-            <button
+            <Button
               onClick={closeOrderConfirmation}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 right-4 rounded-full"
             >
               <FaTimes className="w-6 h-6" />
-            </button>
+            </Button>
 
             {/* Success content */}
             <div className="text-center">

@@ -13,7 +13,7 @@ const NavBar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   
-  const { getCartItemsCount, getCurrentUser, clearCart } = useCart();
+  const { getCartItemsCount, getCurrentUser, clearCart, canAccessCart } = useCart();
   const { 
     notifications, 
     unreadCount, 
@@ -31,6 +31,7 @@ const NavBar = () => {
   const cartItemsCount = getCartItemsCount();
   const user = getCurrentUser();
   const isLoggedIn = user && user.id;
+  const canShowCart = canAccessCart(user);
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -193,8 +194,9 @@ const NavBar = () => {
                           </div>
                           <Button
                             onClick={(e) => handleDeleteNotification(notification.ID, e)}
-                            variant='outline'
+                            variant="danger"
                             size="xs"
+                            className="rounded-full"
                           >
                             <FaTimes className="text-xs" />
                           </Button>
@@ -207,7 +209,7 @@ const NavBar = () => {
             )}
           </div>
 
-          {isLoggedIn && (
+          {canShowCart && (
             <Button
               onClick={() => navigate('/cart')}
               variant="ghost"
@@ -375,8 +377,9 @@ const NavBar = () => {
                           </div>
                           <Button
                             onClick={(e) => handleDeleteNotification(notification.ID, e)}
-                            variant="outline"
+                            variant="danger"
                             size="xs"
+                            className="rounded-full"
                           >
                             <FaTimes className="text-xs" />
                           </Button>
@@ -403,7 +406,7 @@ const NavBar = () => {
                 )}
               </Button>
 
-              {isLoggedIn && (
+              {canShowCart && (
                 <Button
                   onClick={() => navigate('/cart')}
                   variant="ghost"

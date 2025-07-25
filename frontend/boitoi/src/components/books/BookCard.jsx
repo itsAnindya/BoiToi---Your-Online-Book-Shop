@@ -14,7 +14,7 @@ const BookCard = memo(({ book, rank }) => {
     e.target.src = BOOK_CONSTANTS.PLACEHOLDER_IMAGE;
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     // Transform book data to match cart expectations
     const cartBook = {
       id: book.ID,
@@ -25,7 +25,7 @@ const BookCard = memo(({ book, rank }) => {
       thumbnail: book.COVER_URL || BOOK_CONSTANTS.PLACEHOLDER_IMAGE,
     };
     
-    const success = addToCart(cartBook, 1);
+    const success = await addToCart(cartBook, 1);
     if (success) {
       setShowSuccessDialog(true);
     }
@@ -85,14 +85,16 @@ const BookCard = memo(({ book, rank }) => {
       {/* Success Dialog */}
       {showSuccessDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-2xl p-8 max-w-md mx-4 transform animate-scale-in shadow-2xl">
+          <div className="bg-white rounded-2xl p-8 max-w-md mx-4 transform animate-scale-in shadow-2xl relative">
             {/* Close button */}
-            <button
+            <Button
               onClick={closeSuccessDialog}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 right-4 rounded-full z-10"
             >
-              <X className="w-6 h-6" />
-            </button>
+              <X className="w-5 h-5" />
+            </Button>
 
             {/* Success content */}
             <div className="text-center">
