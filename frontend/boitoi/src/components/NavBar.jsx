@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
-import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog, FaUserShield, FaBell, FaBook } from 'react-icons/fa';
+import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog, FaUserShield, FaBell, FaBook, FaClipboardList } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useNotifications } from '../contexts/NotificationContext';
@@ -248,6 +248,16 @@ const NavBar = () => {
                     <span className="text-gray-800">Account Settings</span>
                   </Link>
 
+                  {/* My Orders - Available for all users */}
+                  <Link
+                    to="/orders"
+                    className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 transition-colors"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <FaClipboardList className="mr-3 text-blue-600" />
+                    <span className="text-gray-800">My Orders</span>
+                  </Link>
+
                   {/* Admin Control Panel - Only show for admins */}
                   {user.role === 'admin' && (
                     <Link
@@ -435,6 +445,16 @@ const NavBar = () => {
                   >
                     <FaCog />
                     <span>Account Settings</span>
+                  </Link>
+
+                  {/* My Orders - Mobile */}
+                  <Link
+                    to="/orders"
+                    className="flex items-center justify-center space-x-2 p-2 hover:bg-slate-700 rounded text-white"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaClipboardList />
+                    <span>My Orders</span>
                   </Link>
 
                   {/* Admin Control Panel - Mobile */}

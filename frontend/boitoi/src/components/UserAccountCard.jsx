@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaUser, FaCog, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
+import { FaUser, FaCog, FaSignOutAlt, FaUserShield, FaClipboardList } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import toast from 'react-hot-toast';
@@ -38,6 +38,15 @@ const UserAccountCard = ({ onLogout }) => {
         >
           <FaCog className="text-primary-600" />
           <span>Account Settings</span>
+        </Link>
+
+        {/* My Orders - Available for all users */}
+        <Link
+          to="/orders"
+          className="flex items-center space-x-3 p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors"
+        >
+          <FaClipboardList className="text-blue-600" />
+          <span>My Orders</span>
         </Link>
 
         {/* Admin Control Panel - Only show for admins */}

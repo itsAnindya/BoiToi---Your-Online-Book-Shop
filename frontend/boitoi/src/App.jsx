@@ -14,6 +14,7 @@ import PublisherAuth from './pages/PublisherAuth'
 import PublisherDashboard from './pages/PublisherDashboard'
 import PublisherBookSubmission from './pages/PublisherBookSubmission'
 import PublisherLoginPage from './pages/PublisherLoginPage'
+import MyOrders from './pages/MyOrders'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/cart-test" element={<CartTestPage />} />
                 <Route path="/profile" element={<UserProfilePage />} />
+                <Route path="/orders" element={<MyOrders />} />
                 <Route path="/admin" element={<AdminControlPanel />} />
                 <Route path="/admin/book-requests" element={<BookRequestsManagement />} />
                 <Route path="/notifications-test" element={<NotificationTestPage />} />
