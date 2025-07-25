@@ -1,4 +1,6 @@
 
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./config/database');
@@ -20,7 +22,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api', healthRoutes);
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
-app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/orders', require('./routes/orderRoute'));
 app.use('/api/publisher', publisherRoutes);
 app.use('/api/admin', adminBookRequestRoutes);
 
