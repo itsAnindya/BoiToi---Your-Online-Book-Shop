@@ -150,7 +150,14 @@ const AuthPage = () => {
   };
 
   const toggleAuthMode = () => {
-    setIsLogin(!isLogin);
+    const newIsLogin = !isLogin;
+    setIsLogin(newIsLogin);
+    
+    // If switching to signup, force user type to 'user' and disable publisher option
+    if (!newIsLogin) {
+      setUserType('user');
+    }
+    
     setFormData({
       username: '',
       firstName: '',
@@ -219,7 +226,7 @@ const AuthPage = () => {
         </div>
 
         {/* User Type Toggle */}
-        <div className="flex bg-neutral-100 p-1 rounded-xl mb-8 gap-1">
+        <div className="flex bg-neutral-100 p-1 rounded-xl mb-2 gap-1">
           <Button
             onClick={() => setUserType('user')}
             variant={userType === 'user' ? 'authToggleActive' : 'authToggle'}
@@ -232,11 +239,21 @@ const AuthPage = () => {
             onClick={() => setUserType('publisher')}
             variant={userType === 'publisher' ? 'authToggleActive' : 'authToggle'}
             size="md"
-            className="flex-1"
+            className={`flex-1 ${isLogin ? '' : 'opacity-50 cursor-not-allowed'}`}
+            disabled={!isLogin}
           >
             Publisher
           </Button>
         </div>
+        
+        {/* Publisher signup notice */}
+        {!isLogin && (
+          <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-700 text-sm text-center">
+              Publisher registration requires approval. Please contact support or use the publisher login for existing accounts.
+            </p>
+          </div>
+        )}
 
         {/* Form */}
         <div className="space-y-6">
