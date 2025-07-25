@@ -172,7 +172,7 @@ const NavBar = () => {
                       <div
                         key={notification.ID}
                         className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${
-                          !notification.IS_READ ? 'bg-blue-50' : ''
+                          notification.IS_READ ? '' : 'bg-blue-50'
                         }`}
                         onClick={() => handleNotificationItemClick(notification)}
                       >

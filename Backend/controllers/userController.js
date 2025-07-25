@@ -348,13 +348,13 @@ const updateUserAddress = async (req, res) => {
   try {
     const { userId, addressId } = req.params;
     const {
-      addressType,
+      address_type,
       address,
       city,
       state,
       country,
-      zipCode,
-      isDefault
+      zip_code,
+      is_default
     } = req.body;
 
     if (!userId) {
@@ -382,9 +382,9 @@ const updateUserAddress = async (req, res) => {
         const updateFields = [];
         const updateValues = [];
 
-        if (addressType !== undefined) {
+        if (address_type !== undefined) {
           updateFields.push('ADDRESS_TYPE = ?');
-          updateValues.push(addressType);
+          updateValues.push(address_type);
         }
         if (address !== undefined) {
           updateFields.push('ADDRESS = ?');
@@ -402,13 +402,13 @@ const updateUserAddress = async (req, res) => {
           updateFields.push('COUNTRY = ?');
           updateValues.push(country);
         }
-        if (zipCode !== undefined) {
+        if (zip_code !== undefined) {
           updateFields.push('ZIP_CODE = ?');
-          updateValues.push(zipCode);
+          updateValues.push(zip_code);
         }
-        if (isDefault !== undefined) {
+        if (is_default !== undefined) {
           updateFields.push('IS_DEFAULT = ?');
-          updateValues.push(isDefault);
+          updateValues.push(is_default);
         }
 
         if (updateFields.length === 0) {
@@ -434,8 +434,8 @@ const updateUserAddress = async (req, res) => {
         });
       } else {
         // Create new address
-        if (!addressType || !address || !city || !state || !country || !zipCode) {
-          return res.status(400).json({ message: 'All address fields are required for new address' });
+        if (!address_type || !address || !city || !state || !country) {
+          return res.status(400).json({ message: 'Address type, address, city, state, and country are required for new address' });
         }
 
         // Insert new address (AUTO_INCREMENT will handle ID)
@@ -447,13 +447,13 @@ const updateUserAddress = async (req, res) => {
 
         const addressValues = [
           userId,
-          addressType,
+          address_type,
           address,
           city,
           state,
           country,
-          zipCode,
-          isDefault || 0
+          zip_code,
+          is_default || 0
         ];
 
         db.query(insertAddressSql, addressValues, (err, result) => {
