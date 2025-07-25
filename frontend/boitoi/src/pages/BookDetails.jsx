@@ -295,7 +295,7 @@ const BookDetails = ({ username }) => {
                 </div>
                 
                 <div className="prose prose-neutral max-w-none">
-                  <p className="text-lg text-neutral-700 leading-relaxed">{book.DESCRIPTION}</p>
+                  <p className="text-lg text-neutral-700 leading-relaxed text-left">{book.DESCRIPTION}</p>
                 </div>
               </div>
 
@@ -394,7 +394,7 @@ const BookDetails = ({ username }) => {
                             </div>
                             
                             {review.COMMENT && (
-                              <p className="text-neutral-700 leading-relaxed">{review.COMMENT}</p>
+                              <p className="text-neutral-700 leading-relaxed text-left">{review.COMMENT}</p>
                             )}
                           </div>
                         </div>
