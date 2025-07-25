@@ -6,7 +6,7 @@
   "editor.foldingHighlight": true,
   "editor.fontFamily": "JetBrains Mono, Consolas, 'Courier New', monospace",
   "editor.fontSize": 10,
-  "editor.fontWeight": "bold",
+  "editor.fontWeight": "500",
   "editor.lineHeight": 20,
   "editor.tabSize": 2,
   // "editor.wordWrap": "on",

@@ -3,6 +3,7 @@ import { BookOpen } from 'lucide-react';
 import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog, FaUserShield, FaBell, FaBook } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { useNotifications } from '../contexts/NotificationContext';
 import Button from './ui/Button';
 import toast from 'react-hot-toast';
 
@@ -11,19 +12,25 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: "Welcome to BoiToi!", type: "info", read: false },
-    { id: 2, message: "New books added to your wishlist category", type: "success", read: false },
-    { id: 3, message: "Your order has been shipped", type: "info", read: true },
-  ]);
+  
   const { getCartItemsCount, getCurrentUser, clearCart } = useCart();
+  const { 
+    notifications, 
+    unreadCount, 
+    isLoading: notificationsLoading,
+    markAsRead, 
+    markAllAsRead, 
+    deleteNotification,
+    getNotificationTypeInfo,
+    formatNotificationDate 
+  } = useNotifications();
+  
   const userMenuRef = useRef(null);
   const notificationRef = useRef(null);
 
   const cartItemsCount = getCartItemsCount();
   const user = getCurrentUser();
   const isLoggedIn = user && user.id;
-  const unreadNotifications = notifications.filter(n => !n.read).length;
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -67,26 +74,15 @@ const NavBar = () => {
     setShowNotifications(!showNotifications);
   };
 
-  const markAsRead = (notificationId) => {
-    setNotifications(prev =>
-      prev.map(notification =>
-        notification.id === notificationId
-          ? { ...notification, read: true }
-          : notification
-      )
-    );
+  const handleNotificationItemClick = async (notification) => {
+    if (!notification.IS_READ) {
+      await markAsRead(notification.ID);
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications(prev =>
-      prev.map(notification => ({ ...notification, read: true }))
-    );
-  };
-
-  const clearNotification = (notificationId) => {
-    setNotifications(prev =>
-      prev.filter(notification => notification.id !== notificationId)
-    );
+  const handleDeleteNotification = async (notificationId, event) => {
+    event.stopPropagation();
+    await deleteNotification(notificationId);
   };
 
   const navItems = [
@@ -136,9 +132,9 @@ const NavBar = () => {
               className="relative text-white hover:text-slate-200 bg-transparent hover:bg-slate-700"
             >
               <FaBell className="text-xl group-hover:text-slate-200" />
-              {unreadNotifications > 0 && (
+              {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow-lg">
-                  {unreadNotifications > 99 ? '99+' : unreadNotifications}
+                  {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
             </Button>
@@ -148,7 +144,7 @@ const NavBar = () => {
               <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-200 max-h-96 overflow-y-auto">
                 <div className="px-4 py-2 border-b border-gray-200 flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-gray-800">Notifications</h3>
-                  {unreadNotifications > 0 && (
+                  {unreadCount > 0 && (
                     <Button
                       onClick={markAllAsRead}
                       variant="primary"
@@ -159,43 +155,53 @@ const NavBar = () => {
                   )}
                 </div>
 
-                {notifications.length === 0 ? (
+                {notificationsLoading ? (
+                  <div className="px-4 py-8 text-center text-gray-500 text-sm">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-400 mx-auto"></div>
+                    <p className="mt-2">Loading notifications...</p>
+                  </div>
+                ) : notifications.length === 0 ? (
                   <div className="px-4 py-8 text-center text-gray-500 text-sm">
                     No notifications yet
                   </div>
                 ) : (
-                  notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${notification.read ? '' : 'bg-gray-50'
+                  notifications.map((notification) => {
+                    const typeInfo = getNotificationTypeInfo(notification.TYPE);
+                    return (
+                      <div
+                        key={notification.ID}
+                        className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${
+                          !notification.IS_READ ? 'bg-blue-50' : ''
                         }`}
-                      onClick={() => markAsRead(notification.id)}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <p className="text-sm text-gray-800">{notification.message}</p>
-                          <div className="flex items-center mt-1">
-                            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${notification.type === 'success' ? 'bg-green-500' :
-                                notification.type === 'error' ? 'bg-red-500' : 'bg-indigo-500'
-                              }`}></span>
-                            <span className="text-xs text-gray-500">
-                              {notification.read ? 'Read' : 'Unread'}
-                            </span>
+                        onClick={() => handleNotificationItemClick(notification)}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center mb-1">
+                              <span className={`inline-block w-2 h-2 rounded-full mr-2 ${typeInfo.color}`}></span>
+                              <span className="text-xs text-gray-500">{typeInfo.label}</span>
+                              <span className="text-xs text-gray-400 ml-2">
+                                {formatNotificationDate(notification.CREATED_AT)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-800">{notification.MESSAGE}</p>
+                            <div className="flex items-center mt-1">
+                              <span className="text-xs text-gray-500">
+                                {notification.IS_READ ? 'Read' : 'Unread'}
+                              </span>
+                            </div>
                           </div>
+                          <Button
+                            onClick={(e) => handleDeleteNotification(notification.ID, e)}
+                            variant='outline'
+                            size="xs"
+                          >
+                            <FaTimes className="text-xs" />
+                          </Button>
                         </div>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearNotification(notification.id);
-                          }}
-                          // className="text-gray-400 hover:text-gray-600 ml-2"
-                          variant='outline'
-                        >
-                          <FaTimes className="text-xs" />
-                        </Button>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
             )}
@@ -320,7 +326,7 @@ const NavBar = () => {
               <div className="bg-white rounded-md shadow-lg mx-4 mb-4 border border-gray-200 max-h-64 overflow-y-auto">
                 <div className="px-4 py-2 border-b border-gray-200 flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-gray-800">Notifications</h3>
-                  {unreadNotifications > 0 && (
+                  {unreadCount > 0 && (
                     <Button
                       onClick={markAllAsRead}
                       variant="primary"
@@ -331,42 +337,53 @@ const NavBar = () => {
                   )}
                 </div>
 
-                {notifications.length === 0 ? (
+                {notificationsLoading ? (
+                  <div className="px-4 py-6 text-center text-gray-500 text-sm">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-400 mx-auto"></div>
+                    <p className="mt-2">Loading notifications...</p>
+                  </div>
+                ) : notifications.length === 0 ? (
                   <div className="px-4 py-6 text-center text-gray-500 text-sm">
                     No notifications yet
                   </div>
                 ) : (
-                  notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 ${notification.read ? '' : 'bg-gray-50'
+                  notifications.map((notification) => {
+                    const typeInfo = getNotificationTypeInfo(notification.TYPE);
+                    return (
+                      <div
+                        key={notification.ID}
+                        className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 ${
+                          notification.IS_READ ? '' : 'bg-blue-50'
                         }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <p className="text-sm text-gray-800">{notification.message}</p>
-                          <div className="flex items-center mt-1">
-                            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${notification.type === 'success' ? 'bg-green-500' :
-                                notification.type === 'error' ? 'bg-red-500' : 'bg-indigo-500'
-                              }`}></span>
-                            <span className="text-xs text-gray-500">
-                              {notification.read ? 'Read' : 'Unread'}
-                            </span>
+                        onClick={() => handleNotificationItemClick(notification)}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center mb-1">
+                              <span className={`inline-block w-2 h-2 rounded-full mr-2 ${typeInfo.color}`}></span>
+                              <span className="text-xs text-gray-500">{typeInfo.label}</span>
+                              <span className="text-xs text-gray-400 ml-2">
+                                {formatNotificationDate(notification.CREATED_AT)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-800">{notification.MESSAGE}</p>
+                            <div className="flex items-center mt-1">
+                              <span className="text-xs text-gray-500">
+                                {notification.IS_READ ? 'Read' : 'Unread'}
+                              </span>
+                            </div>
                           </div>
+                          <Button
+                            onClick={(e) => handleDeleteNotification(notification.ID, e)}
+                            variant="outline"
+                            size="xs"
+                          >
+                            <FaTimes className="text-xs" />
+                          </Button>
                         </div>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearNotification(notification.id);
-                          }}
-                          variant="outline"
-                          size="xs"
-                        >
-                          <FaTimes className="text-xs" />
-                        </Button>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
             )}
@@ -379,9 +396,9 @@ const NavBar = () => {
                 className="relative text-white hover:text-slate-200 bg-transparent hover:bg-slate-700 rounded-full"
               >
                 <FaBell />
-                {unreadNotifications > 0 && (
+                {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                    {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                    {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}
               </Button>
