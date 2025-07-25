@@ -75,161 +75,270 @@ const BookDetails = ({ username }) => {
 
   return (
     <DefaultLayout>
-      <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-
-        {/* Left: Cover + Rating + Comment */}
-        <div className="w-full">
-          <img
-            src={book.COVER_URL}
-            alt={book.TITLE}
-            className="max-w-[300px] w-full h-auto rounded shadow mb-4"
-          />
-
-          {/* Rating */}
-          <div className="mb-6">
-            <h2 className="font-semibold mb-1 ml-[-192px]">Rating:</h2>
-            <div className="flex items-center mb-2">
-              {[1, 2, 3, 4, 5].map((val) => (
-                <span
-                  key={val}
-                  className={`cursor-pointer text-2xl ${
-                    (hovered || rating) >= val ? 'text-yellow-400' : 'text-gray-400'
-                  }`}
-                  onClick={() => handleRatingClick(val)}
-                  onMouseEnter={() => setHovered(val)}
-                  onMouseLeave={() => setHovered(0)}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-            {!confirmedRating && rating > 0 && (
-              <Button
-                onClick={submitRating}
-                variant="primary"
-                size="sm"
-                className="mt-1"
-              >
-                Confirm Rating
-              </Button>
-            )}
-            {confirmedRating && (
-              <p className="text-green-600 mt-1">Rating submitted!</p>
-            )}
-          </div>
-
-          {/* Comment */}
-          <div>
-            <h2 className="font-semibold mb-1">Leave a Comment:</h2>
-            <textarea
-              className="w-full border rounded p-2 mb-2"
-              rows={4}
-              value={comment}
-              onChange={(e) => {
-                setComment(e.target.value);
-                setCommentConfirmed(false);
-              }}
-            />
-            {!commentConfirmed && comment.trim() && (
-              <Button
-                onClick={submitComment}
-                variant="success"
-                size="sm"
-              >
-                Submit Comment
-              </Button>
-            )}
-            {commentConfirmed && (
-              <p className="text-green-600 mt-1">Comment submitted!</p>
-            )}
-          </div>
-        </div>
-
-        {/* Right: Book Info */}
-        <div>
-          <h1 className="text-2xl font-bold mb-2">{book.TITLE}</h1>
-          <p className="mb-4 text-gray-800">{book.DESCRIPTION}</p>
-
-          <div className="mb-2">
-            <h2 className="font-semibold">Authors:</h2>
-            <ul className="list-disc list-inside ml-4 text-gray-700">
-              {book.AUTHORS?.split(' · ').map((name, idx) => (
-                <li key={idx}>{name}</li>
-              ))}
-            </ul>
-          </div>
-
-          <p><strong>Language:</strong> {book.LANGUAGE}</p>
-          <p><strong>Publisher:</strong> {book.PUBLISHER_NAME}</p>
-          <p><strong>Genre:</strong> {book.GENRE}</p>
-          <p><strong>ISBN:</strong> {book.ISBN}</p>
-          <p><strong>Added At:</strong> {book.ADDED_AT}</p>
+      {/* Modern Container with Proper Spacing */}
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-primary-50/20">
+        <div className="max-w-7xl mx-auto px-6 py-12">
           
-          {/* Price */}
-          <div className="mt-6 mb-4">
-            <span className="text-3xl font-bold text-green-600">
-              {formatPrice(book.PRICE)}
-            </span>
+          {/* Main Content - Modern Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-12">
+            {/* Left Column - Book Image and Rating (2/5 width) */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Book Cover with Modern Card Design */}
+              <div className="bg-white rounded-2xl shadow-soft p-8 border border-neutral-200">
+                <div className="flex justify-center mb-6">
+                  <div className="relative group">
+                    <img
+                      src={book.COVER_URL || BOOK_CONSTANTS.PLACEHOLDER_IMAGE}
+                      alt={book.TITLE}
+                      className="w-72 h-96 object-cover rounded-xl shadow-medium transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+                
+                {/* Quick Price Display */}
+                <div className="text-center border-t border-neutral-200 pt-6">
+                  <div className="text-4xl font-bold text-primary-600 mb-2">
+                    {formatPrice(book.PRICE)}
+                  </div>
+                  <p className="text-sm text-neutral-500">Free shipping over $50</p>
+                </div>
+              </div>
+
+              {/* Rating and Reviews - Modern Card */}
+              <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl shadow-soft p-8 border border-primary-100">
+                <h3 className="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-3">
+                  <Star className="w-6 h-6 text-primary-500" />
+                  Rate & Review
+                </h3>
+                
+                <div className="space-y-6">
+                  {/* Star Rating */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`w-10 h-10 cursor-pointer transition-all duration-200 hover:scale-110 ${
+                            star <= (hovered || rating)
+                              ? 'text-amber-400 fill-current drop-shadow-sm'
+                              : 'text-neutral-300 hover:text-amber-200'
+                          }`}
+                          onClick={() => handleRatingClick(star)}
+                          onMouseEnter={() => setHovered(star)}
+                          onMouseLeave={() => setHovered(0)}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-lg font-semibold text-neutral-700">
+                      {rating > 0 ? `${rating}/5` : 'Rate it!'}
+                    </span>
+                  </div>
+
+                  {/* Rating Confirmation */}
+                  {!confirmedRating && rating > 0 && (
+                    <Button
+                      onClick={submitRating}
+                      variant="primary"
+                      size="md"
+                      className="bg-primary-600 hover:bg-primary-700"
+                    >
+                      Confirm Rating
+                    </Button>
+                  )}
+                  {confirmedRating && (
+                    <div className="flex items-center gap-2 text-green-600">
+                      <CheckCircle className="w-5 h-5" />
+                      <span className="font-medium">Rating submitted!</span>
+                    </div>
+                  )}
+
+                  {/* Comment Section */}
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-neutral-800 text-lg">Share your thoughts</h4>
+                    <div className="relative">
+                      <textarea
+                        value={comment}
+                        onChange={(e) => {
+                          setComment(e.target.value);
+                          setCommentConfirmed(false);
+                        }}
+                        placeholder="What did you think of this book? Share your insights..."
+                        className="w-full p-4 border-2 border-neutral-200 rounded-xl resize-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white shadow-sm"
+                        rows="4"
+                      />
+                      <div className="absolute bottom-3 right-3 text-xs text-neutral-400">
+                        {comment.length}/500
+                      </div>
+                    </div>
+                    
+                    {!commentConfirmed && comment.trim() && (
+                      <Button
+                        onClick={submitComment}
+                        variant="success"
+                        size="lg"
+                        className="w-full bg-green-600 hover:bg-green-700"
+                      >
+                        Submit Review
+                      </Button>
+                    )}
+                    {commentConfirmed && (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="w-5 h-5" />
+                        <span className="font-medium">Comment submitted!</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Book Information (3/5 width) */}
+            <div className="lg:col-span-3 space-y-8">
+              {/* Book Header */}
+              <div className="bg-white rounded-2xl shadow-soft p-8 border border-neutral-200">
+                <div className="mb-6">
+                  <h1 className="text-4xl font-bold text-neutral-900 mb-4 leading-tight">{book.TITLE}</h1>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                      {book.GENRE}
+                    </span>
+                    <span className="text-neutral-500">•</span>
+                    <span className="text-neutral-600 font-medium">{book.LANGUAGE}</span>
+                  </div>
+                </div>
+                
+                <div className="prose prose-neutral max-w-none">
+                  <p className="text-lg text-neutral-700 leading-relaxed">{book.DESCRIPTION}</p>
+                </div>
+              </div>
+
+              {/* Book Details */}
+              <div className="bg-white rounded-2xl shadow-soft p-8 border border-neutral-200">
+                <h2 className="text-2xl font-bold text-neutral-900 mb-6">Book Details</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Authors */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-neutral-800 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                      Authors
+                    </h3>
+                    <div className="space-y-2">
+                      {book.AUTHORS?.split(' · ').map((name, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 bg-neutral-400 rounded-full"></div>
+                          <span className="text-neutral-700 font-medium">{name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Publisher Info */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-neutral-800 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-secondary-500 rounded-full"></div>
+                      Publisher
+                    </h3>
+                    <p className="text-neutral-700 font-medium">{book.PUBLISHER_NAME}</p>
+                  </div>
+
+                  {/* ISBN */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-neutral-800 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-accent-gold rounded-full"></div>
+                      ISBN
+                    </h3>
+                    <p className="text-neutral-700 font-mono text-sm bg-neutral-50 px-3 py-2 rounded-lg border">
+                      {book.ISBN}
+                    </p>
+                  </div>
+
+                  {/* Publication Date */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-neutral-800 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-accent-emerald rounded-full"></div>
+                      Added
+                    </h3>
+                    <p className="text-neutral-700">{new Date(book.ADDED_AT).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Purchase Section */}
+              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-strong p-8 text-white">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">Ready to read?</h3>
+                    <p className="text-primary-100">Add this book to your collection</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-4xl font-bold mb-1">{formatPrice(book.PRICE)}</div>
+                    <div className="text-sm text-primary-200">Free shipping over $50</div>
+                  </div>
+                </div>
+                
+                <Button
+                  onClick={handleAddToCart}
+                  variant="authSecondary"
+                  size="lg"
+                  className="w-full bg-white text-primary-700 hover:bg-primary-50 hover:text-primary-800 font-semibold text-lg py-4 shadow-medium hover:shadow-strong transition-all duration-300 flex items-center justify-center gap-3"
+                >
+                  <ShoppingCart className="w-6 h-6" />
+                  Add to Cart
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      
-      {/* Add to Cart Section - Compact Design */}
-      <div className="mt-8 border-t pt-6">
-        <div className="flex items-center justify-between max-w-2xl mx-auto">
-          <div className="flex items-center gap-4">
-            <span className="text-2xl font-bold text-gray-800">
-              {formatPrice(book.PRICE)}
-            </span>
-            <span className="text-sm text-gray-500">• Free shipping over $50</span>
-          </div>
-          <Button
-            onClick={handleAddToCart}
-            className="px-6 py-2 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-200"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
-          </Button>
         </div>
       </div>
 
-      {/* Success Dialog - Same as BookCard */}
+      {/* Modern Success Dialog */}
       {showSuccessDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-white rounded-2xl p-8 max-w-md mx-4 transform animate-scale-in shadow-2xl">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-3xl p-8 max-w-md mx-4 transform animate-scale-in shadow-2xl border border-neutral-200">
             {/* Close button */}
             <button
               onClick={closeSuccessDialog}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600 transition-colors p-2 hover:bg-neutral-100 rounded-full"
             >
               <X className="w-6 h-6" />
             </button>
 
             {/* Success content */}
-            <div className="text-center">
+            <div className="text-center pt-4">
               {/* Animated checkmark */}
-              <div className="mx-auto mb-6 w-20 h-20 bg-green-100 rounded-full flex items-center justify-center animate-bounce">
-                <CheckCircle className="w-12 h-12 text-green-500 animate-pulse" />
+              <div className="mx-auto mb-6 w-20 h-20 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center animate-bounce shadow-medium">
+                <CheckCircle className="w-12 h-12 text-white animate-pulse" />
               </div>
 
               {/* Success message */}
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                🎉 Success!
+              <h3 className="text-3xl font-bold text-neutral-900 mb-3">
+                🎉 Added to Cart!
               </h3>
-              <p className="text-lg text-gray-700 mb-2">
+              <p className="text-lg text-neutral-700 mb-2 font-medium">
                 <strong>"{book.TITLE}"</strong>
               </p>
-              <p className="text-gray-600 mb-6">
-                has been added to your cart successfully!
+              <p className="text-neutral-600 mb-6">
+                has been successfully added to your cart
               </p>
 
               {/* Book thumbnail */}
               <div className="flex justify-center mb-6">
-                <img
-                  src={book.COVER_URL || BOOK_CONSTANTS.PLACEHOLDER_IMAGE}
-                  alt={book.TITLE}
-                  className="w-16 h-20 object-cover rounded shadow-md"
-                />
+                <div className="relative">
+                  <img
+                    src={book.COVER_URL || BOOK_CONSTANTS.PLACEHOLDER_IMAGE}
+                    alt={book.TITLE}
+                    className="w-16 h-20 object-cover rounded-lg shadow-medium"
+                  />
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                </div>
               </div>
 
               {/* Action buttons */}
@@ -237,8 +346,8 @@ const BookDetails = ({ username }) => {
                 <Button
                   onClick={closeSuccessDialog}
                   variant="secondary"
-                  size="md"
-                  className="px-6"
+                  size="lg"
+                  className="px-8 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-300"
                 >
                   Continue Shopping
                 </Button>
@@ -248,8 +357,8 @@ const BookDetails = ({ username }) => {
                     window.location.href = '/cart';
                   }}
                   variant="primary"
-                  size="md"
-                  className="px-6 flex items-center gap-2"
+                  size="lg"
+                  className="px-8 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white shadow-medium hover:shadow-strong flex items-center gap-2"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   View Cart
@@ -260,14 +369,14 @@ const BookDetails = ({ username }) => {
         </div>
       )}
 
-      {/* Add custom styles for animations */}
+      {/* Modern CSS Animations */}
       <style jsx>{`
         .animate-fade-in {
-          animation: fadeIn 0.3s ease-out;
+          animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .animate-scale-in {
-          animation: scaleIn 0.3s ease-out;
+          animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         @keyframes fadeIn {
@@ -281,13 +390,18 @@ const BookDetails = ({ username }) => {
         
         @keyframes scaleIn {
           from {
-            transform: scale(0.9);
+            transform: scale(0.95);
             opacity: 0;
           }
           to {
             transform: scale(1);
             opacity: 1;
           }
+        }
+        
+        /* Enhanced hover effects */
+        .group:hover .group-hover\\:scale-105 {
+          transform: scale(1.05);
         }
       `}</style>
     </DefaultLayout>
