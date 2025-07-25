@@ -9,6 +9,7 @@ const bookRoutes = require('./routes/bookRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 const publisherRoutes = require('./routes/publisherRoutes');
 const adminBookRequestRoutes = require('./routes/adminBookRequestRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/api/orders', require('./routes/orderRoute'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/publisher', publisherRoutes);
 app.use('/api/admin', adminBookRequestRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

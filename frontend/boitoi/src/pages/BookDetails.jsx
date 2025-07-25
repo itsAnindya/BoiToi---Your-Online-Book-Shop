@@ -17,37 +17,115 @@ const BookDetails = ({ username }) => {
 
   const [rating, setRating] = useState(0);
   const [hovered, setHovered] = useState(0);
-  const [confirmedRating, setConfirmedRating] = useState(false);
-
   const [comment, setComment] = useState('');
-  const [commentConfirmed, setCommentConfirmed] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [existingReview, setExistingReview] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [reviewStats, setReviewStats] = useState(null);
 
   useEffect(() => {
+    // Fetch book details
     fetch(`${API_BASE_URL}/api/books/${id}`)
       .then(res => res.json())
       .then(data => setBook(data))
       .catch(err => console.error('Error fetching book:', err));
-  }, [id]);
+
+    // Fetch existing reviews
+    fetchReviews();
+
+    // Check if user has existing review (if username is available)
+    if (username) {
+      checkExistingReview();
+    }
+  }, [id, username]);
+
+  const fetchReviews = () => {
+    fetch(`${API_BASE_URL}/api/reviews/book/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setReviews(data.reviews || []);
+        setReviewStats(data.stats || null);
+      })
+      .catch(err => console.error('Error fetching reviews:', err));
+  };
+
+  const checkExistingReview = () => {
+    const userId = sessionStorage.getItem('id');
+    if (!userId) return;
+
+    fetch(`${API_BASE_URL}/api/reviews/book/${id}/user/${userId}`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else if (res.status === 404) {
+          return null; // No existing review
+        }
+        throw new Error('Failed to check existing review');
+      })
+      .then(data => {
+        if (data) {
+          setExistingReview(data);
+          setRating(data.RATING);
+          setComment(data.COMMENT || '');
+          setReviewSubmitted(true);
+        }
+      })
+      .catch(err => console.error('Error checking existing review:', err));
+  };
 
   const handleRatingClick = (value) => {
     setRating(value);
-    setConfirmedRating(false);
   };
 
-  const submitRating = () => {
-    axios.post(`${API_BASE_URL}/api/ratings`, {
-      bookId: book.ID,
-      rating,
-      username,
-    }).then(() => setConfirmedRating(true));
-  };
+  const submitReview = () => {
+    const userId = sessionStorage.getItem('id');
+    if (!userId) {
+      alert('Please log in to submit a review');
+      return;
+    }
 
-  const submitComment = () => {
-    axios.post(`${API_BASE_URL}/api/comments`, {
+    if (rating === 0) {
+      alert('Please select a rating');
+      return;
+    }
+
+    const reviewData = {
       bookId: book.ID,
-      comment,
-      username,
-    }).then(() => setCommentConfirmed(true));
+      userId: parseInt(userId),
+      rating: rating,
+      comment: comment.trim() || null
+    };
+
+    const url = existingReview 
+      ? `${API_BASE_URL}/api/reviews/${existingReview.ID}`
+      : `${API_BASE_URL}/api/reviews`;
+    
+    const method = existingReview ? 'PUT' : 'POST';
+
+    fetch(url, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reviewData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message) {
+        setReviewSubmitted(true);
+        fetchReviews(); // Refresh reviews
+        if (!existingReview) {
+          // If it was a new review, check for the created review
+          checkExistingReview();
+        }
+      } else {
+        throw new Error(data.message || 'Failed to submit review');
+      }
+    })
+    .catch(err => {
+      console.error('Error submitting review:', err);
+      alert('Failed to submit review. Please try again.');
+    });
   };
 
   const handleAddToCart = () => {
@@ -101,7 +179,18 @@ const BookDetails = ({ username }) => {
                   <div className="text-4xl font-bold text-primary-600 mb-2">
                     {formatPrice(book.PRICE)}
                   </div>
-                  <p className="text-sm text-neutral-500">Free shipping over $50</p>
+                  <p className="text-sm text-neutral-500 mb-4">Free shipping over $50</p>
+                  
+                  {/* Add to Cart Button */}
+                  <Button
+                    onClick={handleAddToCart}
+                    variant="primary"
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold text-lg py-4 shadow-medium hover:shadow-strong transition-all duration-300 flex items-center justify-center gap-3"
+                  >
+                    <ShoppingCart className="w-6 h-6" />
+                    Add to Cart
+                  </Button>
                 </div>
               </div>
 
@@ -109,7 +198,7 @@ const BookDetails = ({ username }) => {
               <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl shadow-soft p-8 border border-primary-100">
                 <h3 className="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-3">
                   <Star className="w-6 h-6 text-primary-500" />
-                  Rate & Review
+                  {existingReview ? 'Update Your Review' : 'Rate & Review'}
                 </h3>
                 
                 <div className="space-y-6">
@@ -135,58 +224,55 @@ const BookDetails = ({ username }) => {
                     </span>
                   </div>
 
-                  {/* Rating Confirmation */}
-                  {!confirmedRating && rating > 0 && (
-                    <Button
-                      onClick={submitRating}
-                      variant="primary"
-                      size="md"
-                      className="bg-primary-600 hover:bg-primary-700"
-                    >
-                      Confirm Rating
-                    </Button>
-                  )}
-                  {confirmedRating && (
-                    <div className="flex items-center gap-2 text-green-600">
-                      <CheckCircle className="w-5 h-5" />
-                      <span className="font-medium">Rating submitted!</span>
-                    </div>
-                  )}
-
                   {/* Comment Section */}
                   <div className="space-y-4">
                     <h4 className="font-semibold text-neutral-800 text-lg">Share your thoughts</h4>
                     <div className="relative">
                       <textarea
                         value={comment}
-                        onChange={(e) => {
-                          setComment(e.target.value);
-                          setCommentConfirmed(false);
-                        }}
+                        onChange={(e) => setComment(e.target.value)}
                         placeholder="What did you think of this book? Share your insights..."
                         className="w-full p-4 border-2 border-neutral-200 rounded-xl resize-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white shadow-sm"
                         rows="4"
+                        maxLength="500"
                       />
                       <div className="absolute bottom-3 right-3 text-xs text-neutral-400">
                         {comment.length}/500
                       </div>
                     </div>
                     
-                    {!commentConfirmed && comment.trim() && (
+                    {/* Submit Review Button */}
+                    {!reviewSubmitted && rating > 0 && (
                       <Button
-                        onClick={submitComment}
+                        onClick={submitReview}
                         variant="success"
                         size="lg"
                         className="w-full bg-green-600 hover:bg-green-700"
                       >
-                        Submit Review
+                        {existingReview ? 'Update Review' : 'Submit Review'}
                       </Button>
                     )}
-                    {commentConfirmed && (
-                      <div className="flex items-center gap-2 text-green-600">
+                    
+                    {/* Review Submitted Confirmation */}
+                    {reviewSubmitted && (
+                      <div className="flex items-center gap-2 text-green-600 bg-green-50 p-4 rounded-xl">
                         <CheckCircle className="w-5 h-5" />
-                        <span className="font-medium">Comment submitted!</span>
+                        <span className="font-medium">
+                          {existingReview ? 'Review updated successfully!' : 'Review submitted successfully!'}
+                        </span>
                       </div>
+                    )}
+                    
+                    {/* Edit Button for Existing Review */}
+                    {reviewSubmitted && existingReview && (
+                      <Button
+                        onClick={() => setReviewSubmitted(false)}
+                        variant="outline"
+                        size="sm"
+                        className="w-full mt-2"
+                      >
+                        Edit Review
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -212,6 +298,119 @@ const BookDetails = ({ username }) => {
                   <p className="text-lg text-neutral-700 leading-relaxed">{book.DESCRIPTION}</p>
                 </div>
               </div>
+
+              {/* Reviews Display Section */}
+              {reviewStats && reviewStats.totalReviews > 0 && (
+                <div className="bg-white rounded-2xl shadow-soft p-8 border border-neutral-200">
+                  <h2 className="text-2xl font-bold text-neutral-900 mb-6">Customer Reviews</h2>
+                  
+                  {/* Review Statistics */}
+                  <div className="mb-8 p-6 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl">
+                    <div className="flex items-center gap-6">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-primary-600">{reviewStats.averageRating}</div>
+                        <div className="flex justify-center mt-2">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              className={`w-5 h-5 ${
+                                star <= Math.round(reviewStats.averageRating)
+                                  ? 'text-amber-400 fill-current'
+                                  : 'text-neutral-300'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <div className="text-sm text-neutral-600 mt-1">
+                          {reviewStats.totalReviews} review{reviewStats.totalReviews !== 1 ? 's' : ''}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1">
+                        {[5, 4, 3, 2, 1].map((rating) => (
+                          <div key={rating} className="flex items-center gap-3 mb-2">
+                            <span className="text-sm w-8">{rating}★</span>
+                            <div className="flex-1 bg-neutral-200 rounded-full h-2">
+                              <div
+                                className="bg-amber-400 h-2 rounded-full"
+                                style={{
+                                  width: `${reviewStats.totalReviews > 0 
+                                    ? (reviewStats.ratingDistribution[rating] / reviewStats.totalReviews) * 100 
+                                    : 0}%`
+                                }}
+                              ></div>
+                            </div>
+                            <span className="text-sm text-neutral-600 w-8">
+                              {reviewStats.ratingDistribution[rating]}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Individual Reviews */}
+                  <div className="space-y-6">
+                    {reviews.slice(0, 5).map((review) => (
+                      <div key={review.ID} className="border-b border-neutral-200 pb-6 last:border-b-0">
+                        <div className="flex items-start gap-4">
+                          <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                            <span className="text-primary-600 font-semibold">
+                              {review.FIRST_NAME ? review.FIRST_NAME.charAt(0) : review.USERNAME.charAt(0)}
+                            </span>
+                          </div>
+                          
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <span className="font-semibold text-neutral-900">
+                                {review.FIRST_NAME && review.LAST_NAME 
+                                  ? `${review.FIRST_NAME} ${review.LAST_NAME}` 
+                                  : review.USERNAME}
+                              </span>
+                              {review.IS_VERIFIED_PURCHASER && (
+                                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                                  Verified Purchase
+                                </span>
+                              )}
+                              <span className="text-sm text-neutral-500">
+                                {new Date(review.POSTED_AT).toLocaleDateString()}
+                              </span>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 mb-3">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`w-4 h-4 ${
+                                    star <= review.RATING
+                                      ? 'text-amber-400 fill-current'
+                                      : 'text-neutral-300'
+                                  }`}
+                                />
+                              ))}
+                              <span className="text-sm font-medium text-neutral-700">
+                                {review.RATING}/5
+                              </span>
+                            </div>
+                            
+                            {review.COMMENT && (
+                              <p className="text-neutral-700 leading-relaxed">{review.COMMENT}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    
+                    {reviews.length > 5 && (
+                      <div className="text-center pt-4">
+                        <Button variant="outline" size="md">
+                          View All {reviews.length} Reviews
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Book Details */}
               <div className="bg-white rounded-2xl shadow-soft p-8 border border-neutral-200">
@@ -267,30 +466,6 @@ const BookDetails = ({ username }) => {
                     })}</p>
                   </div>
                 </div>
-              </div>
-
-              {/* Purchase Section */}
-              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-strong p-8 text-white">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">Ready to read?</h3>
-                    <p className="text-primary-100">Add this book to your collection</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-4xl font-bold mb-1">{formatPrice(book.PRICE)}</div>
-                    <div className="text-sm text-primary-200">Free shipping over $50</div>
-                  </div>
-                </div>
-                
-                <Button
-                  onClick={handleAddToCart}
-                  variant="authSecondary"
-                  size="lg"
-                  className="w-full bg-white text-primary-700 hover:bg-primary-50 hover:text-primary-800 font-semibold text-lg py-4 shadow-medium hover:shadow-strong transition-all duration-300 flex items-center justify-center gap-3"
-                >
-                  <ShoppingCart className="w-6 h-6" />
-                  Add to Cart
-                </Button>
               </div>
             </div>
           </div>
