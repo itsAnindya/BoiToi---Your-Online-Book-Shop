@@ -154,14 +154,14 @@ const submitBookRequest = async (req, res) => {
           // Insert book draft (AUTO_INCREMENT will handle ID)
           const insertDraftSql = `
             INSERT INTO PUBLISHER_BOOK_DRAFT 
-            (TITLE, ISBN, PAGE_COUNT, LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE, REQUEST_ID)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (TITLE, ISBN, PAGE_COUNT, LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE, AUTHORS, REQUEST_ID)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `;
               
           db.query(insertDraftSql, [
             title, isbn, page_count, language || 'English', 
             edition || '1st', price, stock_quantity, description, 
-            cover_url, genre, requestId
+            cover_url, genre, authors, requestId
           ], (err, draftResult) => {
             if (err) {
               return db.rollback(() => {
