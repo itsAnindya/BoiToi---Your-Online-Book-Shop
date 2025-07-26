@@ -226,6 +226,9 @@ const AdminBookRequests = () => {
                   Publisher
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Publication Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
@@ -239,7 +242,7 @@ const AdminBookRequests = () => {
             <tbody className="bg-white divide-y divide-neutral-200">
               {filteredRequests.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-neutral-500">
+                  <td colSpan="6" className="px-6 py-12 text-center text-neutral-500">
                     <FileText className="w-12 h-12 mx-auto mb-4 text-neutral-300" />
                     <p>No book requests found</p>
                   </td>
@@ -263,6 +266,14 @@ const AdminBookRequests = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-neutral-900">{request.PUBLISHER_NAME}</div>
                       <div className="text-sm text-neutral-500">{request.PUBLISHER_EMAIL}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
+                      {request.PUBLISHED_DATE ? (() => {
+                        const dateStr = request.PUBLISHED_DATE.split('T')[0];
+                        const [year, month, day] = dateStr.split('-');
+                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                        return `${day.padStart(2, '0')} ${months[parseInt(month) - 1]}, ${year}`;
+                      })() : 'Not specified'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.STATUS)}`}>
@@ -354,6 +365,20 @@ const AdminBookRequests = () => {
                           <p className="font-medium">{selectedRequest.ISBN}</p>
                         </div>
                       </div>
+                      {selectedRequest.PUBLISHED_DATE && (
+                        <div className="flex items-center space-x-3">
+                          <Calendar className="w-5 h-5 text-neutral-500" />
+                          <div>
+                            <p className="text-sm text-neutral-500">Publication Date</p>
+                            <p className="font-medium">{(() => {
+                              const dateStr = selectedRequest.PUBLISHED_DATE.split('T')[0];
+                              const [year, month, day] = dateStr.split('-');
+                              const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                              return `${day.padStart(2, '0')} ${months[parseInt(month) - 1]}, ${year}`;
+                            })()}</p>
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-center space-x-3">
                         <DollarSign className="w-5 h-5 text-neutral-500" />
                         <div>

@@ -262,6 +262,9 @@ const PublisherDashboard = () => {
                         ISBN
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Publication Date
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Price
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -286,6 +289,16 @@ const PublisherDashboard = () => {
                         <td className="px-4 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
                             {request.ISBN || 'N/A'}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">
+                            {request.PUBLISHED_DATE ? (() => {
+                              const dateStr = request.PUBLISHED_DATE.split('T')[0];
+                              const [year, month, day] = dateStr.split('-');
+                              const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                              return `${day.padStart(2, '0')} ${months[parseInt(month) - 1]}, ${year}`;
+                            })() : 'Not specified'}
                           </div>
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap">

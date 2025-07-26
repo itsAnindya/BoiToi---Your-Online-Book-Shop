@@ -13,6 +13,7 @@ const PublisherBookSubmission = () => {
   const [formData, setFormData] = useState({
     title: '',
     isbn: '',
+    published_date: '',
     page_count: '',
     language: 'English',
     edition: '1st',
@@ -175,6 +176,21 @@ const PublisherBookSubmission = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Enter ISBN"
                     required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Globe className="w-4 h-4 inline mr-2" />
+                    Publication Date
+                  </label>
+                  <input
+                    type="date"
+                    name="published_date"
+                    value={formData.published_date}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Select publication date"
                   />
                 </div>
 

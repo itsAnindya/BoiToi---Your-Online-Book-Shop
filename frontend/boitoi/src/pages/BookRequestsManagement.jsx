@@ -177,6 +177,15 @@ const BookRequestsManagement = () => {
     });
   };
 
+  const formatDateOnly = (dateString) => {
+    // For publication dates - only show date, no time, no timezone bullshit
+    if (!dateString) return 'Not specified';
+    const dateStr = dateString.split('T')[0];
+    const [year, month, day] = dateStr.split('-');
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return `${day.padStart(2, '0')} ${months[parseInt(month) - 1]}, ${year}`;
+  };
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-BD', {
       style: 'currency',
@@ -329,6 +338,14 @@ const BookRequestsManagement = () => {
                               <strong>Genre:</strong> {request.GENRE}
                             </span>
                           </div>
+                          {request.PUBLISHED_DATE && (
+                            <div className="flex items-center gap-2">
+                              <FaCalendarAlt className="text-gray-400" />
+                              <span className="text-sm">
+                                <strong>Publication Date:</strong> {formatDateOnly(request.PUBLISHED_DATE)}
+                              </span>
+                            </div>
+                          )}
                           <div className="flex items-center gap-2">
                             <FaCalendarAlt className="text-gray-400" />
                             <span className="text-sm">

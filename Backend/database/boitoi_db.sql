@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 26/07/2025 22:30:23
+ Date: 27/07/2025 03:58:39
 */
 
 SET NAMES utf8mb4;
@@ -71,7 +71,7 @@ CREATE TABLE `author`  (
   `WEBSITE` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PHOTO_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 476 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 484 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of author
@@ -350,6 +350,7 @@ INSERT INTO `author` VALUES (472, 'Marina Nehme', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `author` VALUES (473, 'Prue Vines', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `author` VALUES (474, 'Herbert Baxter Adams', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `author` VALUES (475, 'Anonymous', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `author` VALUES (476, 'Direct Test Author A', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for book
@@ -380,7 +381,7 @@ CREATE TABLE `book`  (
   INDEX `fk_book_category`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `book_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_book_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 407 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 449 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book
@@ -591,6 +592,13 @@ INSERT INTO `book` VALUES (403, 'Linear Algebra Done Right (Undergraduate Texts 
 INSERT INTO `book` VALUES (404, NULL, NULL, NULL, 218, NULL, 'English', '1st', 0.00, 0, '', 1, '/images/books/defaultbook.jpg', '2025-07-20 07:01:45', 'General', NULL);
 INSERT INTO `book` VALUES (405, 'G Protein Signaling Mechanisms in the Retina (Springer Series in Vision Research, 3)', '978-1493912179', '2025-07-20', 218, 206, 'English', '2014th', 108.00, 9, 'The main purpose of this volume is to provide a focused analysis of the function of the G protein-coupled signaling pathways that operate in the interconnected network of retinal neurons as they detect and encode the information carried by light. The organization of this volume will generally follow the path of signal flow in the retina. First we will describe recent advances in understanding the phototransduction cascade of rod and cone photoreceptors, which use signaling cascade based on the GPCR rhodopsin to transduce incident light into neural activity. Chapters will be devoted to unique specializations of the two major types of photosensitive cells that comprise the predominant input for our spatial and color vision. Subsequently, the mechanisms of synaptic information encoding by retinal ON bipolar cells will be described, where the GPCR mGluR6 plays a fundamental role. Chapters in this section will examine macromolecular organization of the mGluR6 signaling pathway as well as current understanding of its function. The functional characteristics of this signaling mechanism will be explored in detail. Additionally, this section will cover the role of dopamine receptors in modulating signal transmission between photoreceptors and ON-bipolar cells. Finally, chapters will be focused on the output neurons of the inner retina, ganglion cells, where the components of the emerging GPCR melanopsin cascade in intrinsically photosensitive ganglion cells will be detailed. Collectively these mechanisms allow the retina to represent visual space over a wide range of light intensities.', 1, 'https://m.media-amazon.com/images/I/61Nr5MbbgWL._SL1240_.jpg', '2025-07-20 07:29:33', 'Other', NULL);
 INSERT INTO `book` VALUES (406, 'A Big History of Globalization (World-Systems Evolution and Global Futures)', '978-3030057060', '2025-07-25', 218, 304, 'English', '1st ed, 2019 ed', 299.00, 10, 'This book presents the history of globalization as a network-based story in the context of Big History. Departing from the traditional historic discourse, in which communities, cities, and states serve as the main units of analysis, the authors instead trace the historical emergence, growth, interconnection, and merging of various types of networks that have gradually encompassed the globe. They also focus on the development of certain ideas, processes, institutions, and phenomena that spread through those networks to become truly global.\n\nThe book specifies five macro-periods in the history of globalization and comprehensively covers the first four, from roughly the 9th – 7th millennia BC to World War I. For each period, it identifies the most important network-related developments that facilitated (or even spurred on) such transitions and had the greatest impacts on the history of globalization.\n\nBy analyzing the world system\'s transition to new levels of complexityand connectivity, the book provides valuable insights into the course of Big History and the evolution of human societies.', 1, 'https://m.media-amazon.com/images/I/71Z4H49UtFL._SL1246_.jpg', '2025-07-25 15:07:13', 'Other', NULL);
+INSERT INTO `book` VALUES (407, NULL, NULL, NULL, 218, NULL, 'English', '1st', 0.00, 0, '', 1, '/images/books/defaultbook.jpg', '2025-07-27 01:36:14', 'General', NULL);
+INSERT INTO `book` VALUES (410, NULL, NULL, NULL, 200, NULL, 'English', '1st', 0.00, 0, '', 1, '/images/books/defaultbook.jpg', '2025-07-27 01:44:56', 'General', NULL);
+INSERT INTO `book` VALUES (411, 'Direct Test Book', NULL, NULL, 200, NULL, 'English', '1st', 15.99, 10, NULL, 1, NULL, '2025-07-27 01:45:55', NULL, NULL);
+INSERT INTO `book` VALUES (412, 'Basic Mathematics 4', '978-0387967875', '2025-07-27', 218, 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 1, 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', '2025-07-27 01:48:58', 'Non-Fiction', NULL);
+INSERT INTO `book` VALUES (438, 'Basic Mathematics 1', '978-TEST-123456', '1988-07-01', 218, NULL, 'English', '1st', NULL, NULL, NULL, 1, NULL, '2025-07-27 03:15:30', NULL, NULL);
+INSERT INTO `book` VALUES (447, 'Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition', '978-3030645724', '2022-02-19', 218, 1914, 'English', '1st', 249.00, 10, 'This book provides a structured and analytical guide to the use of artificial intelligence in medicine. Covering all areas within medicine, the chapters give a systemic review of the history, scientific foundations, present advances, potential trends, and future challenges of artificial intelligence within a healthcare setting.\nArtificial Intelligence in Medicine aims to give readers the required knowledge to apply artificial intelligence to clinical practice. The book is relevant to medical students, specialist doctors, and researchers whose work will be affected by artificial intelligence.', 1, 'https://m.media-amazon.com/images/I/515qMrsY2lL._SL1208_.jpg', '2025-07-27 03:55:03', 'Non-Fiction', NULL);
+INSERT INTO `book` VALUES (448, 'Test Book', '978-TEST-999999', '2024-01-01', 218, 200, 'English', '1st', 25.99, 100, 'Test description', 1, '/images/test.jpg', '2025-07-27 03:55:59', 'Fiction', NULL);
 
 -- ----------------------------
 -- Table structure for book_author
@@ -809,6 +817,7 @@ INSERT INTO `book_author` VALUES (330, 386, 'Author');
 INSERT INTO `book_author` VALUES (331, 387, 'Author');
 INSERT INTO `book_author` VALUES (332, 388, 'Author');
 INSERT INTO `book_author` VALUES (333, 387, 'Author');
+INSERT INTO `book_author` VALUES (411, 476, 'Author');
 
 -- ----------------------------
 -- Table structure for book_category
@@ -1302,7 +1311,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 125 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notifications
@@ -1364,6 +1373,91 @@ INSERT INTO `notifications` VALUES (116, 1, 'New book contribution request: \"A 
 INSERT INTO `notifications` VALUES (117, 2, 'New book contribution request: \"A Big History of Globalization (World-Systems Evolution and Global Futures)\" by Springer', 'SYSTEM', 0, '2025-07-25 15:05:54', NULL);
 INSERT INTO `notifications` VALUES (119, 1001, 'New book contribution request: \"A Big History of Globalization (World-Systems Evolution and Global Futures)\" by Springer', 'SYSTEM', 0, '2025-07-25 15:05:54', NULL);
 INSERT INTO `notifications` VALUES (123, 1, '[PUBLISHER: Springer] Book \"A Big History of Globalization (World-Systems Evolution and Global Futures)\" APPROVED', 'SYSTEM', 0, '2025-07-25 15:07:13', NULL);
+INSERT INTO `notifications` VALUES (125, 1, '[PUBLISHER: Springer] Book \"A Big History of Globalization (World-Systems Evolution and Global Futures)\" APPROVED - Testing complete author processing', 'SYSTEM', 0, '2025-07-27 01:36:14', NULL);
+INSERT INTO `notifications` VALUES (126, 1, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
+INSERT INTO `notifications` VALUES (127, 2, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
+INSERT INTO `notifications` VALUES (128, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
+INSERT INTO `notifications` VALUES (129, 1001, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
+INSERT INTO `notifications` VALUES (133, 1, '[PUBLISHER: EduGorilla Publication] Book \"Final Author Test Book\" APPROVED - Testing final author processing', 'SYSTEM', 0, '2025-07-27 01:40:33', NULL);
+INSERT INTO `notifications` VALUES (134, 1, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
+INSERT INTO `notifications` VALUES (135, 2, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
+INSERT INTO `notifications` VALUES (136, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
+INSERT INTO `notifications` VALUES (137, 1001, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
+INSERT INTO `notifications` VALUES (141, 1, '[PUBLISHER: EduGorilla Publication] Book \"Final Author Test Book 2\" APPROVED - Testing updated procedure', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
+INSERT INTO `notifications` VALUES (142, 1, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
+INSERT INTO `notifications` VALUES (143, 2, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
+INSERT INTO `notifications` VALUES (144, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
+INSERT INTO `notifications` VALUES (145, 1001, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
+INSERT INTO `notifications` VALUES (149, 1, '[PUBLISHER: EduGorilla Publication] Book \"Minimal Fix Test Book\" APPROVED - Testing minimal fix', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
+INSERT INTO `notifications` VALUES (150, 1, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (151, 2, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (152, 3, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (153, 1001, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (157, 1, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (158, 2, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (159, 3, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (160, 1001, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (164, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 4\" APPROVED', 'SYSTEM', 0, '2025-07-27 01:48:58', NULL);
+INSERT INTO `notifications` VALUES (166, 1, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (167, 2, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (168, 3, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (169, 1001, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (173, 1, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (174, 2, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (175, 3, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (176, 1001, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (180, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics\" REJECTED', 'SYSTEM', 0, '2025-07-27 01:58:33', NULL);
+INSERT INTO `notifications` VALUES (182, 1, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (183, 2, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (184, 3, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (185, 1001, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (189, 1, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (190, 2, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (191, 3, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (192, 1001, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (196, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 5\" REJECTED', 'SYSTEM', 0, '2025-07-27 01:59:30', NULL);
+INSERT INTO `notifications` VALUES (198, 1, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (199, 2, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (200, 3, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (201, 1001, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (205, 1, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (206, 2, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (207, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (208, 1001, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (212, 1, '[PUBLISHER: EduGorilla Publication] Book \"Minimal Fix Test Book\" APPROVED - Test approval', 'SYSTEM', 0, '2025-07-27 02:15:32', NULL);
+INSERT INTO `notifications` VALUES (213, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" APPROVED - Test approval fixed', 'SYSTEM', 0, '2025-07-27 02:19:30', NULL);
+INSERT INTO `notifications` VALUES (214, 1, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (215, 2, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (216, 3, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (217, 1001, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (221, 1, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (222, 2, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (223, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (224, 1001, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (228, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:15:30', NULL);
+INSERT INTO `notifications` VALUES (229, 1, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (230, 2, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (231, 3, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (232, 1001, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (236, 1, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (237, 2, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (238, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (239, 1001, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (249, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" REJECTED', 'SYSTEM', 0, '2025-07-27 03:22:44', NULL);
+INSERT INTO `notifications` VALUES (251, 1, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (252, 2, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (253, 3, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (254, 1001, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (258, 1, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (259, 2, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (260, 3, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (261, 1001, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
+INSERT INTO `notifications` VALUES (265, 1, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
+INSERT INTO `notifications` VALUES (266, 2, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
+INSERT INTO `notifications` VALUES (267, 3, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
+INSERT INTO `notifications` VALUES (268, 1001, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
+INSERT INTO `notifications` VALUES (282, 1, '[PUBLISHER: Springer] Book \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:55:03', NULL);
+INSERT INTO `notifications` VALUES (283, 1, '[PUBLISHER: Springer] Book \"Test Book\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:55:59', NULL);
 
 -- ----------------------------
 -- Table structure for order
@@ -1612,6 +1706,7 @@ CREATE TABLE `publisher_book_draft`  (
   `AUTHORS` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `CATEGORY_ID` int NULL DEFAULT NULL,
   `REQUEST_ID` int NULL DEFAULT NULL,
+  `PUBLISHED_DATE` date NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_book_title`(`TITLE` ASC) USING BTREE,
   INDEX `idx_book_isbn`(`ISBN` ASC) USING BTREE,
@@ -1619,23 +1714,34 @@ CREATE TABLE `publisher_book_draft`  (
   INDEX `fk_publisher_book_draft_category`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `fk_publisher_book_draft_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2007 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2021 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publisher_book_draft
 -- ----------------------------
-INSERT INTO `publisher_book_draft` VALUES (1, 'Achieving Serenity', '978-93-6087-544-2', 138, 'English', '1st', 299.00, 10, 'Serenity is often associated with a calm and composed state of mind, where individuals feel undisturbed by external factors or internal turmoil.\nIn the hustle and bustle of our fast-paced lives, the pursuit of serenity becomes a beacon of hope and necessity. \nSerenity is important for holistic well-being, encompassing mental, emotional, and physical health. It contributes to a positive mind-set, improved relationships, and the ability to navigate life\'s challenges with grace and resilience.\nHowever, achieving serenity can be challenging for several reasons. \nWelcome to \"Unlocking Serenity State: Practical Strategies for Stress Relief and Enhanced Quality of Life.\" Your companion on a journey towards tranquility. \nThis book offers practical and actionable strategies to navigate the storms of stress and finding the calm within.\nTo preserve and enhance serenity, it\'s crucial to manage and mitigate stress through various strategies such as mindfulness practices, relaxation techniques, regular exercise, and cultivating a supportive social network. Addressing the root causes of stress and developing healthy coping mechanisms contributes to a more serene and balanced state of being.', 'https://shashwatpublication.com/files/book-covers/front_cover_imgSB20872.jpg', 'Non-Fiction', NULL, 222, 1);
-INSERT INTO `publisher_book_draft` VALUES (1001, 'Test Book Title', '978-1234567890', 300, 'English', '1st', 299.99, 50, 'A test book for approval system', 'https://example.com/cover.jpg', 'Fiction', NULL, 201, 1001);
-INSERT INTO `publisher_book_draft` VALUES (1002, 'Test Reject Book', NULL, NULL, 'English', '1st', 199.99, NULL, NULL, NULL, NULL, NULL, 251, 1002);
-INSERT INTO `publisher_book_draft` VALUES (1003, 'Understanding Analysis (Undergraduate Texts in Mathematics)', '978-1493927111', 324, 'English', '2nd', 99.00, 10, 'This lively introductory text exposes the student to the rewards of a rigorous study of functions of a real variable. In each chapter, informal discussions of questions that give analysis its inherent fascination are followed by precise, but not overly formal, developments of the techniques needed to make sense of them. By focusing on the unifying themes of approximation and the resolution of paradoxes that arise in the transition from the finite to the infinite, the text turns what could be a daunting cascade of definitions and theorems into a coherent and engaging progression of ideas. Acutely aware of the need for rigor, the student is much better prepared to understand what constitutes a proper mathematical proof and how to write one.\n\nFifteen years of classroom experience with the first edition of Understanding Analysis have solidified and refined the central narrative of the second edition. Roughly 150 new exercises join a selection of the best exercises from the first edition, and three more project-style sections have been added. Investigations of Euler’s computation of ζ(2), the Weierstrass Approximation ­ Theorem, and the gamma function are now among the book’s cohort of seminal results serving as motivation and payoff for the beginning student to master the methods of analysis.', 'https://m.media-amazon.com/images/I/51OS+nZ1bEL._SL1244_.jpg', 'Other', NULL, NULL, 1003);
-INSERT INTO `publisher_book_draft` VALUES (1004, 'Linear Algebra Done Right (Undergraduate Texts in Mathematics)', '978-3031410260', 407, 'English', '4th', 99.00, 10, 'Now available in Open Access, this best-selling textbook for a second course in linear algebra is aimed at undergraduate math majors and graduate students. The fourth edition gives an expanded treatment of the singular value decomposition and its consequences. It includes a new chapter on multilinear algebra, treating bilinear forms, quadratic forms, tensor products, and an approach to determinants via alternating multilinear forms. This new edition also increases the use of the minimal polynomial to provide cleaner proofs of multiple results. Also, over 250 new exercises have been added.\n\nThe novel approach taken here banishes determinants to the end of the book. The text focuses on the central goal of linear algebra: understanding the structure of linear operators on finite-dimensional vector spaces. The author has taken unusual care to motivate concepts and simplify proofs. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. Beautiful formatting creates pages with an unusually student-friendly appearance in both print and electronic versions.\n\nNo prerequisites are assumed other than the usual demand for suitable mathematical maturity. The text starts by discussing vector spaces, linear independence, span, basis, and dimension. The book then deals with linear maps, eigenvalues, and eigenvectors. Inner-product spaces are introduced, leading to the finite-dimensional spectral theorem and its consequences. Generalized eigenvectors are then used to provide insight into the structure of a linear operator.\n\nFrom the reviews of previous editions:\n\nAltogether, the text is a didactic masterpiece. ― zbMATH\n\nThe determinant-free proofs are elegant and intuitive. ― American Mathematical Monthly\n\nThe most original linear algebra book to appear in years, it certainly belongs in every undergraduate library ― CHOICE', 'https://m.media-amazon.com/images/I/51793S0SvIL._SL1246_.jpg', 'Other', NULL, NULL, 1004);
-INSERT INTO `publisher_book_draft` VALUES (1005, 'Linear Algebra Done Right (Undergraduate Texts in Mathematics)', '978-3031410260', 407, 'English', '1st', 99.00, 10, 'Now available in Open Access, this best-selling textbook for a second course in linear algebra is aimed at undergraduate math majors and graduate students. The fourth edition gives an expanded treatment of the singular value decomposition and its consequences. It includes a new chapter on multilinear algebra, treating bilinear forms, quadratic forms, tensor products, and an approach to determinants via alternating multilinear forms. This new edition also increases the use of the minimal polynomial to provide cleaner proofs of multiple results. Also, over 250 new exercises have been added.\n\nThe novel approach taken here banishes determinants to the end of the book. The text focuses on the central goal of linear algebra: understanding the structure of linear operators on finite-dimensional vector spaces. The author has taken unusual care to motivate concepts and simplify proofs. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. Beautiful formatting creates pages with an unusually student-friendly appearance in both print and electronic versions.\n\nNo prerequisites are assumed other than the usual demand for suitable mathematical maturity. The text starts by discussing vector spaces, linear independence, span, basis, and dimension. The book then deals with linear maps, eigenvalues, and eigenvectors. Inner-product spaces are introduced, leading to the finite-dimensional spectral theorem and its consequences. Generalized eigenvectors are then used to provide insight into the structure of a linear operator.\n\nFrom the reviews of previous editions:\n\nAltogether, the text is a didactic masterpiece. ― zbMATH\n\nThe determinant-free proofs are elegant and intuitive. ― American Mathematical Monthly\n\nThe most original linear algebra book to appear in years, it certainly belongs in every undergraduate library ― CHOICE', 'https://m.media-amazon.com/images/I/51793S0SvIL._SL1246_.jpg', 'Other', 'Sheldon Axler', NULL, 1005);
-INSERT INTO `publisher_book_draft` VALUES (2001, 'Test Book with Authors', '978-1234567890', 200, 'English', '1st', 29.99, 50, 'A test book to verify authors display', 'https://example.com/cover.jpg', 'Fiction', 'John Doe, Jane Smith, Bob Johnson', 201, 2001);
-INSERT INTO `publisher_book_draft` VALUES (2002, 'Linear Algebra Done Right (Undergraduate Texts in Mathematics)', '978-3031410260', 407, 'English', '4th', 99.00, 10, 'Now available in Open Access, this best-selling textbook for a second course in linear algebra is aimed at undergraduate math majors and graduate students. The fourth edition gives an expanded treatment of the singular value decomposition and its consequences. It includes a new chapter on multilinear algebra, treating bilinear forms, quadratic forms, tensor products, and an approach to determinants via alternating multilinear forms. This new edition also increases the use of the minimal polynomial to provide cleaner proofs of multiple results. Also, over 250 new exercises have been added.\n\nThe novel approach taken here banishes determinants to the end of the book. The text focuses on the central goal of linear algebra: understanding the structure of linear operators on finite-dimensional vector spaces. The author has taken unusual care to motivate concepts and simplify proofs. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. Beautiful formatting creates pages with an unusually student-friendly appearance in both print and electronic versions.\n\nNo prerequisites are assumed other than the usual demand for suitable mathematical maturity. The text starts by discussing vector spaces, linear independence, span, basis, and dimension. The book then deals with linear maps, eigenvalues, and eigenvectors. Inner-product spaces are introduced, leading to the finite-dimensional spectral theorem and its consequences. Generalized eigenvectors are then used to provide insight into the structure of a linear operator.\n\nFrom the reviews of previous editions:\n\nAltogether, the text is a didactic masterpiece. ― zbMATH\n\nThe determinant-free proofs are elegant and intuitive. ― American Mathematical Monthly\n\nThe most original linear algebra book to appear in years, it certainly belongs in every undergraduate library ― CHOICE', 'https://m.media-amazon.com/images/I/51793S0SvIL._SL1246_.jpg', 'Other', NULL, NULL, 2002);
-INSERT INTO `publisher_book_draft` VALUES (2003, 'Understanding Analysis (Undergraduate Texts in Mathematics)', '978-93-6087-544-2', 324, 'English', '2nd', 248.99, 20, 'This lively introductory text exposes the student to the rewards of a rigorous study of functions of a real variable. In each chapter, informal discussions of questions that give analysis its inherent fascination are followed by precise, but not overly formal, developments of the techniques needed to make sense of them. By focusing on the unifying themes of approximation and the resolution of paradoxes that arise in the transition from the finite to the infinite, the text turns what could be a daunting cascade of definitions and theorems into a coherent and engaging progression of ideas. Acutely aware of the need for rigor, the student is much better prepared to understand what constitutes a proper mathematical proof and how to write one.\n\nFifteen years of classroom experience with the first edition of Understanding Analysis have solidified and refined the central narrative of the second edition. Roughly 150 new exercises join a selection of the best exercises from the first edition, and three more project-style sections have been added. Investigations of Euler’s computation of ζ(2), the Weierstrass Approximation ­ Theorem, and the gamma function are now among the book’s cohort of seminal results serving as motivation and payoff for the beginning student to master the methods of analysis.', 'https://m.media-amazon.com/images/I/51OS+nZ1bEL._SL1244_.jpg', 'Other', NULL, NULL, 2003);
-INSERT INTO `publisher_book_draft` VALUES (2004, 'Understanding Analysis (Undergraduate Texts in Mathematics)', '978-93-6087-544-2', 324, 'English', '2', 248.99, 20, '', 'https://m.media-amazon.com/images/I/51OS+nZ1bEL._SL1244_.jpg', 'Other', NULL, NULL, 2004);
-INSERT INTO `publisher_book_draft` VALUES (2005, 'G Protein Signaling Mechanisms in the Retina (Springer Series in Vision Research, 3)', '978-1493912179', 206, 'English', '2014th', 108.00, 9, 'The main purpose of this volume is to provide a focused analysis of the function of the G protein-coupled signaling pathways that operate in the interconnected network of retinal neurons as they detect and encode the information carried by light. The organization of this volume will generally follow the path of signal flow in the retina. First we will describe recent advances in understanding the phototransduction cascade of rod and cone photoreceptors, which use signaling cascade based on the GPCR rhodopsin to transduce incident light into neural activity. Chapters will be devoted to unique specializations of the two major types of photosensitive cells that comprise the predominant input for our spatial and color vision. Subsequently, the mechanisms of synaptic information encoding by retinal ON bipolar cells will be described, where the GPCR mGluR6 plays a fundamental role. Chapters in this section will examine macromolecular organization of the mGluR6 signaling pathway as well as current understanding of its function. The functional characteristics of this signaling mechanism will be explored in detail. Additionally, this section will cover the role of dopamine receptors in modulating signal transmission between photoreceptors and ON-bipolar cells. Finally, chapters will be focused on the output neurons of the inner retina, ganglion cells, where the components of the emerging GPCR melanopsin cascade in intrinsically photosensitive ganglion cells will be detailed. Collectively these mechanisms allow the retina to represent visual space over a wide range of light intensities.', 'https://m.media-amazon.com/images/I/61Nr5MbbgWL._SL1240_.jpg', 'Other', NULL, NULL, 2005);
-INSERT INTO `publisher_book_draft` VALUES (2006, 'A Big History of Globalization (World-Systems Evolution and Global Futures)', '978-3030057060', 304, 'English', '1st ed, 2019 ed', 299.00, 10, 'This book presents the history of globalization as a network-based story in the context of Big History. Departing from the traditional historic discourse, in which communities, cities, and states serve as the main units of analysis, the authors instead trace the historical emergence, growth, interconnection, and merging of various types of networks that have gradually encompassed the globe. They also focus on the development of certain ideas, processes, institutions, and phenomena that spread through those networks to become truly global.\n\nThe book specifies five macro-periods in the history of globalization and comprehensively covers the first four, from roughly the 9th – 7th millennia BC to World War I. For each period, it identifies the most important network-related developments that facilitated (or even spurred on) such transitions and had the greatest impacts on the history of globalization.\n\nBy analyzing the world system\'s transition to new levels of complexityand connectivity, the book provides valuable insights into the course of Big History and the evolution of human societies.', 'https://m.media-amazon.com/images/I/71Z4H49UtFL._SL1246_.jpg', 'Other', NULL, NULL, 2006);
+INSERT INTO `publisher_book_draft` VALUES (1, 'Achieving Serenity', '978-93-6087-544-2', 138, 'English', '1st', 299.00, 10, 'Serenity is often associated with a calm and composed state of mind, where individuals feel undisturbed by external factors or internal turmoil.\nIn the hustle and bustle of our fast-paced lives, the pursuit of serenity becomes a beacon of hope and necessity. \nSerenity is important for holistic well-being, encompassing mental, emotional, and physical health. It contributes to a positive mind-set, improved relationships, and the ability to navigate life\'s challenges with grace and resilience.\nHowever, achieving serenity can be challenging for several reasons. \nWelcome to \"Unlocking Serenity State: Practical Strategies for Stress Relief and Enhanced Quality of Life.\" Your companion on a journey towards tranquility. \nThis book offers practical and actionable strategies to navigate the storms of stress and finding the calm within.\nTo preserve and enhance serenity, it\'s crucial to manage and mitigate stress through various strategies such as mindfulness practices, relaxation techniques, regular exercise, and cultivating a supportive social network. Addressing the root causes of stress and developing healthy coping mechanisms contributes to a more serene and balanced state of being.', 'https://shashwatpublication.com/files/book-covers/front_cover_imgSB20872.jpg', 'Non-Fiction', NULL, 222, 1, NULL);
+INSERT INTO `publisher_book_draft` VALUES (1001, 'Test Book Title', '978-1234567890', 300, 'English', '1st', 299.99, 50, 'A test book for approval system', 'https://example.com/cover.jpg', 'Fiction', NULL, 201, 1001, NULL);
+INSERT INTO `publisher_book_draft` VALUES (1002, 'Test Reject Book', NULL, NULL, 'English', '1st', 199.99, NULL, NULL, NULL, NULL, NULL, 251, 1002, NULL);
+INSERT INTO `publisher_book_draft` VALUES (1003, 'Understanding Analysis (Undergraduate Texts in Mathematics)', '978-1493927111', 324, 'English', '2nd', 99.00, 10, 'This lively introductory text exposes the student to the rewards of a rigorous study of functions of a real variable. In each chapter, informal discussions of questions that give analysis its inherent fascination are followed by precise, but not overly formal, developments of the techniques needed to make sense of them. By focusing on the unifying themes of approximation and the resolution of paradoxes that arise in the transition from the finite to the infinite, the text turns what could be a daunting cascade of definitions and theorems into a coherent and engaging progression of ideas. Acutely aware of the need for rigor, the student is much better prepared to understand what constitutes a proper mathematical proof and how to write one.\n\nFifteen years of classroom experience with the first edition of Understanding Analysis have solidified and refined the central narrative of the second edition. Roughly 150 new exercises join a selection of the best exercises from the first edition, and three more project-style sections have been added. Investigations of Euler’s computation of ζ(2), the Weierstrass Approximation ­ Theorem, and the gamma function are now among the book’s cohort of seminal results serving as motivation and payoff for the beginning student to master the methods of analysis.', 'https://m.media-amazon.com/images/I/51OS+nZ1bEL._SL1244_.jpg', 'Other', NULL, NULL, 1003, NULL);
+INSERT INTO `publisher_book_draft` VALUES (1004, 'Linear Algebra Done Right (Undergraduate Texts in Mathematics)', '978-3031410260', 407, 'English', '4th', 99.00, 10, 'Now available in Open Access, this best-selling textbook for a second course in linear algebra is aimed at undergraduate math majors and graduate students. The fourth edition gives an expanded treatment of the singular value decomposition and its consequences. It includes a new chapter on multilinear algebra, treating bilinear forms, quadratic forms, tensor products, and an approach to determinants via alternating multilinear forms. This new edition also increases the use of the minimal polynomial to provide cleaner proofs of multiple results. Also, over 250 new exercises have been added.\n\nThe novel approach taken here banishes determinants to the end of the book. The text focuses on the central goal of linear algebra: understanding the structure of linear operators on finite-dimensional vector spaces. The author has taken unusual care to motivate concepts and simplify proofs. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. Beautiful formatting creates pages with an unusually student-friendly appearance in both print and electronic versions.\n\nNo prerequisites are assumed other than the usual demand for suitable mathematical maturity. The text starts by discussing vector spaces, linear independence, span, basis, and dimension. The book then deals with linear maps, eigenvalues, and eigenvectors. Inner-product spaces are introduced, leading to the finite-dimensional spectral theorem and its consequences. Generalized eigenvectors are then used to provide insight into the structure of a linear operator.\n\nFrom the reviews of previous editions:\n\nAltogether, the text is a didactic masterpiece. ― zbMATH\n\nThe determinant-free proofs are elegant and intuitive. ― American Mathematical Monthly\n\nThe most original linear algebra book to appear in years, it certainly belongs in every undergraduate library ― CHOICE', 'https://m.media-amazon.com/images/I/51793S0SvIL._SL1246_.jpg', 'Other', NULL, NULL, 1004, NULL);
+INSERT INTO `publisher_book_draft` VALUES (1005, 'Linear Algebra Done Right (Undergraduate Texts in Mathematics)', '978-3031410260', 407, 'English', '1st', 99.00, 10, 'Now available in Open Access, this best-selling textbook for a second course in linear algebra is aimed at undergraduate math majors and graduate students. The fourth edition gives an expanded treatment of the singular value decomposition and its consequences. It includes a new chapter on multilinear algebra, treating bilinear forms, quadratic forms, tensor products, and an approach to determinants via alternating multilinear forms. This new edition also increases the use of the minimal polynomial to provide cleaner proofs of multiple results. Also, over 250 new exercises have been added.\n\nThe novel approach taken here banishes determinants to the end of the book. The text focuses on the central goal of linear algebra: understanding the structure of linear operators on finite-dimensional vector spaces. The author has taken unusual care to motivate concepts and simplify proofs. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. Beautiful formatting creates pages with an unusually student-friendly appearance in both print and electronic versions.\n\nNo prerequisites are assumed other than the usual demand for suitable mathematical maturity. The text starts by discussing vector spaces, linear independence, span, basis, and dimension. The book then deals with linear maps, eigenvalues, and eigenvectors. Inner-product spaces are introduced, leading to the finite-dimensional spectral theorem and its consequences. Generalized eigenvectors are then used to provide insight into the structure of a linear operator.\n\nFrom the reviews of previous editions:\n\nAltogether, the text is a didactic masterpiece. ― zbMATH\n\nThe determinant-free proofs are elegant and intuitive. ― American Mathematical Monthly\n\nThe most original linear algebra book to appear in years, it certainly belongs in every undergraduate library ― CHOICE', 'https://m.media-amazon.com/images/I/51793S0SvIL._SL1246_.jpg', 'Other', 'Sheldon Axler', NULL, 1005, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2001, 'Test Book with Authors', '978-1234567890', 200, 'English', '1st', 29.99, 50, 'A test book to verify authors display', 'https://example.com/cover.jpg', 'Fiction', 'John Doe, Jane Smith, Bob Johnson', 201, 2001, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2002, 'Linear Algebra Done Right (Undergraduate Texts in Mathematics)', '978-3031410260', 407, 'English', '4th', 99.00, 10, 'Now available in Open Access, this best-selling textbook for a second course in linear algebra is aimed at undergraduate math majors and graduate students. The fourth edition gives an expanded treatment of the singular value decomposition and its consequences. It includes a new chapter on multilinear algebra, treating bilinear forms, quadratic forms, tensor products, and an approach to determinants via alternating multilinear forms. This new edition also increases the use of the minimal polynomial to provide cleaner proofs of multiple results. Also, over 250 new exercises have been added.\n\nThe novel approach taken here banishes determinants to the end of the book. The text focuses on the central goal of linear algebra: understanding the structure of linear operators on finite-dimensional vector spaces. The author has taken unusual care to motivate concepts and simplify proofs. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. Beautiful formatting creates pages with an unusually student-friendly appearance in both print and electronic versions.\n\nNo prerequisites are assumed other than the usual demand for suitable mathematical maturity. The text starts by discussing vector spaces, linear independence, span, basis, and dimension. The book then deals with linear maps, eigenvalues, and eigenvectors. Inner-product spaces are introduced, leading to the finite-dimensional spectral theorem and its consequences. Generalized eigenvectors are then used to provide insight into the structure of a linear operator.\n\nFrom the reviews of previous editions:\n\nAltogether, the text is a didactic masterpiece. ― zbMATH\n\nThe determinant-free proofs are elegant and intuitive. ― American Mathematical Monthly\n\nThe most original linear algebra book to appear in years, it certainly belongs in every undergraduate library ― CHOICE', 'https://m.media-amazon.com/images/I/51793S0SvIL._SL1246_.jpg', 'Other', NULL, NULL, 2002, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2003, 'Understanding Analysis (Undergraduate Texts in Mathematics)', '978-93-6087-544-2', 324, 'English', '2nd', 248.99, 20, 'This lively introductory text exposes the student to the rewards of a rigorous study of functions of a real variable. In each chapter, informal discussions of questions that give analysis its inherent fascination are followed by precise, but not overly formal, developments of the techniques needed to make sense of them. By focusing on the unifying themes of approximation and the resolution of paradoxes that arise in the transition from the finite to the infinite, the text turns what could be a daunting cascade of definitions and theorems into a coherent and engaging progression of ideas. Acutely aware of the need for rigor, the student is much better prepared to understand what constitutes a proper mathematical proof and how to write one.\n\nFifteen years of classroom experience with the first edition of Understanding Analysis have solidified and refined the central narrative of the second edition. Roughly 150 new exercises join a selection of the best exercises from the first edition, and three more project-style sections have been added. Investigations of Euler’s computation of ζ(2), the Weierstrass Approximation ­ Theorem, and the gamma function are now among the book’s cohort of seminal results serving as motivation and payoff for the beginning student to master the methods of analysis.', 'https://m.media-amazon.com/images/I/51OS+nZ1bEL._SL1244_.jpg', 'Other', NULL, NULL, 2003, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2004, 'Understanding Analysis (Undergraduate Texts in Mathematics)', '978-93-6087-544-2', 324, 'English', '2', 248.99, 20, '', 'https://m.media-amazon.com/images/I/51OS+nZ1bEL._SL1244_.jpg', 'Other', NULL, NULL, 2004, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2005, 'G Protein Signaling Mechanisms in the Retina (Springer Series in Vision Research, 3)', '978-1493912179', 206, 'English', '2014th', 108.00, 9, 'The main purpose of this volume is to provide a focused analysis of the function of the G protein-coupled signaling pathways that operate in the interconnected network of retinal neurons as they detect and encode the information carried by light. The organization of this volume will generally follow the path of signal flow in the retina. First we will describe recent advances in understanding the phototransduction cascade of rod and cone photoreceptors, which use signaling cascade based on the GPCR rhodopsin to transduce incident light into neural activity. Chapters will be devoted to unique specializations of the two major types of photosensitive cells that comprise the predominant input for our spatial and color vision. Subsequently, the mechanisms of synaptic information encoding by retinal ON bipolar cells will be described, where the GPCR mGluR6 plays a fundamental role. Chapters in this section will examine macromolecular organization of the mGluR6 signaling pathway as well as current understanding of its function. The functional characteristics of this signaling mechanism will be explored in detail. Additionally, this section will cover the role of dopamine receptors in modulating signal transmission between photoreceptors and ON-bipolar cells. Finally, chapters will be focused on the output neurons of the inner retina, ganglion cells, where the components of the emerging GPCR melanopsin cascade in intrinsically photosensitive ganglion cells will be detailed. Collectively these mechanisms allow the retina to represent visual space over a wide range of light intensities.', 'https://m.media-amazon.com/images/I/61Nr5MbbgWL._SL1240_.jpg', 'Other', NULL, NULL, 2005, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2006, 'A Big History of Globalization (World-Systems Evolution and Global Futures)', '978-3030057060', 304, 'English', '1st ed, 2019 ed', 299.00, 10, 'This book presents the history of globalization as a network-based story in the context of Big History. Departing from the traditional historic discourse, in which communities, cities, and states serve as the main units of analysis, the authors instead trace the historical emergence, growth, interconnection, and merging of various types of networks that have gradually encompassed the globe. They also focus on the development of certain ideas, processes, institutions, and phenomena that spread through those networks to become truly global.\n\nThe book specifies five macro-periods in the history of globalization and comprehensively covers the first four, from roughly the 9th – 7th millennia BC to World War I. For each period, it identifies the most important network-related developments that facilitated (or even spurred on) such transitions and had the greatest impacts on the history of globalization.\n\nBy analyzing the world system\'s transition to new levels of complexityand connectivity, the book provides valuable insights into the course of Big History and the evolution of human societies.', 'https://m.media-amazon.com/images/I/71Z4H49UtFL._SL1246_.jpg', 'Other', 'Complete Test Author, Another Test Author', NULL, 2006, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2009, 'Final Author Test Book', NULL, NULL, 'English', '1st', 49.99, 30, 'Testing author functionality', NULL, 'Technology', 'Test Author One, Test Author Two', NULL, 2007, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2010, 'Final Author Test Book 2', NULL, NULL, 'English', '1st', 39.99, 25, 'Second test', NULL, 'Science', 'Final Author A, Final Author B', NULL, 2008, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2011, 'Minimal Fix Test Book', NULL, NULL, 'English', '1st', 29.99, 20, 'Testing minimal fix', NULL, 'Technology', 'Minimal Author A, Minimal Author B', NULL, 2009, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2012, 'Basic Mathematics 4', '978-0387967875', 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', 'Non-Fiction', NULL, NULL, 2010, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2013, 'Basic Mathematics', '978-0387967875', 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', 'Non-Fiction', ' Serge Lang, Serge A. Lang', NULL, 2011, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2014, 'Basic Mathematics 5', '978-0387967875', 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', 'Non-Fiction', ' Serge Lang, Serge A. Lang', NULL, 2012, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2015, 'Basic Mathematics 1', '978-0387967875', 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', 'Non-Fiction', ' Serge Lang, Serge A. Lang', NULL, 2013, NULL);
+INSERT INTO `publisher_book_draft` VALUES (2016, 'Basic Mathematics 1', '978-TEST-123456', 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', 'Non-Fiction', ' Serge Lang, Serge A. Lang', NULL, 2014, '1988-07-01');
+INSERT INTO `publisher_book_draft` VALUES (2017, 'Basic Mathematics 1', '978-0387967876', 494, 'English', '1st', 599.00, 10, 'This text in basic mathematics is ideal for high school or college students. It provides a firm foundation in basic principles of mathematics and thereby acts as a springboard into calculus, linear algebra and other more advanced topics. The information is clearly presented, and the author develops concepts in such a manner to show how one subject matter can relate and evolve into another.', 'https://m.media-amazon.com/images/I/515t1sJlmvL._SL1250_.jpg', 'Non-Fiction', ' Serge Lang, Serge A. Lang', NULL, 2015, '1988-07-01');
+INSERT INTO `publisher_book_draft` VALUES (2018, 'Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition', '978-3030645724', 1914, 'English', '1st', 249.00, 10, 'This book provides a structured and analytical guide to the use of artificial intelligence in medicine. Covering all areas within medicine, the chapters give a systemic review of the history, scientific foundations, present advances, potential trends, and future challenges of artificial intelligence within a healthcare setting.\nArtificial Intelligence in Medicine aims to give readers the required knowledge to apply artificial intelligence to clinical practice. The book is relevant to medical students, specialist doctors, and researchers whose work will be affected by artificial intelligence.', 'https://m.media-amazon.com/images/I/515qMrsY2lL._SL1208_.jpg', 'Non-Fiction', 'Niklas Lidströmer,Hutan Ashrafian', NULL, 2016, '2022-02-19');
+INSERT INTO `publisher_book_draft` VALUES (2020, 'Test Book', '978-TEST-999999', 200, 'English', '1st', 25.99, 100, 'Test description', '/images/test.jpg', 'Fiction', 'Test Author', 200, 2017, '2024-01-01');
 
 -- ----------------------------
 -- Table structure for publisher_request
@@ -1656,7 +1762,7 @@ CREATE TABLE `publisher_request`  (
   INDEX `REVIEWED_BY`(`REVIEWED_BY` ASC) USING BTREE,
   CONSTRAINT `publisher_request_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `publisher_request_ibfk_2` FOREIGN KEY (`REVIEWED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2007 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2018 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of publisher_request
@@ -1672,7 +1778,18 @@ INSERT INTO `publisher_request` VALUES (2002, 218, 'ADD_BOOK', 'REJECTED', '2025
 INSERT INTO `publisher_request` VALUES (2003, 218, 'ADD_BOOK', 'REJECTED', '2025-07-20 07:03:21', '2025-07-20 07:04:29', 3, 'New book contribution request: Understanding Analysis (Undergraduate Texts in Mathematics) | Rejected: Currently not accepting new books.', NULL);
 INSERT INTO `publisher_request` VALUES (2004, 218, 'ADD_BOOK', 'REJECTED', '2025-07-20 07:16:14', '2025-07-20 07:17:05', 3, 'New book contribution request: Understanding Analysis (Undergraduate Texts in Mathematics) | Rejected: There\'s no description.', NULL);
 INSERT INTO `publisher_request` VALUES (2005, 218, 'ADD_BOOK', 'APPROVED', '2025-07-20 07:28:22', '2025-07-20 07:29:33', 3, 'New book contribution request: G Protein Signaling Mechanisms in the Retina (Springer Series in Vision Research, 3) | Approved and book added to catalog', NULL);
-INSERT INTO `publisher_request` VALUES (2006, 218, 'ADD_BOOK', 'APPROVED', '2025-07-25 15:05:54', '2025-07-25 15:07:13', 3, 'New book contribution request: A Big History of Globalization (World-Systems Evolution and Global Futures) | Approved and book added to catalog', NULL);
+INSERT INTO `publisher_request` VALUES (2006, 218, 'ADD_BOOK', 'APPROVED', '2025-07-25 15:05:54', '2025-07-27 01:36:14', 1, 'New book contribution request: A Big History of Globalization (World-Systems Evolution and Global Futures) | Approved and book added to catalog', 'Testing complete author processing');
+INSERT INTO `publisher_request` VALUES (2007, 200, 'ADD_BOOK', 'APPROVED', '2025-07-27 01:40:23', '2025-07-27 01:40:33', 1, NULL, 'Testing final author processing');
+INSERT INTO `publisher_request` VALUES (2008, 200, 'ADD_BOOK', 'APPROVED', '2025-07-27 01:42:51', '2025-07-27 01:42:51', 1, NULL, 'Testing updated procedure');
+INSERT INTO `publisher_request` VALUES (2009, 200, 'ADD_BOOK', 'APPROVED', '2025-07-27 01:44:56', '2025-07-27 02:15:32', 1001, NULL, 'Test approval');
+INSERT INTO `publisher_request` VALUES (2010, 218, 'ADD_BOOK', 'APPROVED', '2025-07-27 01:48:10', '2025-07-27 01:48:58', 3, 'New book contribution request: Basic Mathematics 4 | Approved and book added to catalog', NULL);
+INSERT INTO `publisher_request` VALUES (2011, 218, 'ADD_BOOK', 'REJECTED', '2025-07-27 01:56:11', '2025-07-27 01:58:33', 3, 'New book contribution request: Basic Mathematics | Rejected: Server error', NULL);
+INSERT INTO `publisher_request` VALUES (2012, 218, 'ADD_BOOK', 'REJECTED', '2025-07-27 01:59:06', '2025-07-27 01:59:30', 3, 'New book contribution request: Basic Mathematics 5 | Rejected: failed', NULL);
+INSERT INTO `publisher_request` VALUES (2013, 218, 'ADD_BOOK', 'APPROVED', '2025-07-27 02:12:24', '2025-07-27 02:19:30', 1001, 'New book contribution request: Basic Mathematics 1', 'Test approval fixed');
+INSERT INTO `publisher_request` VALUES (2014, 218, 'ADD_BOOK', 'APPROVED', '2025-07-27 02:41:59', NULL, NULL, 'New book contribution request: Basic Mathematics 1', NULL);
+INSERT INTO `publisher_request` VALUES (2015, 218, 'ADD_BOOK', 'REJECTED', '2025-07-27 03:19:41', '2025-07-27 03:22:44', 3, 'New book contribution request: Basic Mathematics 1 | Rejected: My son hated this book.', NULL);
+INSERT INTO `publisher_request` VALUES (2016, 218, 'ADD_BOOK', 'APPROVED', '2025-07-27 03:27:08', '2025-07-27 03:55:03', 1, 'New book contribution request: Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition | Test approval', NULL);
+INSERT INTO `publisher_request` VALUES (2017, 218, 'ADD_BOOK', 'APPROVED', '2025-07-27 03:27:22', '2025-07-27 03:55:59', 3, 'Test request | ', NULL);
 
 -- ----------------------------
 -- Table structure for return_request
@@ -1815,7 +1932,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, NULL, NULL, NULL, 0, 'MALE', NULL);
 INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-25 23:03:12', 1, 'MALE', '2003-04-20');
+INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-27 01:48:24', 1, 'MALE', '2003-04-20');
 INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-17 00:59:08', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');
@@ -1875,107 +1992,74 @@ CREATE TABLE `wishlist`  (
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ApproveBookRequest`;
 delimiter ;;
-CREATE PROCEDURE `ApproveBookRequest`(IN request_id INT,
-    IN admin_id INT,
-    IN admin_feedback_text TEXT,
-    OUT result_message VARCHAR(255),
-    OUT new_book_id INT)
+CREATE PROCEDURE `ApproveBookRequest`(IN p_request_id INT,
+    IN p_admin_id INT,
+    IN p_admin_feedback TEXT,
+    OUT p_result_message VARCHAR(255),
+    OUT p_new_book_id INT)
 BEGIN
-    DECLARE publisher_id INT DEFAULT NULL;
-    DECLARE book_title VARCHAR(255) DEFAULT NULL;
-    DECLARE book_isbn VARCHAR(50) DEFAULT NULL;
-    DECLARE book_published_date DATE DEFAULT NULL;
-    DECLARE book_pages INT DEFAULT NULL;
-    DECLARE book_language VARCHAR(20) DEFAULT 'English';
-    DECLARE book_edition VARCHAR(20) DEFAULT '1st';
-    DECLARE book_price DECIMAL(12,2) DEFAULT 0.00;
-    DECLARE book_stock INT DEFAULT 0;
-    DECLARE book_description TEXT DEFAULT '';
-    DECLARE book_cover_url VARCHAR(300) DEFAULT '/images/books/defaultbook.jpg';
-    DECLARE book_genre VARCHAR(255) DEFAULT 'General';
-    DECLARE request_status VARCHAR(20) DEFAULT NULL;
-    DECLARE exit_handler BOOLEAN DEFAULT FALSE;
-    
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    DECLARE v_publisher_id INT;
+    DECLARE v_title VARCHAR(255);
+    DECLARE v_isbn VARCHAR(50);
+    DECLARE v_published_date DATE;
+    DECLARE v_page_count INT;
+    DECLARE v_language VARCHAR(50);
+    DECLARE v_edition VARCHAR(100);
+    DECLARE v_price DECIMAL(10,2);
+    DECLARE v_stock_quantity INT;
+    DECLARE v_description TEXT;
+    DECLARE v_cover_url VARCHAR(500);
+    DECLARE v_genre VARCHAR(100);
+    DECLARE exit handler for sqlexception
     BEGIN
-        SET exit_handler = TRUE;
         ROLLBACK;
-        SET result_message = 'SQL Error occurred while processing request';
-        SET new_book_id = 0;
+        SET p_result_message = 'Database error occurred during approval';
+        SET p_new_book_id = 0;
     END;
-    
-    SET result_message = '';
-    SET new_book_id = 0;
-    
+
     START TRANSACTION;
+
     
-    IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
-        SET result_message = 'Admin not found';
+    SELECT PUBLISHER_ID INTO v_publisher_id
+    FROM PUBLISHER_REQUEST 
+    WHERE ID = p_request_id AND STATUS = 'PENDING';
+
+    IF v_publisher_id IS NULL THEN
+        SET p_result_message = 'Request not found or already processed';
+        SET p_new_book_id = 0;
         ROLLBACK;
     ELSE
-        SELECT STATUS INTO request_status
-        FROM PUBLISHER_REQUEST 
-        WHERE ID = request_id;
         
-        IF request_status IS NULL THEN
-            SET result_message = 'Request not found';
-            ROLLBACK;
-        ELSEIF request_status != 'PENDING' THEN
-            SET result_message = CONCAT('Request already processed with status: ', request_status);
-            ROLLBACK;
-        ELSE
-            SELECT pr.PUBLISHER_ID INTO publisher_id
-            FROM PUBLISHER_REQUEST pr
-            WHERE pr.ID = request_id;
-            
-            SELECT 
-                COALESCE(TITLE, 'Untitled') as title,
-                COALESCE(ISBN, '') as isbn,
-                COALESCE(PUBLISHED_DATE, CURDATE()) as pub_date,
-                COALESCE(PAGE_COUNT, 0) as pages,
-                COALESCE(LANGUAGE, 'English') as lang,
-                COALESCE(EDITION, '1st') as ed,
-                COALESCE(PRICE, 0.00) as pr,
-                COALESCE(STOCK_QUANTITY, 0) as stock,
-                COALESCE(DESCRIPTION, '') as desc_text,
-                COALESCE(COVER_URL, '/images/books/defaultbook.jpg') as cover,
-                COALESCE(GENRE, 'General') as genre_text
-            INTO 
-                book_title, book_isbn, book_published_date, book_pages, 
-                book_language, book_edition, book_price, book_stock, 
-                book_description, book_cover_url, book_genre
-            FROM PUBLISHER_BOOK_DRAFT 
-            WHERE REQUEST_ID = request_id;
-            
-            -- Let AUTO_INCREMENT handle the ID automatically
-            INSERT INTO BOOK (
-                TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, 
-                LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, 
-                COVER_URL, GENRE, ADDED_AT, SHOW_BOOK
-            ) VALUES (
-                book_title, book_isbn, book_published_date, publisher_id, book_pages,
-                book_language, book_edition, book_price, book_stock, book_description,
-                book_cover_url, book_genre, NOW(), 1
-            );
-            
-            -- Get the auto-generated ID
-            SET new_book_id = LAST_INSERT_ID();
-            
-            UPDATE PUBLISHER_REQUEST 
-            SET STATUS = 'APPROVED',
-                REVIEWED_AT = NOW(),
-                REVIEWED_BY = admin_id,
-                admin_feedback = admin_feedback_text
-            WHERE ID = request_id;
-            
-            SET result_message = CONCAT('Book approved successfully with ID: ', new_book_id);
-        END IF;
-    END IF;
-    
-    IF exit_handler = FALSE THEN
+        SELECT TITLE, ISBN, PUBLISHED_DATE, PAGE_COUNT, LANGUAGE, EDITION, 
+               PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE
+        INTO v_title, v_isbn, v_published_date, v_page_count, v_language, 
+             v_edition, v_price, v_stock_quantity, v_description, v_cover_url, v_genre
+        FROM PUBLISHER_BOOK_DRAFT 
+        WHERE REQUEST_ID = p_request_id;
+
+        
+        INSERT INTO BOOK (TITLE, ISBN, PUBLISHED_DATE, PAGE_COUNT, LANGUAGE, 
+                         EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, 
+                         GENRE, PUBLISHER_ID, ADDED_AT)
+        VALUES (v_title, v_isbn, v_published_date, v_page_count, v_language,
+                v_edition, v_price, v_stock_quantity, v_description, v_cover_url,
+                v_genre, v_publisher_id, NOW());
+
+        SET p_new_book_id = LAST_INSERT_ID();
+
+        
+        UPDATE PUBLISHER_REQUEST 
+        SET STATUS = 'APPROVED', 
+            REVIEWED_AT = NOW(), 
+            REVIEWED_BY = p_admin_id,
+            NOTES = CONCAT(COALESCE(NOTES, ''), ' | ', COALESCE(p_admin_feedback, 'Approved'))
+        WHERE ID = p_request_id;
+
+        SET p_result_message = 'Book approved and added to catalog successfully';
+        
         COMMIT;
     END IF;
-    
+
 END
 ;;
 delimiter ;
@@ -1985,50 +2069,69 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ProcessBookAuthors`;
 delimiter ;;
-CREATE PROCEDURE `ProcessBookAuthors`(IN book_id INT,
-    IN authors_text TEXT)
+CREATE PROCEDURE `ProcessBookAuthors`(IN p_book_id INT,
+    IN p_authors_text TEXT)
 BEGIN
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE author_name VARCHAR(255);
-    DECLARE author_id INT;
-    DECLARE authors_cursor CURSOR FOR 
-        SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(authors_text, ',', numbers.n), ',', -1)) as author
-        FROM (
-            SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
-            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
-        ) numbers
-        WHERE numbers.n <= 1 + (LENGTH(authors_text) - LENGTH(REPLACE(authors_text, ',', '')))
-        AND TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(authors_text, ',', numbers.n), ',', -1)) != '';
+    DECLARE v_author_name VARCHAR(255);
+    DECLARE v_author_id INT;
+    DECLARE v_remaining_text TEXT;
+    DECLARE v_comma_pos INT;
+    DECLARE v_processed_count INT DEFAULT 0;
     
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    -- Error handler for author processing
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        -- Log error but continue processing other authors
+        GET DIAGNOSTICS CONDITION 1
+            @error_message = MESSAGE_TEXT;
+    END;
     
-    IF authors_text IS NOT NULL AND TRIM(authors_text) != '' THEN
-        OPEN authors_cursor;
+    -- Clean and prepare the authors text
+    SET v_remaining_text = TRIM(p_authors_text);
+    
+    -- Add a trailing comma to make parsing easier
+    IF v_remaining_text != '' THEN
+        SET v_remaining_text = CONCAT(v_remaining_text, ',');
+    END IF;
+    
+    -- Process each author
+    WHILE LENGTH(v_remaining_text) > 0 DO
+        SET v_comma_pos = LOCATE(',', v_remaining_text);
         
-        read_loop: LOOP
-            FETCH authors_cursor INTO author_name;
-            IF done THEN
-                LEAVE read_loop;
-            END IF;
+        IF v_comma_pos > 0 THEN
+            -- Extract author name
+            SET v_author_name = TRIM(SUBSTRING(v_remaining_text, 1, v_comma_pos - 1));
+            SET v_remaining_text = TRIM(SUBSTRING(v_remaining_text, v_comma_pos + 1));
             
-            SET author_name = TRIM(author_name);
-            
-            IF author_name != '' THEN
-                SELECT ID INTO author_id FROM author WHERE NAME = author_name LIMIT 1;
+            -- Process this author if name is not empty
+            IF v_author_name != '' THEN
+                SET v_processed_count = v_processed_count + 1;
                 
-                IF author_id IS NULL THEN
-                    -- Use AUTO_INCREMENT for new author ID
-                    INSERT INTO author (NAME) VALUES (author_name);
-                    SET author_id = LAST_INSERT_ID();
+                -- Check if author already exists
+                SELECT ID INTO v_author_id 
+                FROM author 
+                WHERE NAME = v_author_name 
+                LIMIT 1;
+                
+                -- If author doesn't exist, create them
+                IF v_author_id IS NULL THEN
+                    INSERT INTO author (NAME) VALUES (v_author_name);
+                    SET v_author_id = LAST_INSERT_ID();
                 END IF;
                 
-                INSERT IGNORE INTO book_author (BOOK_ID, AUTHOR_ID, CONTRIBUTION) 
-                VALUES (book_id, author_id, 'Author');
+                -- Link author to book (INSERT IGNORE prevents duplicates)
+                INSERT IGNORE INTO book_author (BOOK_ID, AUTHOR_ID, CONTRIBUTION)
+                VALUES (p_book_id, v_author_id, 'Author');
+                
+                -- Reset for next iteration
+                SET v_author_id = NULL;
             END IF;
-        END LOOP;
-        
-        CLOSE authors_cursor;
-    END IF;
+        ELSE
+            -- No more commas, exit loop
+            SET v_remaining_text = '';
+        END IF;
+    END WHILE;
+    
 END
 ;;
 delimiter ;
