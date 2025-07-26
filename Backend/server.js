@@ -10,7 +10,7 @@ const healthRoutes = require('./routes/healthRoutes');
 const publisherRoutes = require('./routes/publisherRoutes');
 const adminBookRequestRoutes = require('./routes/adminBookRequestRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
-
+const authorRoutes= require('./routes/authorRoutes');
 const app = express();
 
 // Middleware
@@ -20,6 +20,7 @@ app.use(cors());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/authors', authorRoutes);
 app.use('/api', healthRoutes);
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));

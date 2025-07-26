@@ -7,12 +7,14 @@ const bookRoutes = require('./bookRoutes');
 const userRoutes = require('./userRoutes');
 const cartRoutes = require('./cartRoutes');
 const orderRoutes = require('./orderRoute');
+const authorRoutes = require('./authorRoutes');
 
 // Use routes
 router.use('/api/auth', authRoutes);
 router.use('/api/user', userRoutes);
 router.use('/api/cart', cartRoutes);
 router.use('/api/orders', orderRoutes);
+router.use('/api/authors', authorRoutes);
 router.use('/', bookRoutes);
 
 // Health check route

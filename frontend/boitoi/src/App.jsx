@@ -15,6 +15,8 @@ import PublisherDashboard from './pages/PublisherDashboard'
 import PublisherBookSubmission from './pages/PublisherBookSubmission'
 import PublisherLoginPage from './pages/PublisherLoginPage'
 import MyOrders from './pages/MyOrders'
+import AuthorsPage from './pages/AuthorsPage'
+import AuthorDetailPage from './pages/AuthorDetailPage'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -36,6 +38,8 @@ function App() {
                 <Route path="/auth" element={<AuthPage />} />
                 <Route path="/books" element={<BooksSection />}/>
                 <Route path="/books/:id" element={<BookDetail />} />
+                <Route path="/authors" element={<AuthorsPage />} />
+                <Route path="/author/:id" element={<AuthorDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/cart-test" element={<CartTestPage />} />
                 <Route path="/profile" element={<UserProfilePage />} />
