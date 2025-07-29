@@ -8,6 +8,7 @@ const userRoutes = require('./userRoutes');
 const cartRoutes = require('./cartRoutes');
 const orderRoutes = require('./orderRoute');
 const authorRoutes = require('./authorRoutes');
+const bestsellerRoutes = require('./bestsellerRoutes');
 
 // Use routes
 router.use('/api/auth', authRoutes);
@@ -15,6 +16,7 @@ router.use('/api/user', userRoutes);
 router.use('/api/cart', cartRoutes);
 router.use('/api/orders', orderRoutes);
 router.use('/api/authors', authorRoutes);
+router.use('/api/bestsellers', bestsellerRoutes);
 router.use('/', bookRoutes);
 
 // Health check route
