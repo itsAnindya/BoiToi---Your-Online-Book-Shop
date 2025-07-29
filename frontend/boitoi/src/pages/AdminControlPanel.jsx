@@ -14,7 +14,8 @@ import {
   FaUserShield,
   FaStore,
   FaArrowLeft,
-  FaClipboardList
+  FaClipboardList,
+  FaTags
 } from 'react-icons/fa';
 import Button from '../components/ui/Button';
 
@@ -115,6 +116,14 @@ const AdminControlPanel = () => {
       icon: FaShoppingCart,
       color: 'bg-purple-500',
       link: '/admin/orders'
+    },
+    {
+      id: 'discounts',
+      title: 'Discount Management',
+      description: 'Create and manage discount codes and promotions',
+      icon: FaTags,
+      color: 'bg-pink-500',
+      link: '/admin/discounts'
     },
     {
       id: 'analytics',
