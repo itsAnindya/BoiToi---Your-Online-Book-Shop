@@ -13,7 +13,8 @@ const adminOrderRoutes = require('./routes/adminOrderRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const authorRoutes= require('./routes/authorRoutes');
 const wishlistRoutes = require('./routes/wishlistRoute');
-const { addToWishlist } = require('./controllers/wishListController');
+const bestsellerRoutes = require('./routes/bestsellerRoutes');
+const schedulerService = require('./services/schedulerService');
 const app = express();
 
 // Middleware
@@ -34,6 +35,7 @@ app.use('/api/admin', adminBookRequestRoutes);
 app.use('/api/admin', adminOrderRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/bestsellers', bestsellerRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -59,4 +61,9 @@ console.log(
 
 app.listen(PORT, HOST, () => {
   console.log(`🚀 Server running on http://${HOST}:${PORT}`);
+  
+  // Start the scheduler service for periodic tasks
+  console.log('🕐 Starting scheduler service...');
+  schedulerService.start();
+  console.log('✅ Scheduler service started - bestsellers will update daily at 2 AM');
 });
