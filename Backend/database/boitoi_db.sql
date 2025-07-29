@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 27/07/2025 03:58:39
+ Date: 29/07/2025 22:13:39
 */
 
 SET NAMES utf8mb4;
@@ -1446,7 +1446,6 @@ INSERT INTO `notifications` VALUES (239, 1001, 'New book contribution request: \
 INSERT INTO `notifications` VALUES (249, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" REJECTED', 'SYSTEM', 0, '2025-07-27 03:22:44', NULL);
 INSERT INTO `notifications` VALUES (251, 1, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (252, 2, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
-INSERT INTO `notifications` VALUES (253, 3, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (254, 1001, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (258, 1, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (259, 2, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
@@ -1454,7 +1453,6 @@ INSERT INTO `notifications` VALUES (260, 3, 'New book contribution request: \"Ar
 INSERT INTO `notifications` VALUES (261, 1001, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (265, 1, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
 INSERT INTO `notifications` VALUES (266, 2, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
-INSERT INTO `notifications` VALUES (267, 3, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
 INSERT INTO `notifications` VALUES (268, 1001, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
 INSERT INTO `notifications` VALUES (282, 1, '[PUBLISHER: Springer] Book \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:55:03', NULL);
 INSERT INTO `notifications` VALUES (283, 1, '[PUBLISHER: Springer] Book \"Test Book\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:55:59', NULL);
@@ -1562,7 +1560,7 @@ CREATE TABLE `permission`  (
   `NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DESCRIPTION` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of permission
@@ -1932,7 +1930,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, NULL, NULL, NULL, 0, 'MALE', NULL);
 INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-27 01:48:24', 1, 'MALE', '2003-04-20');
+INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-29 21:49:27', 1, 'MALE', '2003-04-20');
 INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-17 00:59:08', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');
@@ -1957,14 +1955,14 @@ CREATE TABLE `user_address`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_address
 -- ----------------------------
 INSERT INTO `user_address` VALUES (1, 6, 'home', 'Bangladesh University of Engineering and Technology\nPalashi, Dhaka 1000', 'Dhaka', 'Bangladesh', 'Bangladesh', '1000', 1);
 INSERT INTO `user_address` VALUES (2, 7, 'office', '60 Biswanath Heights, Natun Bazar', 'Magura', 'Bangladesh', 'Bangladesh', '7600', 1);
-INSERT INTO `user_address` VALUES (3, 3, 'office', 'Ahsan Ullah Hall, Zahir Rayhan Road', 'Dhaka-1000', 'Dhaka', 'Bangladesh', '1000', 1);
+INSERT INTO `user_address` VALUES (3, 3, 'office', 'Ahsan Ullah Hall, Zahir Rayhan Road', 'Dhaka-1000', 'Dhaka', 'Bangladesh', '1000', 0);
 INSERT INTO `user_address` VALUES (4, 3, 'home', '60 Biswanath Heights, Natun Bazar', 'Magura', 'Khulna', 'Bangladesh', '7600', 1);
 
 -- ----------------------------
@@ -2209,6 +2207,44 @@ END
 delimiter ;
 
 -- ----------------------------
+-- Procedure structure for SetDefaultAddress
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `SetDefaultAddress`;
+delimiter ;;
+CREATE PROCEDURE `SetDefaultAddress`(IN p_user_id INT,
+    IN p_address_id INT)
+BEGIN
+    DECLARE address_exists INT DEFAULT 0;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+    
+    SELECT COUNT(*) INTO address_exists 
+    FROM user_address 
+    WHERE ID = p_address_id AND USER_ID = p_user_id;
+    
+    IF address_exists = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Address not found or does not belong to user';
+    END IF;
+    
+    UPDATE user_address 
+    SET IS_DEFAULT = 0 
+    WHERE USER_ID = p_user_id;
+    
+    UPDATE user_address 
+    SET IS_DEFAULT = 1 
+    WHERE ID = p_address_id;
+    
+    COMMIT;
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Triggers structure for table publisher_request
 -- ----------------------------
 DROP TRIGGER IF EXISTS `notify_admins_new_request`;
@@ -2264,6 +2300,65 @@ CREATE TRIGGER `notify_publisher_request_update` AFTER UPDATE ON `publisher_requ
             NOW()
         FROM admin a LIMIT 1;
         
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table user_address
+-- ----------------------------
+DROP TRIGGER IF EXISTS `ensure_single_default_update`;
+delimiter ;;
+CREATE TRIGGER `ensure_single_default_update` AFTER UPDATE ON `user_address` FOR EACH ROW BEGIN
+    DECLARE user_default_count INT DEFAULT 0;
+    
+    
+    SELECT COUNT(*) INTO user_default_count
+    FROM user_address 
+    WHERE USER_ID = NEW.USER_ID AND IS_DEFAULT = 1;
+    
+    
+    IF NEW.IS_DEFAULT = 1 AND OLD.IS_DEFAULT = 0 AND user_default_count > 1 THEN
+        UPDATE user_address 
+        SET IS_DEFAULT = 0 
+        WHERE USER_ID = NEW.USER_ID 
+        AND ID != NEW.ID 
+        AND IS_DEFAULT = 1;
+    END IF;
+    
+    
+    IF user_default_count = 0 THEN
+        UPDATE user_address 
+        SET IS_DEFAULT = 1 
+        WHERE USER_ID = NEW.USER_ID 
+        ORDER BY ID ASC 
+        LIMIT 1;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table user_address
+-- ----------------------------
+DROP TRIGGER IF EXISTS `ensure_default_after_delete`;
+delimiter ;;
+CREATE TRIGGER `ensure_default_after_delete` AFTER DELETE ON `user_address` FOR EACH ROW BEGIN
+    DECLARE user_default_count INT DEFAULT 0;
+    
+    
+    SELECT COUNT(*) INTO user_default_count
+    FROM user_address 
+    WHERE USER_ID = OLD.USER_ID AND IS_DEFAULT = 1;
+    
+    
+    IF user_default_count = 0 THEN
+        UPDATE user_address 
+        SET IS_DEFAULT = 1 
+        WHERE USER_ID = OLD.USER_ID 
+        ORDER BY ID ASC 
+        LIMIT 1;
     END IF;
 END
 ;;

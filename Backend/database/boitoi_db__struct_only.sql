@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 27/07/2025 02:26:45
+ Date: 29/07/2025 22:31:40
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `author`  (
   `WEBSITE` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PHOTO_URL` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 477 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 484 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for book
@@ -90,7 +90,7 @@ CREATE TABLE `book`  (
   INDEX `fk_book_category`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `book_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_book_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 433 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 449 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for book_author
@@ -134,7 +134,7 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for category
@@ -234,7 +234,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 214 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order
@@ -251,7 +251,7 @@ CREATE TABLE `order`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_order_user_id`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1005 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order_book
@@ -308,7 +308,7 @@ CREATE TABLE `permission`  (
   `NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DESCRIPTION` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for publisher
@@ -357,7 +357,7 @@ CREATE TABLE `publisher_book_draft`  (
   INDEX `fk_publisher_book_draft_category`(`CATEGORY_ID` ASC) USING BTREE,
   CONSTRAINT `fk_publisher_book_draft_category` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `category` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `publisher_book_draft_ibfk_1` FOREIGN KEY (`REQUEST_ID`) REFERENCES `publisher_request` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2016 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2021 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for publisher_request
@@ -378,7 +378,7 @@ CREATE TABLE `publisher_request`  (
   INDEX `REVIEWED_BY`(`REVIEWED_BY` ASC) USING BTREE,
   CONSTRAINT `publisher_request_ibfk_1` FOREIGN KEY (`PUBLISHER_ID`) REFERENCES `publisher` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `publisher_request_ibfk_2` FOREIGN KEY (`REVIEWED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2014 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2018 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for return_request
@@ -505,7 +505,7 @@ CREATE TABLE `user_address`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wishlist
@@ -528,210 +528,74 @@ CREATE TABLE `wishlist`  (
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ApproveBookRequest`;
 delimiter ;;
-CREATE PROCEDURE `ApproveBookRequest`(IN request_id INT,
-    IN admin_id INT,
-    IN admin_feedback_text TEXT,
-    OUT result_message VARCHAR(255),
-    OUT new_book_id INT)
+CREATE PROCEDURE `ApproveBookRequest`(IN p_request_id INT,
+    IN p_admin_id INT,
+    IN p_admin_feedback TEXT,
+    OUT p_result_message VARCHAR(255),
+    OUT p_new_book_id INT)
 BEGIN
-    DECLARE publisher_id INT DEFAULT NULL;
-    DECLARE book_title VARCHAR(255) DEFAULT NULL;
-    DECLARE book_isbn VARCHAR(50) DEFAULT NULL;
-    DECLARE book_pages INT DEFAULT NULL;
-    DECLARE book_language VARCHAR(20) DEFAULT 'English';
-    DECLARE book_edition VARCHAR(20) DEFAULT '1st';
-    DECLARE book_price DECIMAL(12,2) DEFAULT 0.00;
-    DECLARE book_stock INT DEFAULT 0;
-    DECLARE book_description TEXT DEFAULT '';
-    DECLARE book_cover_url VARCHAR(300) DEFAULT '/images/books/defaultbook.jpg';
-    DECLARE book_genre VARCHAR(255) DEFAULT 'General';
-    DECLARE request_status VARCHAR(20) DEFAULT NULL;
-    DECLARE exit_handler BOOLEAN DEFAULT FALSE;
-    
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    DECLARE v_publisher_id INT;
+    DECLARE v_title VARCHAR(255);
+    DECLARE v_isbn VARCHAR(50);
+    DECLARE v_published_date DATE;
+    DECLARE v_page_count INT;
+    DECLARE v_language VARCHAR(50);
+    DECLARE v_edition VARCHAR(100);
+    DECLARE v_price DECIMAL(10,2);
+    DECLARE v_stock_quantity INT;
+    DECLARE v_description TEXT;
+    DECLARE v_cover_url VARCHAR(500);
+    DECLARE v_genre VARCHAR(100);
+    DECLARE exit handler for sqlexception
     BEGIN
-        SET exit_handler = TRUE;
         ROLLBACK;
-        SET result_message = 'SQL Error occurred while processing request';
-        SET new_book_id = 0;
+        SET p_result_message = 'Database error occurred during approval';
+        SET p_new_book_id = 0;
     END;
-    
-    SET result_message = '';
-    SET new_book_id = 0;
-    
+
     START TRANSACTION;
+
     
-    IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
-        SET result_message = 'Admin not found';
+    SELECT PUBLISHER_ID INTO v_publisher_id
+    FROM PUBLISHER_REQUEST 
+    WHERE ID = p_request_id AND STATUS = 'PENDING';
+
+    IF v_publisher_id IS NULL THEN
+        SET p_result_message = 'Request not found or already processed';
+        SET p_new_book_id = 0;
         ROLLBACK;
     ELSE
-        SELECT STATUS INTO request_status
-        FROM PUBLISHER_REQUEST 
-        WHERE ID = request_id;
         
-        IF request_status IS NULL THEN
-            SET result_message = 'Request not found';
-            ROLLBACK;
-        ELSEIF request_status != 'PENDING' THEN
-            SET result_message = CONCAT('Request already processed with status: ', request_status);
-            ROLLBACK;
-        ELSE
-            SELECT pr.PUBLISHER_ID INTO publisher_id
-            FROM PUBLISHER_REQUEST pr
-            WHERE pr.ID = request_id;
-            
-            
-            SELECT 
-                COALESCE(TITLE, 'Untitled') as title,
-                COALESCE(ISBN, '') as isbn,
-                COALESCE(PAGE_COUNT, 0) as pages,
-                COALESCE(LANGUAGE, 'English') as lang,
-                COALESCE(EDITION, '1st') as ed,
-                COALESCE(PRICE, 0.00) as pr,
-                COALESCE(STOCK_QUANTITY, 0) as stock,
-                COALESCE(DESCRIPTION, '') as desc_text,
-                COALESCE(COVER_URL, '/images/books/defaultbook.jpg') as cover,
-                COALESCE(GENRE, 'General') as genre_text
-            INTO 
-                book_title, book_isbn, book_pages, 
-                book_language, book_edition, book_price, book_stock, 
-                book_description, book_cover_url, book_genre
-            FROM PUBLISHER_BOOK_DRAFT 
-            WHERE REQUEST_ID = request_id;
-            
-            
-            INSERT INTO BOOK (
-                TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, 
-                LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, 
-                COVER_URL, GENRE, ADDED_AT, SHOW_BOOK
-            ) VALUES (
-                book_title, book_isbn, CURDATE(), publisher_id, book_pages,
-                book_language, book_edition, book_price, book_stock, book_description,
-                book_cover_url, book_genre, NOW(), 1
-            );
-            
-            
-            SET new_book_id = LAST_INSERT_ID();
-            
-            
-            CALL ProcessBookAuthors(new_book_id, (
-                SELECT AUTHORS FROM PUBLISHER_BOOK_DRAFT WHERE REQUEST_ID = request_id
-            ));
-            
-            UPDATE PUBLISHER_REQUEST 
-            SET STATUS = 'APPROVED',
-                REVIEWED_AT = NOW(),
-                REVIEWED_BY = admin_id,
-                admin_feedback = admin_feedback_text
-            WHERE ID = request_id;
-            
-            SET result_message = CONCAT('Book approved successfully with ID: ', new_book_id);
-        END IF;
-    END IF;
-    
-    IF exit_handler = FALSE THEN
+        SELECT TITLE, ISBN, PUBLISHED_DATE, PAGE_COUNT, LANGUAGE, EDITION, 
+               PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, GENRE
+        INTO v_title, v_isbn, v_published_date, v_page_count, v_language, 
+             v_edition, v_price, v_stock_quantity, v_description, v_cover_url, v_genre
+        FROM PUBLISHER_BOOK_DRAFT 
+        WHERE REQUEST_ID = p_request_id;
+
+        
+        INSERT INTO BOOK (TITLE, ISBN, PUBLISHED_DATE, PAGE_COUNT, LANGUAGE, 
+                         EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, COVER_URL, 
+                         GENRE, PUBLISHER_ID, ADDED_AT)
+        VALUES (v_title, v_isbn, v_published_date, v_page_count, v_language,
+                v_edition, v_price, v_stock_quantity, v_description, v_cover_url,
+                v_genre, v_publisher_id, NOW());
+
+        SET p_new_book_id = LAST_INSERT_ID();
+
+        
+        UPDATE PUBLISHER_REQUEST 
+        SET STATUS = 'APPROVED', 
+            REVIEWED_AT = NOW(), 
+            REVIEWED_BY = p_admin_id,
+            NOTES = CONCAT(COALESCE(NOTES, ''), ' | ', COALESCE(p_admin_feedback, 'Approved'))
+        WHERE ID = p_request_id;
+
+        SET p_result_message = 'Book approved and added to catalog successfully';
+        
         COMMIT;
     END IF;
-    
-END
-;;
-delimiter ;
 
--- ----------------------------
--- Procedure structure for ApproveBookRequestSimple
--- ----------------------------
-DROP PROCEDURE IF EXISTS `ApproveBookRequestSimple`;
-delimiter ;;
-CREATE PROCEDURE `ApproveBookRequestSimple`(IN request_id INT,
-    IN admin_id INT,
-    IN admin_feedback_text TEXT,
-    OUT result_message VARCHAR(255),
-    OUT new_book_id INT)
-BEGIN
-    DECLARE publisher_id INT DEFAULT NULL;
-    DECLARE book_title VARCHAR(255) DEFAULT NULL;
-    DECLARE book_isbn VARCHAR(50) DEFAULT NULL;
-    DECLARE book_pages INT DEFAULT NULL;
-    DECLARE book_language VARCHAR(20) DEFAULT 'English';
-    DECLARE book_edition VARCHAR(20) DEFAULT '1st';
-    DECLARE book_price DECIMAL(12,2) DEFAULT 0.00;
-    DECLARE book_stock INT DEFAULT 0;
-    DECLARE book_description TEXT DEFAULT '';
-    DECLARE book_cover_url VARCHAR(300) DEFAULT '/images/books/defaultbook.jpg';
-    DECLARE book_genre VARCHAR(255) DEFAULT 'General';
-    DECLARE request_status VARCHAR(20) DEFAULT NULL;
-    
-    SET result_message = '';
-    SET new_book_id = 0;
-    
-    START TRANSACTION;
-    
-    IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
-        SET result_message = 'Admin not found';
-        ROLLBACK;
-    ELSE
-        SELECT STATUS INTO request_status
-        FROM PUBLISHER_REQUEST 
-        WHERE ID = request_id;
-        
-        IF request_status IS NULL THEN
-            SET result_message = 'Request not found';
-            ROLLBACK;
-        ELSEIF request_status != 'PENDING' THEN
-            SET result_message = CONCAT('Request already processed with status: ', request_status);
-            ROLLBACK;
-        ELSE
-            SELECT pr.PUBLISHER_ID INTO publisher_id
-            FROM PUBLISHER_REQUEST pr
-            WHERE pr.ID = request_id;
-            
-            SELECT 
-                COALESCE(TITLE, 'Untitled') as title,
-                COALESCE(ISBN, '') as isbn,
-                COALESCE(PAGE_COUNT, 0) as pages,
-                COALESCE(LANGUAGE, 'English') as lang,
-                COALESCE(EDITION, '1st') as ed,
-                COALESCE(PRICE, 0.00) as pr,
-                COALESCE(STOCK_QUANTITY, 0) as stock,
-                COALESCE(DESCRIPTION, '') as desc_text,
-                COALESCE(COVER_URL, '/images/books/defaultbook.jpg') as cover,
-                COALESCE(GENRE, 'General') as genre_text
-            INTO 
-                book_title, book_isbn, book_pages, 
-                book_language, book_edition, book_price, book_stock, 
-                book_description, book_cover_url, book_genre
-            FROM PUBLISHER_BOOK_DRAFT 
-            WHERE REQUEST_ID = request_id;
-            
-            
-            INSERT INTO BOOK (
-                TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, 
-                LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, 
-                COVER_URL, GENRE, ADDED_AT, SHOW_BOOK
-            ) VALUES (
-                book_title, book_isbn, CURDATE(), publisher_id, book_pages,
-                book_language, book_edition, book_price, book_stock, book_description,
-                book_cover_url, book_genre, NOW(), 1
-            );
-            
-            
-            SET new_book_id = LAST_INSERT_ID();
-            
-            
-            
-            UPDATE PUBLISHER_REQUEST 
-            SET STATUS = 'APPROVED',
-                REVIEWED_AT = NOW(),
-                REVIEWED_BY = admin_id,
-                admin_feedback = admin_feedback_text
-            WHERE ID = request_id;
-            
-            SET result_message = CONCAT('Book approved successfully with ID: ', new_book_id);
-        END IF;
-    END IF;
-    
-    COMMIT;
-    
 END
 ;;
 delimiter ;
@@ -741,50 +605,69 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ProcessBookAuthors`;
 delimiter ;;
-CREATE PROCEDURE `ProcessBookAuthors`(IN book_id INT,
-    IN authors_text TEXT)
+CREATE PROCEDURE `ProcessBookAuthors`(IN p_book_id INT,
+    IN p_authors_text TEXT)
 BEGIN
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE author_name VARCHAR(255);
-    DECLARE author_id INT;
-    DECLARE authors_cursor CURSOR FOR 
-        SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(authors_text, ',', numbers.n), ',', -1)) as author
-        FROM (
-            SELECT 1 n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
-            UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
-        ) numbers
-        WHERE numbers.n <= 1 + (LENGTH(authors_text) - LENGTH(REPLACE(authors_text, ',', '')))
-        AND TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(authors_text, ',', numbers.n), ',', -1)) != '';
+    DECLARE v_author_name VARCHAR(255);
+    DECLARE v_author_id INT;
+    DECLARE v_remaining_text TEXT;
+    DECLARE v_comma_pos INT;
+    DECLARE v_processed_count INT DEFAULT 0;
     
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    -- Error handler for author processing
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        -- Log error but continue processing other authors
+        GET DIAGNOSTICS CONDITION 1
+            @error_message = MESSAGE_TEXT;
+    END;
     
-    IF authors_text IS NOT NULL AND TRIM(authors_text) != '' THEN
-        OPEN authors_cursor;
+    -- Clean and prepare the authors text
+    SET v_remaining_text = TRIM(p_authors_text);
+    
+    -- Add a trailing comma to make parsing easier
+    IF v_remaining_text != '' THEN
+        SET v_remaining_text = CONCAT(v_remaining_text, ',');
+    END IF;
+    
+    -- Process each author
+    WHILE LENGTH(v_remaining_text) > 0 DO
+        SET v_comma_pos = LOCATE(',', v_remaining_text);
         
-        read_loop: LOOP
-            FETCH authors_cursor INTO author_name;
-            IF done THEN
-                LEAVE read_loop;
-            END IF;
+        IF v_comma_pos > 0 THEN
+            -- Extract author name
+            SET v_author_name = TRIM(SUBSTRING(v_remaining_text, 1, v_comma_pos - 1));
+            SET v_remaining_text = TRIM(SUBSTRING(v_remaining_text, v_comma_pos + 1));
             
-            SET author_name = TRIM(author_name);
-            
-            IF author_name != '' THEN
-                SELECT ID INTO author_id FROM author WHERE NAME = author_name LIMIT 1;
+            -- Process this author if name is not empty
+            IF v_author_name != '' THEN
+                SET v_processed_count = v_processed_count + 1;
                 
-                IF author_id IS NULL THEN
-                    -- Use AUTO_INCREMENT for new author ID
-                    INSERT INTO author (NAME) VALUES (author_name);
-                    SET author_id = LAST_INSERT_ID();
+                -- Check if author already exists
+                SELECT ID INTO v_author_id 
+                FROM author 
+                WHERE NAME = v_author_name 
+                LIMIT 1;
+                
+                -- If author doesn't exist, create them
+                IF v_author_id IS NULL THEN
+                    INSERT INTO author (NAME) VALUES (v_author_name);
+                    SET v_author_id = LAST_INSERT_ID();
                 END IF;
                 
-                INSERT IGNORE INTO book_author (BOOK_ID, AUTHOR_ID, CONTRIBUTION) 
-                VALUES (book_id, author_id, 'Author');
+                -- Link author to book (INSERT IGNORE prevents duplicates)
+                INSERT IGNORE INTO book_author (BOOK_ID, AUTHOR_ID, CONTRIBUTION)
+                VALUES (p_book_id, v_author_id, 'Author');
+                
+                -- Reset for next iteration
+                SET v_author_id = NULL;
             END IF;
-        END LOOP;
-        
-        CLOSE authors_cursor;
-    END IF;
+        ELSE
+            -- No more commas, exit loop
+            SET v_remaining_text = '';
+        END IF;
+    END WHILE;
+    
 END
 ;;
 delimiter ;
@@ -862,134 +745,42 @@ END
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for TestApproveBookRequest
+-- Procedure structure for SetDefaultAddress
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `TestApproveBookRequest`;
+DROP PROCEDURE IF EXISTS `SetDefaultAddress`;
 delimiter ;;
-CREATE PROCEDURE `TestApproveBookRequest`(IN request_id INT,
-    IN admin_id INT,
-    IN admin_feedback_text TEXT,
-    OUT result_message VARCHAR(255),
-    OUT new_book_id INT)
+CREATE PROCEDURE `SetDefaultAddress`(IN p_user_id INT,
+    IN p_address_id INT)
 BEGIN
-    DECLARE publisher_id INT DEFAULT NULL;
-    DECLARE book_title VARCHAR(255) DEFAULT NULL;
-    DECLARE book_isbn VARCHAR(50) DEFAULT NULL;
-    DECLARE book_published_date DATE DEFAULT NULL;
-    DECLARE book_pages INT DEFAULT NULL;
-    DECLARE book_language VARCHAR(20) DEFAULT 'English';
-    DECLARE book_edition VARCHAR(20) DEFAULT '1st';
-    DECLARE book_price DECIMAL(12,2) DEFAULT 0.00;
-    DECLARE book_stock INT DEFAULT 0;
-    DECLARE book_description TEXT DEFAULT '';
-    DECLARE book_cover_url VARCHAR(300) DEFAULT '/images/books/defaultbook.jpg';
-    DECLARE book_genre VARCHAR(255) DEFAULT 'General';
-    DECLARE request_status VARCHAR(20) DEFAULT NULL;
-    
-    SET result_message = '';
-    SET new_book_id = 0;
-    
+    DECLARE address_exists INT DEFAULT 0;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
     START TRANSACTION;
     
+    -- Check if the address exists and belongs to the user
+    SELECT COUNT(*) INTO address_exists 
+    FROM user_address 
+    WHERE ID = p_address_id AND USER_ID = p_user_id;
     
-    IF NOT EXISTS (SELECT 1 FROM ADMIN WHERE USER_ID = admin_id) THEN
-        SET result_message = 'Admin not found';
-        ROLLBACK;
-    ELSE
-        
-        SELECT STATUS INTO request_status
-        FROM PUBLISHER_REQUEST 
-        WHERE ID = request_id;
-        
-        IF request_status IS NULL THEN
-            SET result_message = 'Request not found';
-            ROLLBACK;
-        ELSEIF request_status != 'PENDING' THEN
-            SET result_message = CONCAT('Request already processed with status: ', request_status);
-            ROLLBACK;
-        ELSE
-            
-            SELECT pr.PUBLISHER_ID INTO publisher_id
-            FROM PUBLISHER_REQUEST pr
-            WHERE pr.ID = request_id;
-            
-            
-            SELECT 
-                COALESCE(TITLE, 'Untitled') as title,
-                COALESCE(ISBN, '') as isbn,
-                COALESCE(PUBLISHED_DATE, CURDATE()) as pub_date,
-                COALESCE(PAGE_COUNT, 0) as pages,
-                COALESCE(LANGUAGE, 'English') as lang,
-                COALESCE(EDITION, '1st') as ed,
-                COALESCE(PRICE, 0.00) as pr,
-                COALESCE(STOCK_QUANTITY, 0) as stock,
-                COALESCE(DESCRIPTION, '') as desc_text,
-                COALESCE(COVER_URL, '/images/books/defaultbook.jpg') as cover,
-                COALESCE(GENRE, 'General') as genre_text
-            INTO 
-                book_title, book_isbn, book_published_date, book_pages, 
-                book_language, book_edition, book_price, book_stock, 
-                book_description, book_cover_url, book_genre
-            FROM PUBLISHER_BOOK_DRAFT 
-            WHERE REQUEST_ID = request_id;
-            
-            
-            INSERT INTO BOOK (
-                TITLE, ISBN, PUBLISHED_DATE, PUBLISHER_ID, PAGE_COUNT, 
-                LANGUAGE, EDITION, PRICE, STOCK_QUANTITY, DESCRIPTION, 
-                COVER_URL, GENRE, ADDED_AT, SHOW_BOOK
-            ) VALUES (
-                book_title, book_isbn, book_published_date, publisher_id, book_pages,
-                book_language, book_edition, book_price, book_stock, book_description,
-                book_cover_url, book_genre, NOW(), 1
-            );
-            
-            SET new_book_id = LAST_INSERT_ID();
-            
-            
-            UPDATE PUBLISHER_REQUEST 
-            SET STATUS = 'APPROVED',
-                REVIEWED_AT = NOW(),
-                REVIEWED_BY = admin_id,
-                admin_feedback = admin_feedback_text
-            WHERE ID = request_id;
-            
-            SET result_message = CONCAT('Book approved successfully with ID: ', new_book_id);
-        END IF;
+    IF address_exists = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Address not found or does not belong to user';
     END IF;
     
+    -- Set all addresses for this user to non-default
+    UPDATE user_address 
+    SET IS_DEFAULT = 0 
+    WHERE USER_ID = p_user_id;
+    
+    -- Set the specified address as default
+    UPDATE user_address 
+    SET IS_DEFAULT = 1 
+    WHERE ID = p_address_id;
+    
     COMMIT;
-    
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Procedure structure for TestApproveSimple
--- ----------------------------
-DROP PROCEDURE IF EXISTS `TestApproveSimple`;
-delimiter ;;
-CREATE PROCEDURE `TestApproveSimple`(IN request_id INT,
-    OUT result_message VARCHAR(255),
-    OUT new_book_id INT)
-BEGIN
-    DECLARE publisher_id INT;
-    DECLARE book_title VARCHAR(255);
-    DECLARE book_price DECIMAL(12,2);
-    DECLARE book_stock INT;
-    
-    SELECT pr.PUBLISHER_ID INTO publisher_id
-    FROM PUBLISHER_REQUEST pr WHERE pr.ID = request_id;
-    
-    SELECT TITLE, PRICE, STOCK_QUANTITY
-    INTO book_title, book_price, book_stock
-    FROM PUBLISHER_BOOK_DRAFT WHERE REQUEST_ID = request_id;
-    
-    INSERT INTO BOOK (TITLE, PRICE, STOCK_QUANTITY, PUBLISHER_ID, ADDED_AT, SHOW_BOOK)
-    VALUES (book_title, book_price, book_stock, publisher_id, NOW(), 1);
-    
-    SET new_book_id = LAST_INSERT_ID();
-    SET result_message = CONCAT('Simple test: ', book_title, ', ID: ', new_book_id);
 END
 ;;
 delimiter ;
@@ -1050,6 +841,65 @@ CREATE TRIGGER `notify_publisher_request_update` AFTER UPDATE ON `publisher_requ
             NOW()
         FROM admin a LIMIT 1;
         
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table user_address
+-- ----------------------------
+DROP TRIGGER IF EXISTS `ensure_single_default_update`;
+delimiter ;;
+CREATE TRIGGER `ensure_single_default_update` AFTER UPDATE ON `user_address` FOR EACH ROW BEGIN
+    DECLARE user_default_count INT DEFAULT 0;
+    
+    
+    SELECT COUNT(*) INTO user_default_count
+    FROM user_address 
+    WHERE USER_ID = NEW.USER_ID AND IS_DEFAULT = 1;
+    
+    
+    IF NEW.IS_DEFAULT = 1 AND OLD.IS_DEFAULT = 0 AND user_default_count > 1 THEN
+        UPDATE user_address 
+        SET IS_DEFAULT = 0 
+        WHERE USER_ID = NEW.USER_ID 
+        AND ID != NEW.ID 
+        AND IS_DEFAULT = 1;
+    END IF;
+    
+    
+    IF user_default_count = 0 THEN
+        UPDATE user_address 
+        SET IS_DEFAULT = 1 
+        WHERE USER_ID = NEW.USER_ID 
+        ORDER BY ID ASC 
+        LIMIT 1;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table user_address
+-- ----------------------------
+DROP TRIGGER IF EXISTS `ensure_default_after_delete`;
+delimiter ;;
+CREATE TRIGGER `ensure_default_after_delete` AFTER DELETE ON `user_address` FOR EACH ROW BEGIN
+    DECLARE user_default_count INT DEFAULT 0;
+    
+    
+    SELECT COUNT(*) INTO user_default_count
+    FROM user_address 
+    WHERE USER_ID = OLD.USER_ID AND IS_DEFAULT = 1;
+    
+    
+    IF user_default_count = 0 THEN
+        UPDATE user_address 
+        SET IS_DEFAULT = 1 
+        WHERE USER_ID = OLD.USER_ID 
+        ORDER BY ID ASC 
+        LIMIT 1;
     END IF;
 END
 ;;
