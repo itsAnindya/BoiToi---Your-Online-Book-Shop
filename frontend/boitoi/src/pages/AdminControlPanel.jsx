@@ -122,6 +122,12 @@ const AdminControlPanel = () => {
       return;
     }
 
+    // Order management page is implemented
+    if (link === '/admin/orders') {
+      navigate('/admin/orders');
+      return;
+    }
+
     // For other features, show placeholder message
     alert(`This feature will be implemented soon!\nRedirect: ${link}`);
   };
