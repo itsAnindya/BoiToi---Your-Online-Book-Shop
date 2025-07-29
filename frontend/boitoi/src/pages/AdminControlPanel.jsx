@@ -180,6 +180,12 @@ const AdminControlPanel = () => {
       return;
     }
 
+    // Discount management page is implemented
+    if (link === '/admin/discounts') {
+      navigate('/admin/discounts');
+      return;
+    }
+
     // For other features, show placeholder message
     alert(`This feature will be implemented soon!\nRedirect: ${link}`);
   };

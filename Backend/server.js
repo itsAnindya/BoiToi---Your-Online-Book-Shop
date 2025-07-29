@@ -15,6 +15,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const authorRoutes= require('./routes/authorRoutes');
 const wishlistRoutes = require('./routes/wishlistRoute');
 const bestsellerRoutes = require('./routes/bestsellerRoutes');
+const discountRoutes = require('./routes/discountRoutes');
 const schedulerService = require('./services/schedulerService');
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/api/admin', adminStatsRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/bestsellers', bestsellerRoutes);
+app.use('/api/admin/discounts', discountRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
