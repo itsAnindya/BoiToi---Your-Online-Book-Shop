@@ -3,8 +3,32 @@ const router = express.Router();
 const { 
   updateCategoryBestsellers, 
   getBestsellersStatus, 
-  triggerBestsellersUpdate 
+  triggerBestsellersUpdate,
+  getCategories,
+  getBestsellersByCategory,
+  getAllBestsellers
 } = require('../controllers/bestsellerController');
+
+/**
+ * @route   GET /api/bestsellers/categories
+ * @desc    Get all categories that have bestsellers
+ * @access  Public
+ */
+router.get('/categories', getCategories);
+
+/**
+ * @route   GET /api/bestsellers/category/:categoryId
+ * @desc    Get bestsellers for a specific category
+ * @access  Public
+ */
+router.get('/category/:categoryId', getBestsellersByCategory);
+
+/**
+ * @route   GET /api/bestsellers/all
+ * @desc    Get all bestsellers grouped by category
+ * @access  Public
+ */
+router.get('/all', getAllBestsellers);
 
 /**
  * @route   GET /api/bestsellers/status

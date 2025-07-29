@@ -18,24 +18,25 @@ const BestsellersPage = () => {
     fetchCategories();
   }, []);
 
-  // Fetch bestsellers when category changes
-  useEffect(() => {
-    if (selectedCategory) {
-      fetchBestsellers(selectedCategory.ID);
-    }
-  }, [selectedCategory]);
+  // Handle category selection change
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    fetchBestsellers(category.ID);
+  };
 
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/books/categories`);
-      const data = await response.json();
+      const response = await fetch(`${API_BASE_URL}/api/bestsellers/categories`);
+      const result = await response.json();
       
-      if (data && Array.isArray(data)) {
-        setCategories(data);
+      if (result.success && Array.isArray(result.data)) {
+        setCategories(result.data);
         // Set first category as default selected
-        if (data.length > 0) {
-          setSelectedCategory(data[0]);
+        if (result.data.length > 0) {
+          setSelectedCategory(result.data[0]);
+          // Fetch bestsellers for the first category
+          await fetchBestsellers(result.data[0].ID);
         }
       } else {
         setError('Failed to load categories');
@@ -53,36 +54,21 @@ const BestsellersPage = () => {
       setLoadingBestsellers(true);
       setError(null);
       
-      // For now, we'll fetch popular books from the category
-      // This should be replaced with actual bestseller API when backend is ready
-      const response = await fetch(`${API_BASE_URL}/api/books?category=${categoryId}&limit=10&sortBy=popularity`);
-      const data = await response.json();
+      const response = await fetch(`${API_BASE_URL}/api/bestsellers/category/${categoryId}`);
+      const result = await response.json();
       
-      if (data && Array.isArray(data)) {
-        // Calculate ratings for each book
-        const booksWithRatings = await Promise.all(
-          data.map(async (book) => {
-            try {
-              const reviewResponse = await fetch(`${API_BASE_URL}/api/reviews/book/${book.ID}`);
-              const reviewData = await reviewResponse.json();
-              
-              return {
-                ...book,
-                averageRating: reviewData.stats?.averageRating || 0,
-                totalReviews: reviewData.stats?.totalReviews || 0
-              };
-            } catch {
-              return {
-                ...book,
-                averageRating: 0,
-                totalReviews: 0
-              };
-            }
-          })
-        );
+      if (result.success && result.data) {
+        // Books already come with ratings from the backend
+        const booksWithRatings = result.data.books.map((book, index) => ({
+          ...book,
+          rank: book.position || (index + 1),
+          averageRating: parseFloat(book.AVERAGE_RATING || 0),
+          totalReviews: book.REVIEW_COUNT || 0
+        }));
         
         setBestsellers(booksWithRatings);
       } else {
+        setError('Failed to load bestsellers for this category');
         setBestsellers([]);
       }
     } catch (err) {
@@ -92,10 +78,6 @@ const BestsellersPage = () => {
     } finally {
       setLoadingBestsellers(false);
     }
-  };
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
   };
 
   const getRankIcon = (rank) => {
