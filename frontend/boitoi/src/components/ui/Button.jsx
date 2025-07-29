@@ -21,6 +21,9 @@ const Button = ({
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
     link: 'text-primary-600 hover:text-primary-700 focus:ring-primary-500 underline-offset-4 hover:underline bg-transparent hover:bg-primary-50',
     success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm hover:shadow-md',
+    // Category selection variants
+    category: 'bg-neutral-100 text-neutral-700 hover:bg-primary-50 hover:text-primary-600 focus:ring-primary-500 border border-neutral-200 transition-all duration-300',
+    categoryActive: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-md transition-all duration-300',
     // Auth page specific variants
     authPrimary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm hover:shadow-md transition-all duration-300',
     authSecondary: 'bg-white-10 text-primary-600 hover:bg-white-20 focus:ring-primary-500 border border-primary-600 transition-all duration-300',
