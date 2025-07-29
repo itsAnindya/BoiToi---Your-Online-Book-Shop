@@ -4,6 +4,7 @@ const db = require('../config/database');
 /**
  * Utility function to ensure user has exactly one default address
  * This function can be called after any address operations to maintain consistency
+ * NOTE: With database triggers in place, this is mainly for verification
  */
 const ensureDefaultAddress = (userId, callback) => {
   // Check if user has any default address
@@ -18,11 +19,11 @@ const ensureDefaultAddress = (userId, callback) => {
     const defaultCount = defaultResult[0].default_count;
 
     if (defaultCount === 0) {
-      // No default address, set the first one as default
+      // No default address, set the first one as default (backup to triggers)
       const setDefaultSql = 'UPDATE USER_ADDRESS SET IS_DEFAULT = 1 WHERE USER_ID = ? ORDER BY ID ASC LIMIT 1';
       db.query(setDefaultSql, [userId], callback);
     } else if (defaultCount > 1) {
-      // Multiple defaults, keep only the first one
+      // Multiple defaults, keep only the first one (backup to triggers)
       const fixMultipleDefaultsSql = `
         UPDATE USER_ADDRESS 
         SET IS_DEFAULT = 0 
@@ -424,23 +425,11 @@ const updateUserAddress = async (req, res) => {
         return res.status(404).json({ message: 'User not found' });
       }
 
-      // Helper function to handle default address logic
+      // Simplified helper function - database triggers handle the default logic
       const handleDefaultAddress = (callback) => {
-        if (is_default == 1 || is_default === true) {
-          // If this address is being set as default, unset all other defaults first
-          const unsetDefaultSql = 'UPDATE USER_ADDRESS SET IS_DEFAULT = 0 WHERE USER_ID = ? AND ID != ?';
-          const unsetValues = addressId ? [userId, addressId] : [userId, 0]; // Use 0 for new addresses
-          
-          db.query(unsetDefaultSql, unsetValues, (err) => {
-            if (err) {
-              console.error('Database error unsetting default addresses:', err);
-              return res.status(500).json({ message: 'Server error managing default address' });
-            }
-            callback();
-          });
-        } else {
-          callback();
-        }
+        // With database triggers in place, we don't need complex logic here
+        // The triggers automatically ensure only one default address per user
+        callback();
       };
 
       // Check if this is a create (POST) or update (PUT) operation
@@ -500,13 +489,8 @@ const updateUserAddress = async (req, res) => {
               return res.status(404).json({ message: 'Address not found or does not belong to user' });
             }
 
-            // Ensure default address consistency
-            ensureDefaultAddress(userId, (err) => {
-              if (err) {
-                console.error('Error ensuring default address after update:', err);
-              }
-              res.json({ message: 'Address updated successfully' });
-            });
+            // Database triggers automatically handle default address consistency
+            res.json({ message: 'Address updated successfully' });
           });
         });
       } else {
@@ -542,15 +526,10 @@ const updateUserAddress = async (req, res) => {
 
               const newAddressId = result.insertId; // Get auto-generated address ID
 
-              // Ensure default address consistency
-              ensureDefaultAddress(userId, (err) => {
-                if (err) {
-                  console.error('Error ensuring default address after creation:', err);
-                }
-                res.status(201).json({ 
-                  message: 'New address created successfully',
-                  addressId: newAddressId
-                });
+              // Database triggers automatically handle default address consistency
+              res.status(201).json({ 
+                message: 'New address created successfully',
+                addressId: newAddressId
               });
             });
         });
@@ -645,10 +624,47 @@ const deleteUserAddress = async (req, res) => {
   }
 };
 
+/**
+ * Set Default Address Controller
+ * Sets a specific address as the default address for a user
+ */
+const setDefaultAddress = async (req, res) => {
+  try {
+    const { userId, addressId } = req.params;
+
+    if (!userId || !addressId) {
+      return res.status(400).json({ message: 'User ID and Address ID are required' });
+    }
+
+    // Use the stored procedure for atomic default address management
+    const callProcedureSql = 'CALL SetDefaultAddress(?, ?)';
+    
+    db.query(callProcedureSql, [userId, addressId], (err) => {
+      if (err) {
+        console.error('Database error setting default address:', err);
+        if (err.sqlState === '45000') {
+          return res.status(404).json({ message: err.sqlMessage || 'Address not found or does not belong to user' });
+        }
+        return res.status(500).json({ message: 'Server error setting default address' });
+      }
+
+      res.json({ 
+        message: 'Default address set successfully',
+        userId: userId,
+        addressId: addressId
+      });
+    });
+  } catch (error) {
+    console.error('Set default address error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   getUserProfile,
   updateUserProfile,
   changePassword,
   updateUserAddress,
-  deleteUserAddress
+  deleteUserAddress,
+  setDefaultAddress
 };

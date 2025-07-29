@@ -1,39 +1,43 @@
--- Address Default Constraint Script
+-- Address Default Constraint Script (FIXED VERSION)
 -- Ensures only one default address per user at the database level
 
--- First, clean up any existing multiple defaults (if any)
-UPDATE user_address ua1
+-- First, clean up any existing multiple defaults (if any) - FIXED SUBQUERY ISSUE
+UPDATE user_address 
 SET IS_DEFAULT = 0
 WHERE IS_DEFAULT = 1
-AND EXISTS (
-    SELECT 1 FROM (
+AND USER_ID IN (
+    SELECT USER_ID FROM (
+        SELECT USER_ID
+        FROM user_address
+        WHERE IS_DEFAULT = 1
+        GROUP BY USER_ID
+        HAVING COUNT(*) > 1
+    ) AS duplicate_defaults
+)
+AND ID NOT IN (
+    SELECT min_id FROM (
         SELECT USER_ID, MIN(ID) as min_id
         FROM user_address
         WHERE IS_DEFAULT = 1
         GROUP BY USER_ID
         HAVING COUNT(*) > 1
-    ) ua2
-    WHERE ua1.USER_ID = ua2.USER_ID
-    AND ua1.ID != ua2.min_id
+    ) AS first_defaults
 );
 
--- Ensure every user has at least one default address
+-- Ensure every user has at least one default address - FIXED SUBQUERY ISSUE
 UPDATE user_address ua1
-SET IS_DEFAULT = 1
-WHERE USER_ID IN (
-    SELECT USER_ID
-    FROM (
+JOIN (
+    SELECT USER_ID, MIN(ID) as first_id
+    FROM user_address
+    WHERE USER_ID IN (
         SELECT USER_ID
         FROM user_address
         GROUP BY USER_ID
         HAVING SUM(IS_DEFAULT) = 0
-    ) users_without_default
-)
-AND ID = (
-    SELECT MIN(ID)
-    FROM user_address ua2
-    WHERE ua2.USER_ID = ua1.USER_ID
-);
+    )
+    GROUP BY USER_ID
+) ua2 ON ua1.USER_ID = ua2.USER_ID AND ua1.ID = ua2.first_id
+SET ua1.IS_DEFAULT = 1;
 
 -- ============================================================================
 -- STORED PROCEDURE: Manage Default Address
@@ -79,39 +83,36 @@ END//
 
 DELIMITER ;
 
--- Create a trigger to automatically handle default address logic
--- This trigger ensures only one default address per user
+-- ============================================================================
+-- IMPROVED DATABASE TRIGGERS
+-- ============================================================================
 
+-- Create enhanced triggers to automatically handle default address logic
 DELIMITER //
 
--- Trigger for INSERT operations
+-- Trigger for INSERT operations (Enhanced)
 DROP TRIGGER IF EXISTS ensure_single_default_insert//
 CREATE TRIGGER ensure_single_default_insert
-    AFTER INSERT ON user_address
+    BEFORE INSERT ON user_address
     FOR EACH ROW
 BEGIN
-    -- If the new address is set as default
-    IF NEW.IS_DEFAULT = 1 THEN
-        -- Set all other addresses for this user to non-default
+    -- If the new address is set as default OR user has no addresses
+    IF NEW.IS_DEFAULT = 1 OR 
+       (SELECT COUNT(*) FROM user_address WHERE USER_ID = NEW.USER_ID) = 0 THEN
+        -- Set all other addresses for this user to non-default first
         UPDATE user_address 
         SET IS_DEFAULT = 0 
         WHERE USER_ID = NEW.USER_ID 
-        AND ID != NEW.ID 
         AND IS_DEFAULT = 1;
-    ELSE
-        -- If no address is default for this user, make this one default
-        IF (SELECT COUNT(*) FROM user_address WHERE USER_ID = NEW.USER_ID AND IS_DEFAULT = 1) = 0 THEN
-            UPDATE user_address 
-            SET IS_DEFAULT = 1 
-            WHERE ID = NEW.ID;
-        END IF;
+        -- Ensure this new address is default
+        SET NEW.IS_DEFAULT = 1;
     END IF;
 END//
 
--- Trigger for UPDATE operations
+-- Trigger for UPDATE operations (Enhanced) - FIXED SYNTAX
 DROP TRIGGER IF EXISTS ensure_single_default_update//
 CREATE TRIGGER ensure_single_default_update
-    AFTER UPDATE ON user_address
+    BEFORE UPDATE ON user_address
     FOR EACH ROW
 BEGIN
     -- If the address is being set as default
@@ -122,26 +123,30 @@ BEGIN
         WHERE USER_ID = NEW.USER_ID 
         AND ID != NEW.ID 
         AND IS_DEFAULT = 1;
-    ELSIF NEW.IS_DEFAULT = 0 AND OLD.IS_DEFAULT = 1 THEN
-        -- If this was the default and is being unset, set another as default
-        IF (SELECT COUNT(*) FROM user_address WHERE USER_ID = NEW.USER_ID AND IS_DEFAULT = 1) = 0 THEN
+    ELSEIF NEW.IS_DEFAULT = 0 AND OLD.IS_DEFAULT = 1 THEN
+        -- Prevent unsetting the last default address
+        IF (SELECT COUNT(*) FROM user_address WHERE USER_ID = NEW.USER_ID AND ID != NEW.ID) > 0 THEN
+            -- Force another address to be default
             UPDATE user_address 
             SET IS_DEFAULT = 1 
             WHERE USER_ID = NEW.USER_ID 
             AND ID != NEW.ID 
             ORDER BY ID ASC 
             LIMIT 1;
+        ELSE
+            -- This is the only address, keep it as default
+            SET NEW.IS_DEFAULT = 1;
         END IF;
     END IF;
 END//
 
--- Trigger for DELETE operations
+-- Trigger for DELETE operations (Enhanced)
 DROP TRIGGER IF EXISTS ensure_default_after_delete//
 CREATE TRIGGER ensure_default_after_delete
     AFTER DELETE ON user_address
     FOR EACH ROW
 BEGIN
-    -- If the deleted address was default, set another as default
+    -- If the deleted address was default and user still has addresses
     IF OLD.IS_DEFAULT = 1 THEN
         IF (SELECT COUNT(*) FROM user_address WHERE USER_ID = OLD.USER_ID) > 0 THEN
             UPDATE user_address 

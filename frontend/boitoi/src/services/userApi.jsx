@@ -157,3 +157,31 @@ export const deleteUserAddress = async (userId, addressId) => {
     };
   }
 };
+
+// Set default address
+export const setDefaultAddress = async (userId, addressId) => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/user/${userId}/address/${addressId}/default`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to set default address');
+    }
+
+    return {
+      success: true,
+      message: data.message,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+};
