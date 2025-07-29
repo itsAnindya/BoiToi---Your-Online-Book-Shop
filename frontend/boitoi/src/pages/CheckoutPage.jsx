@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaShoppingCart, FaMapMarkerAlt, FaCreditCard, FaPhone, FaEdit, FaPlus, FaTimes, FaCheck, FaMoneyBillWave, FaMobileAlt, FaUser, FaEnvelope, FaShippingFast, FaExclamationTriangle } from 'react-icons/fa';
+import { FaShoppingCart, FaMapMarkerAlt, FaCreditCard, FaPhone, FaEdit, FaPlus, FaTimes, FaCheck, FaMoneyBillWave, FaMobileAlt, FaUser, FaEnvelope, FaShippingFast, FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa';
 import toast from 'react-hot-toast';
-import DefaultLayout from '../components/layouts/DefaultLayout';
+import DefaultLayout from '../layouts/DefaultLayout';
 import Button from '../components/ui/Button';
 import AddressCard from '../components/Profile/AddressCard';
 import AddressManagement from '../components/Profile/AddressManagement';
@@ -58,51 +58,84 @@ const CheckoutPage = () => {
         const userId = sessionStorage.getItem('id');
         if (!userId) {
           toast.error('Please login to proceed with checkout');
-          navigate('/login');
+          navigate('/auth');
           return;
         }
 
         // Get user details
-        const userResponse = await fetch(`http://localhost:3001/api/user/profile/${userId}`);
+        const userResponse = await fetch(`http://localhost:3001/api/user/${userId}`);
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          setUser(userData.user);
+          console.log('User data fetched:', userData);
+          
+          // Create user object with concatenated full name
+          const userWithFullName = {
+            ...userData.user,
+            fullName: `${userData.user.firstName || ''} ${userData.user.lastName || ''}`.trim()
+          };
+          
+          setUser(userWithFullName);
           setPhoneNumber(userData.user.phone || '');
+          
+          // Set addresses from user data
+          setAddresses(userData.user.addresses || []);
+          
+          // Set default address as selected
+          const defaultAddress = userData.user.addresses?.find(addr => addr.isDefault === 1);
+          if (defaultAddress) {
+            setSelectedAddress(defaultAddress);
+          }
+        } else {
+          throw new Error('Failed to fetch user data');
         }
 
         // Get cart items from location state or localStorage
-        const items = location.state?.cartItems || JSON.parse(localStorage.getItem('cartItems') || '[]');
+        let items = location.state?.cartItems || JSON.parse(localStorage.getItem('cartItems') || '[]');
         if (items.length === 0) {
           toast.error('Your cart is empty');
           navigate('/cart');
           return;
         }
-        setCartItems(items);
+
+        // Fetch complete book details including cover_url for each item
+        const itemsWithBookDetails = await Promise.all(
+          items.map(async (item) => {
+            try {
+              const bookResponse = await fetch(`http://localhost:3001/api/books/${item.id || item.book_id}`);
+              if (bookResponse.ok) {
+                const bookData = await bookResponse.json();
+                return {
+                  ...item,
+                  id: item.id || item.book_id,
+                  book_id: item.id || item.book_id,
+                  title: bookData.book?.title || item.title,
+                  cover_url: bookData.book?.cover_url || item.cover_url,
+                  price: item.price || bookData.book?.price,
+                  author: bookData.book?.author || item.author
+                };
+              }
+              return item; // Return original item if book fetch fails
+            } catch (error) {
+              console.error('Error fetching book details:', error);
+              return item; // Return original item if error
+            }
+          })
+        );
+
+        setCartItems(itemsWithBookDetails);
 
         // Calculate order summary
-        const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const subtotal = itemsWithBookDetails.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         setOrderSummary({
           subtotal,
           shippingFee: 40.00,
           total: subtotal + 40.00
         });
 
-        // Fetch user addresses
-        const addressResponse = await fetch(`http://localhost:3001/api/user/addresses/${userId}`);
-        if (addressResponse.ok) {
-          const addressData = await addressResponse.json();
-          setAddresses(addressData.addresses || []);
-          
-          // Set default address as selected
-          const defaultAddress = addressData.addresses?.find(addr => addr.is_default === 1);
-          if (defaultAddress) {
-            setSelectedAddress(defaultAddress);
-          }
-        }
-
       } catch (error) {
         console.error('Error fetching user data:', error);
         toast.error('Failed to load checkout data');
+        navigate('/cart');
       } finally {
         setLoading(false);
       }
@@ -179,7 +212,6 @@ const CheckoutPage = () => {
       setIsSavingAddress(true);
       
       const addressData = {
-        user_id: user.id,
         address_type: addressFormData.type,
         address: addressFormData.address,
         city: addressFormData.city,
@@ -190,8 +222,8 @@ const CheckoutPage = () => {
       };
 
       const url = editingAddressId 
-        ? `http://localhost:3001/api/user/addresses/${editingAddressId}`
-        : `http://localhost:3001/api/user/addresses`;
+        ? `http://localhost:3001/api/user/${user.id}/address/${editingAddressId}`
+        : `http://localhost:3001/api/user/${user.id}/address`;
       
       const method = editingAddressId ? 'PUT' : 'POST';
 
@@ -206,14 +238,14 @@ const CheckoutPage = () => {
         toast.success(editingAddressId ? 'Address updated successfully!' : 'Address added successfully!');
         
         // Refresh addresses
-        const addressResponse = await fetch(`http://localhost:3001/api/user/addresses/${user.id}`);
+        const addressResponse = await fetch(`http://localhost:3001/api/user/${user.id}`);
         if (addressResponse.ok) {
           const addressData = await addressResponse.json();
-          setAddresses(addressData.addresses || []);
+          setAddresses(addressData.user.addresses || []);
           
           // If this was set as default or is the first address, select it
           if (addressFormData.isDefault || !selectedAddress) {
-            const newAddress = addressData.addresses?.find(addr => 
+            const newAddress = addressData.user.addresses?.find(addr => 
               editingAddressId ? addr.id === editingAddressId : addr.id === result.addressId
             );
             if (newAddress) setSelectedAddress(newAddress);
@@ -235,7 +267,7 @@ const CheckoutPage = () => {
 
   const deleteAddress = async (addressId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/user/addresses/${addressId}`, {
+      const response = await fetch(`http://localhost:3001/api/user/${user.id}/address/${addressId}`, {
         method: 'DELETE'
       });
 
@@ -243,14 +275,14 @@ const CheckoutPage = () => {
         toast.success('Address deleted successfully!');
         
         // Refresh addresses
-        const addressResponse = await fetch(`http://localhost:3001/api/user/addresses/${user.id}`);
+        const addressResponse = await fetch(`http://localhost:3001/api/user/${user.id}`);
         if (addressResponse.ok) {
           const addressData = await addressResponse.json();
-          setAddresses(addressData.addresses || []);
+          setAddresses(addressData.user.addresses || []);
           
           // If deleted address was selected, clear selection
           if (selectedAddress?.id === addressId) {
-            const defaultAddress = addressData.addresses?.find(addr => addr.is_default === 1);
+            const defaultAddress = addressData.user.addresses?.find(addr => addr.is_default === 1);
             setSelectedAddress(defaultAddress || null);
           }
         }
@@ -299,7 +331,7 @@ const CheckoutPage = () => {
         total_amount: orderSummary.total,
         shipping_fee: orderSummary.shippingFee,
         items: cartItems.map(item => ({
-          book_id: item.id,
+          book_id: item.book_id || item.id,
           quantity: item.quantity,
           price: item.price
         }))
@@ -353,6 +385,17 @@ const CheckoutPage = () => {
     <DefaultLayout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back Button */}
+          <div className="mb-6 flex items-center">
+            <Button
+              onClick={() => navigate('/cart')}
+              variant="ghost"
+            >
+              <FaArrowLeft className="text-sm group-hover:-translate-x-1 transition-transform" />
+              <span className="text-sm font-medium">Back to Cart</span>
+            </Button>
+          </div>
+
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-slate-800 mb-2">Checkout</h1>
@@ -378,7 +421,7 @@ const CheckoutPage = () => {
                     </label>
                     <input
                       type="text"
-                      value={`${user?.first_name || ''} ${user?.last_name || ''}`.trim()}
+                      value={user?.fullName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim()}
                       disabled
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 text-slate-600"
                     />
@@ -537,9 +580,9 @@ const CheckoutPage = () => {
                         <div className="bg-pink-100 border border-pink-300 rounded-lg p-4 mb-4">
                           <div className="flex items-start">
                             <FaExclamationTriangle className="text-pink-600 mt-1 mr-3 flex-shrink-0" />
-                            <div>
+                            <div className="text-left">
                               <h4 className="font-semibold text-pink-800 mb-2">Payment Instructions</h4>
-                              <ol className="text-sm text-pink-700 space-y-1">
+                              <ol className="text-sm text-pink-700 space-y-1 text-left">
                                 <li>1. Open your bKash app</li>
                                 <li>2. Select "Send Money"</li>
                                 <li>3. Send <strong>৳{orderSummary.total.toFixed(2)}</strong> to: <strong>01821-646373</strong></li>
@@ -582,7 +625,7 @@ const CheckoutPage = () => {
                   {cartItems.map((item, index) => (
                     <div key={index} className="flex items-center space-x-3 py-2 border-b border-slate-100 last:border-b-0">
                       <img
-                        src={item.cover_url || '/placeholder-book.jpg'}
+                        src={item.thumbnail || item.cover_url || '/placeholder-book.jpg'}
                         alt={item.title}
                         className="w-12 h-12 object-cover rounded"
                       />

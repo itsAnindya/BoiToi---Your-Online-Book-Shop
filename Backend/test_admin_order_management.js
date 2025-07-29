@@ -29,7 +29,7 @@ async function testAdminOrderManagement() {
 
     // Test 4: Get specific order details (if orders exist)
     if (ordersResponse.data.orders.length > 0) {
-      const firstOrderId = ordersResponse.data.orders[0].ORDER_ID;
+      const firstOrderId = ordersResponse.data.orders[0].id;
       console.log(`4. Testing GET /orders/${firstOrderId}...`);
       const orderDetailResponse = await axios.get(`${BASE_URL}/orders/${firstOrderId}`);
       console.log(`✅ GET /orders/${firstOrderId} - Status: ${orderDetailResponse.status}`);
@@ -38,6 +38,7 @@ async function testAdminOrderManagement() {
       // Test 5: Update order status (if orders exist)
       console.log(`5. Testing PUT /orders/${firstOrderId}/status...`);
       const updateResponse = await axios.put(`${BASE_URL}/orders/${firstOrderId}/status`, {
+        admin_id: 1, // Assuming admin user with ID 1 exists
         order_status: 'confirmed'
       });
       console.log(`✅ PUT /orders/${firstOrderId}/status - Status: ${updateResponse.status}`);

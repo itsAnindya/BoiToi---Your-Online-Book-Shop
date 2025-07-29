@@ -4,19 +4,19 @@ const adminOrderController = require('../controllers/adminOrderController');
 
 /**
  * Admin Order Management Routes
- * Base path: /api/admin/orders
+ * Base path: /api/admin
  */
 
 // GET /api/admin/orders - Get all orders with optional filtering and pagination
-router.get('/', adminOrderController.getAllOrders);
+router.get('/orders', adminOrderController.getAllOrders);
 
 // GET /api/admin/orders/statistics - Get order statistics for dashboard
-router.get('/statistics', adminOrderController.getOrderStatistics);
+router.get('/orders/statistics', adminOrderController.getOrderStatistics);
 
 // GET /api/admin/orders/:orderId - Get detailed order information
-router.get('/:orderId', adminOrderController.getOrderDetails);
+router.get('/orders/:orderId', adminOrderController.getOrderDetails);
 
 // PUT /api/admin/orders/:orderId/status - Update order and/or payment status
-router.put('/:orderId/status', adminOrderController.updateOrderStatus);
+router.put('/orders/:orderId/status', adminOrderController.updateOrderStatus);
 
 module.exports = router;
