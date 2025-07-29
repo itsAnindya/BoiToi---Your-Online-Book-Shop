@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 30/07/2025 01:45:09
+ Date: 30/07/2025 03:38:03
 */
 
 SET NAMES utf8mb4;
@@ -1036,14 +1036,11 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
 -- ----------------------------
-INSERT INTO `cart` VALUES (0000000030, 3, 201, 1, '2025-07-30 00:13:45');
-INSERT INTO `cart` VALUES (0000000031, 3, 202, 1, '2025-07-30 00:13:47');
-INSERT INTO `cart` VALUES (0000000032, 3, 204, 1, '2025-07-30 00:13:49');
 
 -- ----------------------------
 -- Table structure for category
@@ -1133,7 +1130,7 @@ INSERT INTO `category` VALUES (263, 'Young Adult', 'Young adult literature', NUL
 DROP TABLE IF EXISTS `category_bestseller`;
 CREATE TABLE `category_bestseller`  (
   `PERIOD_TYPE` enum('DAILY','WEEKLY','MONTHLY','YEARLY') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'MONTHLY',
-  `PERIOD_START` date NOT NULL,
+  `PERIOD_START` datetime NOT NULL,
   `CATEGORY_ID` int NOT NULL,
   `POSITION` int NOT NULL,
   `BOOK_ID` int NULL DEFAULT NULL,
@@ -1147,90 +1144,98 @@ CREATE TABLE `category_bestseller`  (
 -- ----------------------------
 -- Records of category_bestseller
 -- ----------------------------
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 200, 1, 200);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 200, 2, 201);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 200, 3, 202);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 200, 4, 203);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 200, 5, 204);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 201, 1, 215);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 202, 1, 220);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 203, 1, 225);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 203, 2, 230);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 204, 1, 241);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 203, 3, 242);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 203, 4, 243);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 205, 1, 245);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 206, 1, 246);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 207, 1, 253);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 208, 1, 256);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 206, 2, 259);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 209, 1, 261);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 204, 2, 276);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 210, 1, 278);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 211, 1, 280);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 203, 5, 287);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 211, 2, 290);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 209, 2, 291);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 212, 1, 292);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 213, 1, 300);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 214, 1, 301);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 202, 2, 302);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 215, 1, 303);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 216, 1, 304);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 216, 2, 305);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 217, 1, 306);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 202, 3, 308);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 216, 3, 310);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 216, 4, 311);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 216, 5, 312);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 218, 1, 315);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 218, 2, 318);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 202, 4, 319);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 219, 1, 320);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 220, 1, 321);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 221, 1, 322);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 202, 5, 323);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 222, 1, 324);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 223, 1, 325);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 222, 2, 326);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 222, 3, 327);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 224, 1, 329);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 225, 1, 330);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 222, 4, 336);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 226, 1, 338);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 226, 2, 339);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 222, 5, 341);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 223, 2, 349);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 227, 1, 362);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 212, 2, 363);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 227, 2, 365);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 225, 2, 366);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 228, 1, 367);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 225, 3, 368);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 229, 1, 369);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 227, 3, 371);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 223, 3, 374);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 226, 3, 375);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 230, 1, 376);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 231, 1, 377);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 232, 1, 378);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 233, 1, 379);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 234, 1, 380);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 235, 1, 381);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 218, 3, 382);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 218, 4, 383);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 236, 1, 384);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 208, 2, 385);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 226, 4, 386);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 234, 2, 387);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 218, 5, 388);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 237, 1, 392);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 238, 1, 393);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 239, 1, 394);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 225, 4, 395);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 240, 1, 396);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 241, 1, 397);
-INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07', 242, 1, 398);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 200, 1, 200);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 200, 2, 201);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 200, 1, 201);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 200, 3, 202);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 200, 2, 202);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 200, 4, 203);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 200, 5, 204);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 200, 3, 204);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 201, 1, 215);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 202, 1, 220);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 203, 1, 225);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 203, 2, 230);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 204, 1, 241);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 203, 3, 242);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 203, 4, 243);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 205, 1, 245);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 205, 1, 245);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 206, 1, 246);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 207, 1, 253);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 208, 1, 256);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 206, 2, 259);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 206, 1, 259);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 209, 1, 261);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 204, 2, 276);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 210, 1, 278);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 211, 1, 280);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 203, 5, 287);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 211, 2, 290);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 209, 2, 291);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 212, 1, 292);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 212, 1, 292);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 213, 1, 300);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 214, 1, 301);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 202, 2, 302);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 215, 1, 303);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 216, 1, 304);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 216, 2, 305);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 217, 1, 306);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 202, 3, 308);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 216, 3, 310);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 216, 4, 311);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 216, 5, 312);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 218, 1, 315);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 218, 2, 318);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 202, 4, 319);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 219, 1, 320);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 220, 1, 321);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 221, 1, 322);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 202, 5, 323);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 222, 1, 324);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 223, 1, 325);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 222, 2, 326);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 222, 3, 327);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 224, 1, 329);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 225, 1, 330);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 222, 4, 336);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 226, 1, 338);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 226, 2, 339);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 222, 5, 341);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 223, 2, 349);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 227, 1, 362);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 212, 2, 363);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 212, 2, 363);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 227, 2, 365);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 225, 2, 366);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 228, 1, 367);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 225, 3, 368);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 229, 1, 369);
+INSERT INTO `category_bestseller` VALUES ('MONTHLY', '2025-07-01 00:00:00', 216, 1, 370);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 227, 3, 371);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 223, 3, 374);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 226, 3, 375);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 230, 1, 376);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 231, 1, 377);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 232, 1, 378);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 233, 1, 379);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 234, 1, 380);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 235, 1, 381);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 218, 3, 382);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 218, 4, 383);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 236, 1, 384);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 208, 2, 385);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 226, 4, 386);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 234, 2, 387);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 218, 5, 388);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 237, 1, 392);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 238, 1, 393);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 239, 1, 394);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 225, 4, 395);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 240, 1, 396);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 241, 1, 397);
+INSERT INTO `category_bestseller` VALUES ('WEEKLY', '2025-07-07 00:00:00', 242, 1, 398);
 
 -- ----------------------------
 -- Table structure for discount
@@ -1311,7 +1316,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 295 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 304 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notifications
@@ -1462,6 +1467,13 @@ INSERT INTO `notifications` VALUES (290, 2, 'New order #228355 placed by admin. 
 INSERT INTO `notifications` VALUES (291, 3, 'New order #228355 placed by admin. Total amount: $250.50. Status: pending', 'ORDER', 0, '2025-07-30 01:43:48', '/admin/orders/228355');
 INSERT INTO `notifications` VALUES (293, 1, 'Great news! Your order #228355 has been confirmed by Prottoy Das and is now being prepared for shipping.', 'ORDER', 0, '2025-07-30 01:43:49', '/orders/228355');
 INSERT INTO `notifications` VALUES (294, 1, 'Exciting news! Your order #228355 has been shipped and is on its way to you. You should receive it soon!', 'ORDER', 0, '2025-07-30 01:43:50', '/orders/228355');
+INSERT INTO `notifications` VALUES (295, 2, 'New order #228356 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1040.00. Status: pending', 'ORDER', 0, '2025-07-30 02:37:33', '/admin/orders/228356');
+INSERT INTO `notifications` VALUES (296, 3, 'New order #228356 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1040.00. Status: pending', 'ORDER', 0, '2025-07-30 02:37:33', '/admin/orders/228356');
+INSERT INTO `notifications` VALUES (298, 3, 'Your order #228356 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-30 02:38:52', '/orders/228356');
+INSERT INTO `notifications` VALUES (299, 3, 'Your order #1004 has been cancelled by Anindya Biswas. If you have any questions, please contact our support team.', 'ORDER', 0, '2025-07-30 02:42:21', '/orders/1004');
+INSERT INTO `notifications` VALUES (300, 2, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 0, '2025-07-30 03:30:52', '/admin/orders/228357');
+INSERT INTO `notifications` VALUES (301, 3, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 0, '2025-07-30 03:30:52', '/admin/orders/228357');
+INSERT INTO `notifications` VALUES (303, 3, 'Your order #228357 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-30 03:32:32', '/orders/228357');
 
 -- ----------------------------
 -- Table structure for order
@@ -1476,13 +1488,13 @@ CREATE TABLE `order`  (
   `SHIPPING_FEE` decimal(12, 2) NULL DEFAULT 40.00,
   `TOTAL_AMOUNT` decimal(12, 2) NULL DEFAULT NULL,
   `STATUS_UPDATED_BY` int NULL DEFAULT NULL,
-  `STATUS_UPDATED_AT` datetime NULL DEFAULT NULL,
+  `STATUS_UPDATED_AT` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_order_user_id`(`USER_ID` ASC) USING BTREE,
   INDEX `order_confirmation`(`STATUS_UPDATED_BY` ASC) USING BTREE,
   CONSTRAINT `order_confirmation` FOREIGN KEY (`STATUS_UPDATED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 228356 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 228358 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order
@@ -1491,13 +1503,15 @@ INSERT INTO `order` VALUES (1000, 3, '2025-07-19 18:33:17', 'To be provided by c
 INSERT INTO `order` VALUES (1001, 3, '2025-07-19 18:34:19', 'To be provided by customer', 'pending', 0.00, 200.00, NULL, NULL);
 INSERT INTO `order` VALUES (1002, 3, '2025-07-19 23:18:20', 'To be provided by customer', 'pending', 0.00, 1600.00, NULL, NULL);
 INSERT INTO `order` VALUES (1003, 3, '2025-07-21 01:00:37', 'To be provided by customer', 'pending', 0.00, 2400.00, NULL, NULL);
-INSERT INTO `order` VALUES (1004, 3, '2025-07-25 17:54:19', 'To be provided by customer', 'pending', 0.00, 1800.00, NULL, NULL);
+INSERT INTO `order` VALUES (1004, 3, '2025-07-25 17:54:19', 'To be provided by customer', 'cancelled', 0.00, 1800.00, 3, '2025-07-30 02:42:21');
 INSERT INTO `order` VALUES (1005, 3, '2025-07-29 22:20:02', 'To be provided by customer', 'confirmed', 0.00, 200.00, 1, '2025-07-30 00:57:31');
 INSERT INTO `order` VALUES (1006, 1, '2025-07-30 01:26:28', '123 Test Street', 'pending', 40.00, 100.00, NULL, NULL);
 INSERT INTO `order` VALUES (1007, 1, '2025-07-30 01:27:51', '123 Test Street', 'pending', 40.00, 100.00, NULL, NULL);
 INSERT INTO `order` VALUES (1008, 5, '2025-07-30 01:28:12', 'Ahsan Ullah Hall, Zahir Rayhan Road, Dhaka-1000, Dhaka, Bangladesh', 'refunded', 40.00, 1840.00, 3, '2025-07-30 01:39:10');
 INSERT INTO `order` VALUES (1009, 1, '2025-07-30 01:37:03', '123 Test Street, Test City', 'shipped', 40.00, 150.00, 3, '2025-07-30 01:37:05');
 INSERT INTO `order` VALUES (228355, 1, '2025-07-30 01:43:48', '456 Real Customer Street, Dhaka, Bangladesh', 'shipped', 40.00, 250.50, 3, '2025-07-30 01:43:50');
+INSERT INTO `order` VALUES (228356, 3, '2025-07-30 02:37:33', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 1040.00, 3, '2025-07-30 02:38:52');
+INSERT INTO `order` VALUES (228357, 3, '2025-07-30 03:30:52', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 2440.00, 3, '2025-07-30 03:32:32');
 
 -- ----------------------------
 -- Table structure for order_book
@@ -1532,6 +1546,14 @@ INSERT INTO `order_book` VALUES (1007, 201, 1);
 INSERT INTO `order_book` VALUES (1008, 200, 2);
 INSERT INTO `order_book` VALUES (1008, 201, 4);
 INSERT INTO `order_book` VALUES (1008, 203, 2);
+INSERT INTO `order_book` VALUES (228356, 201, 1);
+INSERT INTO `order_book` VALUES (228356, 202, 1);
+INSERT INTO `order_book` VALUES (228356, 204, 1);
+INSERT INTO `order_book` VALUES (228357, 245, 3);
+INSERT INTO `order_book` VALUES (228357, 259, 1);
+INSERT INTO `order_book` VALUES (228357, 292, 2);
+INSERT INTO `order_book` VALUES (228357, 363, 1);
+INSERT INTO `order_book` VALUES (228357, 370, 1);
 
 -- ----------------------------
 -- Table structure for order_discount
@@ -1567,7 +1589,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payment
@@ -1575,6 +1597,8 @@ CREATE TABLE `payment`  (
 INSERT INTO `payment` VALUES (1, 1006, NULL, 'cash_on_delivery', 100, 'pending', NULL);
 INSERT INTO `payment` VALUES (2, 1007, NULL, 'cash_on_delivery', 100, 'pending', NULL);
 INSERT INTO `payment` VALUES (3, 1008, '2025-07-30 01:28:13', 'bkash', 1840, 'refunded', 'testtrx');
+INSERT INTO `payment` VALUES (4, 228356, NULL, 'cash_on_delivery', 1040, 'paid', NULL);
+INSERT INTO `payment` VALUES (5, 228357, NULL, 'cash_on_delivery', 2440, 'paid', NULL);
 
 -- ----------------------------
 -- Table structure for permission
@@ -1856,7 +1880,7 @@ CREATE TABLE `review`  (
   INDEX `idx_review_book_id`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `review_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `review_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of review
@@ -1869,6 +1893,7 @@ INSERT INTO `review` VALUES (5, 1, 204, 5, 'Good Book', '2025-07-06 15:52:29', 1
 INSERT INTO `review` VALUES (6, 3, 201, 4, 'Recommended book if you\'re learning python.', '2025-07-25 17:15:41', NULL);
 INSERT INTO `review` VALUES (7, 3, 287, 3, 'Great textbook for students who are already familiar with the concepts.', '2025-07-25 17:20:31', NULL);
 INSERT INTO `review` VALUES (8, 3, 215, 3, 'My kids read this.', '2025-07-25 17:46:02', NULL);
+INSERT INTO `review` VALUES (9, 3, 245, 1, 'My machine didn\'t learn anything from this book. I believe it\'s a scam.', '2025-07-30 03:36:17', NULL);
 
 -- ----------------------------
 -- Table structure for review_reaction
@@ -1955,7 +1980,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, '01234567890', NULL, NULL, 0, 'MALE', NULL);
 INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-30 01:28:38', 1, 'MALE', '2003-04-20');
+INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-30 02:37:17', 1, 'MALE', '2003-04-20');
 INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-30 01:39:24', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');
