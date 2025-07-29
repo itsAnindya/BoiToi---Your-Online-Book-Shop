@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 29/07/2025 22:13:39
+ Date: 30/07/2025 01:45:09
 */
 
 SET NAMES utf8mb4;
@@ -1036,14 +1036,14 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
 -- ----------------------------
-INSERT INTO `cart` VALUES (0000000001, 5, 201, 4, '2025-07-13 00:59:39');
-INSERT INTO `cart` VALUES (0000000003, 5, 200, 2, '2025-07-13 01:00:04');
-INSERT INTO `cart` VALUES (0000000004, 5, 203, 2, '2025-07-13 01:50:05');
+INSERT INTO `cart` VALUES (0000000030, 3, 201, 1, '2025-07-30 00:13:45');
+INSERT INTO `cart` VALUES (0000000031, 3, 202, 1, '2025-07-30 00:13:47');
+INSERT INTO `cart` VALUES (0000000032, 3, 204, 1, '2025-07-30 00:13:49');
 
 -- ----------------------------
 -- Table structure for category
@@ -1311,7 +1311,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 295 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notifications
@@ -1376,72 +1376,71 @@ INSERT INTO `notifications` VALUES (123, 1, '[PUBLISHER: Springer] Book \"A Big 
 INSERT INTO `notifications` VALUES (125, 1, '[PUBLISHER: Springer] Book \"A Big History of Globalization (World-Systems Evolution and Global Futures)\" APPROVED - Testing complete author processing', 'SYSTEM', 0, '2025-07-27 01:36:14', NULL);
 INSERT INTO `notifications` VALUES (126, 1, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
 INSERT INTO `notifications` VALUES (127, 2, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
-INSERT INTO `notifications` VALUES (128, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
+INSERT INTO `notifications` VALUES (128, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 1, '2025-07-27 01:40:23', NULL);
 INSERT INTO `notifications` VALUES (129, 1001, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2007)', 'SYSTEM', 0, '2025-07-27 01:40:23', NULL);
 INSERT INTO `notifications` VALUES (133, 1, '[PUBLISHER: EduGorilla Publication] Book \"Final Author Test Book\" APPROVED - Testing final author processing', 'SYSTEM', 0, '2025-07-27 01:40:33', NULL);
 INSERT INTO `notifications` VALUES (134, 1, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
 INSERT INTO `notifications` VALUES (135, 2, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
-INSERT INTO `notifications` VALUES (136, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
+INSERT INTO `notifications` VALUES (136, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 1, '2025-07-27 01:42:51', NULL);
 INSERT INTO `notifications` VALUES (137, 1001, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2008)', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
 INSERT INTO `notifications` VALUES (141, 1, '[PUBLISHER: EduGorilla Publication] Book \"Final Author Test Book 2\" APPROVED - Testing updated procedure', 'SYSTEM', 0, '2025-07-27 01:42:51', NULL);
 INSERT INTO `notifications` VALUES (142, 1, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
 INSERT INTO `notifications` VALUES (143, 2, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
-INSERT INTO `notifications` VALUES (144, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
+INSERT INTO `notifications` VALUES (144, 3, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 1, '2025-07-27 01:44:56', NULL);
 INSERT INTO `notifications` VALUES (145, 1001, 'New book request from \"EduGorilla Publication\" for \"\" (ID: 2009)', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
 INSERT INTO `notifications` VALUES (149, 1, '[PUBLISHER: EduGorilla Publication] Book \"Minimal Fix Test Book\" APPROVED - Testing minimal fix', 'SYSTEM', 0, '2025-07-27 01:44:56', NULL);
 INSERT INTO `notifications` VALUES (150, 1, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
 INSERT INTO `notifications` VALUES (151, 2, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
-INSERT INTO `notifications` VALUES (152, 3, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (152, 3, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 1, '2025-07-27 01:48:10', NULL);
 INSERT INTO `notifications` VALUES (153, 1001, 'New book request from \"Springer\" for \"\" (ID: 2010)', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
 INSERT INTO `notifications` VALUES (157, 1, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
 INSERT INTO `notifications` VALUES (158, 2, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
-INSERT INTO `notifications` VALUES (159, 3, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
+INSERT INTO `notifications` VALUES (159, 3, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 1, '2025-07-27 01:48:10', NULL);
 INSERT INTO `notifications` VALUES (160, 1001, 'New book contribution request: \"Basic Mathematics 4\" by Springer', 'SYSTEM', 0, '2025-07-27 01:48:10', NULL);
 INSERT INTO `notifications` VALUES (164, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 4\" APPROVED', 'SYSTEM', 0, '2025-07-27 01:48:58', NULL);
 INSERT INTO `notifications` VALUES (166, 1, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
 INSERT INTO `notifications` VALUES (167, 2, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
-INSERT INTO `notifications` VALUES (168, 3, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (168, 3, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 1, '2025-07-27 01:56:11', NULL);
 INSERT INTO `notifications` VALUES (169, 1001, 'New book request from \"Springer\" for \"\" (ID: 2011)', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
 INSERT INTO `notifications` VALUES (173, 1, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
 INSERT INTO `notifications` VALUES (174, 2, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
-INSERT INTO `notifications` VALUES (175, 3, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
+INSERT INTO `notifications` VALUES (175, 3, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 1, '2025-07-27 01:56:11', NULL);
 INSERT INTO `notifications` VALUES (176, 1001, 'New book contribution request: \"Basic Mathematics\" by Springer', 'SYSTEM', 0, '2025-07-27 01:56:11', NULL);
 INSERT INTO `notifications` VALUES (180, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics\" REJECTED', 'SYSTEM', 0, '2025-07-27 01:58:33', NULL);
 INSERT INTO `notifications` VALUES (182, 1, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
 INSERT INTO `notifications` VALUES (183, 2, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
-INSERT INTO `notifications` VALUES (184, 3, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (184, 3, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 1, '2025-07-27 01:59:06', NULL);
 INSERT INTO `notifications` VALUES (185, 1001, 'New book request from \"Springer\" for \"\" (ID: 2012)', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
 INSERT INTO `notifications` VALUES (189, 1, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
 INSERT INTO `notifications` VALUES (190, 2, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
-INSERT INTO `notifications` VALUES (191, 3, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
+INSERT INTO `notifications` VALUES (191, 3, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 1, '2025-07-27 01:59:06', NULL);
 INSERT INTO `notifications` VALUES (192, 1001, 'New book contribution request: \"Basic Mathematics 5\" by Springer', 'SYSTEM', 0, '2025-07-27 01:59:06', NULL);
 INSERT INTO `notifications` VALUES (196, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 5\" REJECTED', 'SYSTEM', 0, '2025-07-27 01:59:30', NULL);
 INSERT INTO `notifications` VALUES (198, 1, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
 INSERT INTO `notifications` VALUES (199, 2, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
-INSERT INTO `notifications` VALUES (200, 3, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (200, 3, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 1, '2025-07-27 02:12:24', NULL);
 INSERT INTO `notifications` VALUES (201, 1001, 'New book request from \"Springer\" for \"\" (ID: 2013)', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
 INSERT INTO `notifications` VALUES (205, 1, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
 INSERT INTO `notifications` VALUES (206, 2, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
-INSERT INTO `notifications` VALUES (207, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
+INSERT INTO `notifications` VALUES (207, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 1, '2025-07-27 02:12:24', NULL);
 INSERT INTO `notifications` VALUES (208, 1001, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:12:24', NULL);
 INSERT INTO `notifications` VALUES (212, 1, '[PUBLISHER: EduGorilla Publication] Book \"Minimal Fix Test Book\" APPROVED - Test approval', 'SYSTEM', 0, '2025-07-27 02:15:32', NULL);
 INSERT INTO `notifications` VALUES (213, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" APPROVED - Test approval fixed', 'SYSTEM', 0, '2025-07-27 02:19:30', NULL);
 INSERT INTO `notifications` VALUES (214, 1, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
 INSERT INTO `notifications` VALUES (215, 2, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
-INSERT INTO `notifications` VALUES (216, 3, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (216, 3, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 1, '2025-07-27 02:41:59', NULL);
 INSERT INTO `notifications` VALUES (217, 1001, 'New book request from \"Springer\" for \"\" (ID: 2014)', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
 INSERT INTO `notifications` VALUES (221, 1, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
 INSERT INTO `notifications` VALUES (222, 2, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
-INSERT INTO `notifications` VALUES (223, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
+INSERT INTO `notifications` VALUES (223, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 1, '2025-07-27 02:41:59', NULL);
 INSERT INTO `notifications` VALUES (224, 1001, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 02:41:59', NULL);
 INSERT INTO `notifications` VALUES (228, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:15:30', NULL);
 INSERT INTO `notifications` VALUES (229, 1, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
 INSERT INTO `notifications` VALUES (230, 2, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
-INSERT INTO `notifications` VALUES (231, 3, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
 INSERT INTO `notifications` VALUES (232, 1001, 'New book request from \"Springer\" for \"\" (ID: 2015)', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
 INSERT INTO `notifications` VALUES (236, 1, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
 INSERT INTO `notifications` VALUES (237, 2, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
-INSERT INTO `notifications` VALUES (238, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
+INSERT INTO `notifications` VALUES (238, 3, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 1, '2025-07-27 03:19:41', NULL);
 INSERT INTO `notifications` VALUES (239, 1001, 'New book contribution request: \"Basic Mathematics 1\" by Springer', 'SYSTEM', 0, '2025-07-27 03:19:41', NULL);
 INSERT INTO `notifications` VALUES (249, 1, '[PUBLISHER: Springer] Book \"Basic Mathematics 1\" REJECTED', 'SYSTEM', 0, '2025-07-27 03:22:44', NULL);
 INSERT INTO `notifications` VALUES (251, 1, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
@@ -1449,13 +1448,20 @@ INSERT INTO `notifications` VALUES (252, 2, 'New book request from \"Springer\" 
 INSERT INTO `notifications` VALUES (254, 1001, 'New book request from \"Springer\" for \"\" (ID: 2016)', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (258, 1, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (259, 2, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
-INSERT INTO `notifications` VALUES (260, 3, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (261, 1001, 'New book contribution request: \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" by Springer', 'SYSTEM', 0, '2025-07-27 03:27:08', NULL);
 INSERT INTO `notifications` VALUES (265, 1, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
 INSERT INTO `notifications` VALUES (266, 2, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
 INSERT INTO `notifications` VALUES (268, 1001, 'New book request from \"Springer\" for \"\" (ID: 2017)', 'SYSTEM', 0, '2025-07-27 03:27:22', NULL);
 INSERT INTO `notifications` VALUES (282, 1, '[PUBLISHER: Springer] Book \"Artificial Intelligence in Medicine (Volume 1 & 2) 1st ed. 2022 Edition\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:55:03', NULL);
 INSERT INTO `notifications` VALUES (283, 1, '[PUBLISHER: Springer] Book \"Test Book\" APPROVED', 'SYSTEM', 0, '2025-07-27 03:55:59', NULL);
+INSERT INTO `notifications` VALUES (284, 2, 'New order #1009 placed by admin. Total amount: $150.00. Status: pending', 'ORDER', 0, '2025-07-30 01:37:03', '/admin/orders/1009');
+INSERT INTO `notifications` VALUES (285, 3, 'New order #1009 placed by admin. Total amount: $150.00. Status: pending', 'ORDER', 1, '2025-07-30 01:37:03', '/admin/orders/1009');
+INSERT INTO `notifications` VALUES (287, 1, 'Great news! Your order #1009 has been confirmed by Prottoy Das and is now being prepared for shipping.', 'ORDER', 0, '2025-07-30 01:37:04', '/orders/1009');
+INSERT INTO `notifications` VALUES (288, 1, 'Exciting news! Your order #1009 has been shipped and is on its way to you. You should receive it soon!', 'ORDER', 1, '2025-07-30 01:37:05', '/orders/1009');
+INSERT INTO `notifications` VALUES (290, 2, 'New order #228355 placed by admin. Total amount: $250.50. Status: pending', 'ORDER', 0, '2025-07-30 01:43:48', '/admin/orders/228355');
+INSERT INTO `notifications` VALUES (291, 3, 'New order #228355 placed by admin. Total amount: $250.50. Status: pending', 'ORDER', 0, '2025-07-30 01:43:48', '/admin/orders/228355');
+INSERT INTO `notifications` VALUES (293, 1, 'Great news! Your order #228355 has been confirmed by Prottoy Das and is now being prepared for shipping.', 'ORDER', 0, '2025-07-30 01:43:49', '/orders/228355');
+INSERT INTO `notifications` VALUES (294, 1, 'Exciting news! Your order #228355 has been shipped and is on its way to you. You should receive it soon!', 'ORDER', 0, '2025-07-30 01:43:50', '/orders/228355');
 
 -- ----------------------------
 -- Table structure for order
@@ -1469,19 +1475,29 @@ CREATE TABLE `order`  (
   `ORDER_STATUS` enum('pending','confirmed','processing','shipped','delivered','cancelled','returned','refunded','on_hold') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `SHIPPING_FEE` decimal(12, 2) NULL DEFAULT 40.00,
   `TOTAL_AMOUNT` decimal(12, 2) NULL DEFAULT NULL,
+  `STATUS_UPDATED_BY` int NULL DEFAULT NULL,
+  `STATUS_UPDATED_AT` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_order_user_id`(`USER_ID` ASC) USING BTREE,
+  INDEX `order_confirmation`(`STATUS_UPDATED_BY` ASC) USING BTREE,
+  CONSTRAINT `order_confirmation` FOREIGN KEY (`STATUS_UPDATED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1005 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 228356 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
-INSERT INTO `order` VALUES (1000, 3, '2025-07-19 18:33:17', 'To be provided by customer', 'pending', 0.00, 500.00);
-INSERT INTO `order` VALUES (1001, 3, '2025-07-19 18:34:19', 'To be provided by customer', 'pending', 0.00, 200.00);
-INSERT INTO `order` VALUES (1002, 3, '2025-07-19 23:18:20', 'To be provided by customer', 'pending', 0.00, 1600.00);
-INSERT INTO `order` VALUES (1003, 3, '2025-07-21 01:00:37', 'To be provided by customer', 'pending', 0.00, 2400.00);
-INSERT INTO `order` VALUES (1004, 3, '2025-07-25 17:54:19', 'To be provided by customer', 'pending', 0.00, 1800.00);
+INSERT INTO `order` VALUES (1000, 3, '2025-07-19 18:33:17', 'To be provided by customer', 'pending', 0.00, 500.00, NULL, NULL);
+INSERT INTO `order` VALUES (1001, 3, '2025-07-19 18:34:19', 'To be provided by customer', 'pending', 0.00, 200.00, NULL, NULL);
+INSERT INTO `order` VALUES (1002, 3, '2025-07-19 23:18:20', 'To be provided by customer', 'pending', 0.00, 1600.00, NULL, NULL);
+INSERT INTO `order` VALUES (1003, 3, '2025-07-21 01:00:37', 'To be provided by customer', 'pending', 0.00, 2400.00, NULL, NULL);
+INSERT INTO `order` VALUES (1004, 3, '2025-07-25 17:54:19', 'To be provided by customer', 'pending', 0.00, 1800.00, NULL, NULL);
+INSERT INTO `order` VALUES (1005, 3, '2025-07-29 22:20:02', 'To be provided by customer', 'confirmed', 0.00, 200.00, 1, '2025-07-30 00:57:31');
+INSERT INTO `order` VALUES (1006, 1, '2025-07-30 01:26:28', '123 Test Street', 'pending', 40.00, 100.00, NULL, NULL);
+INSERT INTO `order` VALUES (1007, 1, '2025-07-30 01:27:51', '123 Test Street', 'pending', 40.00, 100.00, NULL, NULL);
+INSERT INTO `order` VALUES (1008, 5, '2025-07-30 01:28:12', 'Ahsan Ullah Hall, Zahir Rayhan Road, Dhaka-1000, Dhaka, Bangladesh', 'refunded', 40.00, 1840.00, 3, '2025-07-30 01:39:10');
+INSERT INTO `order` VALUES (1009, 1, '2025-07-30 01:37:03', '123 Test Street, Test City', 'shipped', 40.00, 150.00, 3, '2025-07-30 01:37:05');
+INSERT INTO `order` VALUES (228355, 1, '2025-07-30 01:43:48', '456 Real Customer Street, Dhaka, Bangladesh', 'shipped', 40.00, 250.50, 3, '2025-07-30 01:43:50');
 
 -- ----------------------------
 -- Table structure for order_book
@@ -1510,6 +1526,12 @@ INSERT INTO `order_book` VALUES (1003, 244, 1);
 INSERT INTO `order_book` VALUES (1003, 268, 1);
 INSERT INTO `order_book` VALUES (1004, 201, 2);
 INSERT INTO `order_book` VALUES (1004, 215, 2);
+INSERT INTO `order_book` VALUES (1005, 201, 1);
+INSERT INTO `order_book` VALUES (1006, 201, 1);
+INSERT INTO `order_book` VALUES (1007, 201, 1);
+INSERT INTO `order_book` VALUES (1008, 200, 2);
+INSERT INTO `order_book` VALUES (1008, 201, 4);
+INSERT INTO `order_book` VALUES (1008, 203, 2);
 
 -- ----------------------------
 -- Table structure for order_discount
@@ -1545,11 +1567,14 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payment
 -- ----------------------------
+INSERT INTO `payment` VALUES (1, 1006, NULL, 'cash_on_delivery', 100, 'pending', NULL);
+INSERT INTO `payment` VALUES (2, 1007, NULL, 'cash_on_delivery', 100, 'pending', NULL);
+INSERT INTO `payment` VALUES (3, 1008, '2025-07-30 01:28:13', 'bkash', 1840, 'refunded', 'testtrx');
 
 -- ----------------------------
 -- Table structure for permission
@@ -1928,11 +1953,11 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, NULL, NULL, NULL, 0, 'MALE', NULL);
+INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, '01234567890', NULL, NULL, 0, 'MALE', NULL);
 INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-29 21:49:27', 1, 'MALE', '2003-04-20');
+INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-30 01:28:38', 1, 'MALE', '2003-04-20');
 INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-17 00:59:08', 1, 'MALE', '2000-01-01');
+INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-30 01:39:24', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (7, 'anindya1', 'anindya@gmail.com', '$2b$10$UQH5JtdMmEic2uRe4TEv7.RhVf2SPy/sUn1ArmLwucMakKwDPFuz6', 'anindya', 'biswas', '12345678901', '2025-06-28 02:05:35', '2025-06-28 02:05:35', 0, 'MALE', '2025-05-31');
 INSERT INTO `user` VALUES (999, 'admin_test', 'admin@boitoi.com', '$2b$10$8YYiD7ZT1YLl.dQ0dI2uXeJKaORxV3QOhyxPV5MmHHdz3.I8zN8gW', NULL, NULL, NULL, '2025-07-19 20:34:37', NULL, 0, 'UNSPECIFIED', NULL);
@@ -1955,7 +1980,7 @@ CREATE TABLE `user_address`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_address
@@ -1964,6 +1989,8 @@ INSERT INTO `user_address` VALUES (1, 6, 'home', 'Bangladesh University of Engin
 INSERT INTO `user_address` VALUES (2, 7, 'office', '60 Biswanath Heights, Natun Bazar', 'Magura', 'Bangladesh', 'Bangladesh', '7600', 1);
 INSERT INTO `user_address` VALUES (3, 3, 'office', 'Ahsan Ullah Hall, Zahir Rayhan Road', 'Dhaka-1000', 'Dhaka', 'Bangladesh', '1000', 0);
 INSERT INTO `user_address` VALUES (4, 3, 'home', '60 Biswanath Heights, Natun Bazar', 'Magura', 'Khulna', 'Bangladesh', '7600', 1);
+INSERT INTO `user_address` VALUES (7, 5, 'home', 'Ahsan Ullah Hall, Zahir Rayhan Road', 'Dhaka-1000', 'Dhaka', 'Bangladesh', '1000', 1);
+INSERT INTO `user_address` VALUES (8, 1, 'home', 'Test Street 123', 'Test City', 'Test State', 'Bangladesh', '12345', 1);
 
 -- ----------------------------
 -- Table structure for wishlist
@@ -1979,11 +2006,12 @@ CREATE TABLE `wishlist`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wishlist
 -- ----------------------------
+INSERT INTO `wishlist` VALUES (1, 3, 200, '2025-07-29 00:00:00');
 
 -- ----------------------------
 -- Procedure structure for ApproveBookRequest
@@ -2223,6 +2251,7 @@ BEGIN
 
     START TRANSACTION;
     
+    -- Check if the address exists and belongs to the user
     SELECT COUNT(*) INTO address_exists 
     FROM user_address 
     WHERE ID = p_address_id AND USER_ID = p_user_id;
@@ -2231,15 +2260,201 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Address not found or does not belong to user';
     END IF;
     
+    -- Set all addresses for this user to non-default
     UPDATE user_address 
     SET IS_DEFAULT = 0 
     WHERE USER_ID = p_user_id;
     
+    -- Set the specified address as default
     UPDATE user_address 
     SET IS_DEFAULT = 1 
     WHERE ID = p_address_id;
     
     COMMIT;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for TriggerOrderNotification
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `TriggerOrderNotification`;
+delimiter ;;
+CREATE PROCEDURE `TriggerOrderNotification`(IN order_id INT,
+    IN notification_type ENUM('NEW_ORDER', 'STATUS_UPDATE'))
+BEGIN
+    DECLARE order_user_id INT;
+    DECLARE order_status VARCHAR(50);
+    DECLARE order_amount DECIMAL(12,2);
+    DECLARE updated_by_admin INT;
+    
+    
+    SELECT USER_ID, ORDER_STATUS, TOTAL_AMOUNT, STATUS_UPDATED_BY
+    INTO order_user_id, order_status, order_amount, updated_by_admin
+    FROM `order`
+    WHERE ID = order_id;
+    
+    IF order_user_id IS NOT NULL THEN
+        IF notification_type = 'NEW_ORDER' THEN
+            
+            INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+            SELECT 
+                a.USER_ID,
+                CONCAT('New order #', order_id, ' requires attention. Amount: $', COALESCE(order_amount, 0)),
+                'ORDER',
+                0,
+                NOW(),
+                CONCAT('/admin/orders/', order_id)
+            FROM admin a;
+            
+        ELSEIF notification_type = 'STATUS_UPDATE' THEN
+            
+            INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+            VALUES (
+                order_user_id,
+                CONCAT('Your order #', order_id, ' status has been updated to: ', order_status),
+                'ORDER',
+                0,
+                NOW(),
+                CONCAT('/orders/', order_id)
+            );
+        END IF;
+    END IF;
+    
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table order
+-- ----------------------------
+DROP TRIGGER IF EXISTS `notify_admins_new_order`;
+delimiter ;;
+CREATE TRIGGER `notify_admins_new_order` AFTER INSERT ON `order` FOR EACH ROW BEGIN
+    DECLARE customer_name VARCHAR(100) DEFAULT 'Customer';
+    DECLARE customer_email VARCHAR(50) DEFAULT '';
+    DECLARE notification_message TEXT;
+    
+    
+    SELECT COALESCE(CONCAT(FIRST_NAME, ' ', LAST_NAME), USERNAME, 'Customer'),
+           COALESCE(EMAIL, '')
+    INTO customer_name, customer_email
+    FROM user
+    WHERE ID = NEW.USER_ID;
+    
+    
+    SET notification_message = CONCAT(
+        'New order #', NEW.ID, ' placed by ', customer_name,
+        CASE 
+            WHEN customer_email != '' THEN CONCAT(' (', customer_email, ')')
+            ELSE ''
+        END,
+        '. Total amount: $', COALESCE(NEW.TOTAL_AMOUNT, 0),
+        '. Status: ', COALESCE(NEW.ORDER_STATUS, 'pending')
+    );
+    
+    
+    INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+    SELECT 
+        a.USER_ID,
+        notification_message,
+        'ORDER',
+        0,
+        NOW(),
+        CONCAT('/admin/orders/', NEW.ID)
+    FROM admin a
+    WHERE EXISTS (SELECT 1 FROM user u WHERE u.ID = a.USER_ID AND u.IS_ACTIVE = 1);
+    
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table order
+-- ----------------------------
+DROP TRIGGER IF EXISTS `notify_user_order_update`;
+delimiter ;;
+CREATE TRIGGER `notify_user_order_update` AFTER UPDATE ON `order` FOR EACH ROW BEGIN
+    DECLARE admin_name VARCHAR(100) DEFAULT 'Admin';
+    DECLARE notification_message TEXT;
+    DECLARE status_display VARCHAR(50);
+    
+    
+    IF (OLD.ORDER_STATUS != NEW.ORDER_STATUS OR OLD.ORDER_STATUS IS NULL) 
+       AND NEW.STATUS_UPDATED_BY IS NOT NULL THEN
+        
+        
+        SELECT COALESCE(CONCAT(u.FIRST_NAME, ' ', u.LAST_NAME), u.USERNAME, 'Admin')
+        INTO admin_name
+        FROM admin a
+        JOIN user u ON a.USER_ID = u.ID
+        WHERE a.USER_ID = NEW.STATUS_UPDATED_BY;
+        
+        
+        SET status_display = CASE NEW.ORDER_STATUS
+            WHEN 'pending' THEN 'Pending Review'
+            WHEN 'confirmed' THEN 'Confirmed'
+            WHEN 'processing' THEN 'Being Processed'
+            WHEN 'shipped' THEN 'Shipped'
+            WHEN 'delivered' THEN 'Delivered'
+            WHEN 'cancelled' THEN 'Cancelled'
+            WHEN 'returned' THEN 'Returned'
+            WHEN 'refunded' THEN 'Refunded'
+            WHEN 'on_hold' THEN 'On Hold'
+            ELSE NEW.ORDER_STATUS
+        END;
+        
+        
+        SET notification_message = CASE NEW.ORDER_STATUS
+            WHEN 'confirmed' THEN CONCAT(
+                'Great news! Your order #', NEW.ID, ' has been confirmed by ', admin_name, 
+                ' and is now being prepared for shipping.'
+            )
+            WHEN 'processing' THEN CONCAT(
+                'Your order #', NEW.ID, ' is now being processed. We''ll notify you when it ships!'
+            )
+            WHEN 'shipped' THEN CONCAT(
+                'Exciting news! Your order #', NEW.ID, ' has been shipped and is on its way to you. ',
+                'You should receive it soon!'
+            )
+            WHEN 'delivered' THEN CONCAT(
+                'Your order #', NEW.ID, ' has been delivered! We hope you enjoy your books. ',
+                'Thank you for choosing BoiToi!'
+            )
+            WHEN 'cancelled' THEN CONCAT(
+                'Your order #', NEW.ID, ' has been cancelled by ', admin_name, '. ',
+                'If you have any questions, please contact our support team.'
+            )
+            WHEN 'returned' THEN CONCAT(
+                'Your return request for order #', NEW.ID, ' has been processed. ',
+                'Thank you for your patience.'
+            )
+            WHEN 'refunded' THEN CONCAT(
+                'Your refund for order #', NEW.ID, ' has been processed. ',
+                'The amount will be credited to your original payment method within 3-5 business days.'
+            )
+            WHEN 'on_hold' THEN CONCAT(
+                'Your order #', NEW.ID, ' has been placed on hold by ', admin_name, '. ',
+                'Our team will contact you soon with more information.'
+            )
+            ELSE CONCAT(
+                'Your order #', NEW.ID, ' status has been updated to: ', status_display, ' by ', admin_name
+            )
+        END;
+        
+        
+        INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+        VALUES (
+            NEW.USER_ID,
+            notification_message,
+            'ORDER',
+            0,
+            NOW(),
+            CONCAT('/orders/', NEW.ID)
+        );
+        
+    END IF;
+    
 END
 ;;
 delimiter ;

@@ -415,9 +415,250 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+/**
+ * Create Order - Comprehensive checkout with address, payment method, phone number
+ */
+const createOrder = async (req, res) => {
+  try {
+    const { 
+      user_id, 
+      shipping_address, 
+      phone_number, 
+      payment_method, 
+      transaction_id, 
+      total_amount, 
+      shipping_fee,
+      items 
+    } = req.body;
+    
+    // Validate required fields
+    if (!user_id || !shipping_address || !phone_number || !payment_method || !total_amount) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Missing required fields: user_id, shipping_address, phone_number, payment_method, total_amount' 
+      });
+    }
+
+    // Validate payment method specific requirements
+    if (payment_method === 'bkash' && !transaction_id) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Transaction ID is required for bKash payments' 
+      });
+    }
+
+    // Validate items array
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Order must contain at least one item' 
+      });
+    }
+
+    console.log(`Creating order for user ${user_id} with payment method: ${payment_method}`);
+
+    // Start transaction
+    db.beginTransaction(async (transactionErr) => {
+      if (transactionErr) {
+        console.error('Transaction start error:', transactionErr);
+        return res.status(500).json({ 
+          success: false,
+          message: 'Server error during order processing' 
+        });
+      }
+
+      try {
+        // Insert order record
+        const insertOrderSql = `
+          INSERT INTO \`order\` (
+            USER_ID, 
+            SHIPPING_ADDRESS, 
+            ORDER_STATUS, 
+            SHIPPING_FEE, 
+            TOTAL_AMOUNT
+          ) VALUES (?, ?, 'pending', ?, ?)
+        `;
+
+        db.query(insertOrderSql, [
+          user_id, 
+          shipping_address, 
+          shipping_fee || 40.00, 
+          total_amount
+        ], (orderErr, orderResult) => {
+          if (orderErr) {
+            console.error('Database error during order insertion:', orderErr);
+            console.error('SQL:', insertOrderSql);
+            console.error('Values:', [user_id, shipping_address, shipping_fee || 40.00, total_amount]);
+            return db.rollback(() => {
+              res.status(500).json({ 
+                success: false,
+                message: 'Server error during order creation' 
+              });
+            });
+          }
+
+          const orderId = orderResult.insertId;
+          console.log(`Order created with ID: ${orderId}`);
+
+          // Insert payment record
+          const paymentStatus = payment_method === 'cash_on_delivery' ? 'pending' : 'paid';
+          const insertPaymentSql = `
+            INSERT INTO payment (
+              ORDER_ID, 
+              PAYMENT_METHOD, 
+              AMOUNT, 
+              PAYMENT_STATUS, 
+              TRANSACTION_ID, 
+              PAYMENT_DATE
+            ) VALUES (?, ?, ?, ?, ?, ?)
+          `;
+
+          const paymentDate = payment_method === 'cash_on_delivery' ? null : new Date();
+          
+          db.query(insertPaymentSql, [
+            orderId, 
+            payment_method, 
+            total_amount, 
+            paymentStatus, 
+            transaction_id || null, 
+            paymentDate
+          ], (paymentErr, paymentResult) => {
+            if (paymentErr) {
+              console.error('Database error during payment insertion:', paymentErr);
+              return db.rollback(() => {
+                res.status(500).json({ 
+                  success: false,
+                  message: 'Server error during payment processing' 
+                });
+              });
+            }
+
+            console.log(`Payment record created with ID: ${paymentResult.insertId}`);
+
+            // Insert order items
+            const insertOrderItemSql = `
+              INSERT INTO order_book (ORDER_ID, BOOK_ID, QUANTITY) 
+              VALUES ?
+            `;
+
+            const orderItemsData = items.map(item => [
+              orderId, 
+              item.book_id, 
+              item.quantity
+            ]);
+
+            db.query(insertOrderItemSql, [orderItemsData], (itemsErr, itemsResult) => {
+              if (itemsErr) {
+                console.error('Database error during order items insertion:', itemsErr);
+                return db.rollback(() => {
+                  res.status(500).json({ 
+                    success: false,
+                    message: 'Server error during order items processing' 
+                  });
+                });
+              }
+
+              console.log(`${itemsResult.affectedRows} order items inserted`);
+
+              // Update user phone number if provided
+              const updateUserPhoneSql = `
+                UPDATE user SET PHONE = ? WHERE ID = ?
+              `;
+
+              db.query(updateUserPhoneSql, [phone_number, user_id], (phoneErr) => {
+                if (phoneErr) {
+                  console.error('Warning: Could not update user phone number:', phoneErr);
+                  // Don't fail the order for this
+                }
+
+                // Clear user's cart
+                const clearCartSql = `DELETE FROM cart WHERE USER_ID = ?`;
+                
+                db.query(clearCartSql, [user_id], (cartErr) => {
+                  if (cartErr) {
+                    console.error('Database error during cart clearing:', cartErr);
+                    return db.rollback(() => {
+                      res.status(500).json({ 
+                        success: false,
+                        message: 'Server error during cart cleanup' 
+                      });
+                    });
+                  }
+
+                  console.log(`Cart cleared for user ${user_id}`);
+
+                  // Commit transaction
+                  db.commit((commitErr) => {
+                    if (commitErr) {
+                      console.error('Transaction commit error:', commitErr);
+                      return db.rollback(() => {
+                        res.status(500).json({ 
+                          success: false,
+                          message: 'Server error during order finalization' 
+                        });
+                      });
+                    }
+
+                    // Generate order ID string
+                    const orderIdString = `ORD-${String(orderId).padStart(6, '0')}`;
+                    
+                    console.log(`Order placed successfully for user ${user_id}, Order ID: ${orderIdString}`);
+                    
+                    return res.status(200).json({
+                      success: true,
+                      message: 'Order placed successfully',
+                      orderId: orderIdString,
+                      orderDetails: {
+                        orderId: orderIdString,
+                        databaseOrderId: orderId,
+                        items: items.map(item => ({
+                          book_id: item.book_id,
+                          quantity: item.quantity,
+                          price: parseFloat(item.price),
+                          subtotal: parseFloat((item.price * item.quantity).toFixed(2))
+                        })),
+                        itemCount: items.length,
+                        totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+                        totalAmount: parseFloat(total_amount),
+                        shippingFee: parseFloat(shipping_fee || 40.00),
+                        orderDate: new Date().toISOString(),
+                        status: 'pending',
+                        shippingAddress: shipping_address,
+                        paymentMethod: payment_method,
+                        paymentStatus: paymentStatus,
+                        transactionId: transaction_id
+                      }
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      } catch (error) {
+        console.error('Unexpected error in createOrder transaction:', error);
+        return db.rollback(() => {
+          res.status(500).json({ 
+            success: false,
+            message: 'Internal server error' 
+          });
+        });
+      }
+    });
+
+  } catch (error) {
+    console.error('Unexpected error in createOrder:', error);
+    return res.status(500).json({ 
+      success: false,
+      message: 'Internal server error' 
+    });
+  }
+};
+
 module.exports = {
   placeOrder,
   getOrderHistory,
   getOrderDetails,
-  updateOrderStatus
+  updateOrderStatus,
+  createOrder
 };

@@ -4,6 +4,7 @@ import { API_BASE_URL } from '../config';
 import DefaultLayout from '../layouts/DefaultLayout';
 import { User, BookOpen, Calendar, Globe, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Button, { BackToAuthorsButton } from '../components/ui/Button';
 
 const AuthorDetailPage = () => {
   const { id } = useParams();
@@ -40,13 +41,24 @@ const AuthorDetailPage = () => {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'Unknown';
+    if (!dateString) return null;
     try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+      // Parse the date as-is since it's already a DATE type in DB
+      // Don't add time to avoid any timezone conversion issues
+      const dateParts = dateString.split('-');
+      if (dateParts.length === 3) {
+        const year = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]) - 1; // Month is 0-based in JS Date
+        const day = parseInt(dateParts[2]);
+        const date = new Date(year, month, day);
+        
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+      return dateString;
     } catch {
       return dateString;
     }
@@ -80,13 +92,7 @@ const AuthorDetailPage = () => {
                 <h2 className="text-2xl font-bold">Author Not Found</h2>
               </div>
               <p className="text-red-700 mb-4">{error || 'Author not found'}</p>
-              <Link
-                to="/authors"
-                className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Authors
-              </Link>
+              <BackToAuthorsButton />
             </div>
           </div>
         </div>
@@ -100,15 +106,7 @@ const AuthorDetailPage = () => {
         <div className="max-w-7xl mx-auto px-6 py-12">
           
           {/* Back Button */}
-          <div className="mb-8">
-            <Link
-              to="/authors"
-              className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Authors
-            </Link>
-          </div>
+          <BackToAuthorsButton />
 
           {/* Author Header */}
           <div className="bg-white rounded-2xl shadow-soft border border-neutral-200 overflow-hidden mb-8">
@@ -160,6 +158,13 @@ const AuthorDetailPage = () => {
                       </div>
                     </div>
                   )}
+
+                  {/* Show message when both fields are null */}
+                  {!author.DATE_OF_BIRTH && !author.NATIONALITY && (
+                    <div className="col-span-full text-center py-4">
+                      <p className="text-neutral-500 italic">Personal details not available</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Website */}
@@ -178,10 +183,14 @@ const AuthorDetailPage = () => {
                 )}
 
                 {/* Bio */}
-                {author.BIO && (
+                {author.BIO ? (
                   <div>
                     <h2 className="text-xl font-semibold text-neutral-900 mb-3">Biography</h2>
                     <p className="text-neutral-700 leading-relaxed">{author.BIO}</p>
+                  </div>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-neutral-500 italic">Biography not available</p>
                   </div>
                 )}
               </div>

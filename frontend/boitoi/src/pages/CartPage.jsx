@@ -91,10 +91,10 @@ const CartPage = () => {
     }
   };
 
-  // Place order
-  const handlePlaceOrder = async () => {
+  // Navigate to checkout
+  const handleProceedToCheckout = () => {
     if (!user.id) {
-      toast.error('Please login to place order');
+      toast.error('Please login to proceed with checkout');
       return;
     }
 
@@ -103,33 +103,14 @@ const CartPage = () => {
       return;
     }
 
-    setIsPlacingOrder(true);
-    try {
-      // First save the current cart state
-      await handleSaveCart();
-      
-      const result = await placeOrder(user.id);
-      
-      if (result.success) {
-        // Store order details for confirmation dialog
-        setOrderDetails({
-          orderId: result.orderId,
-          total: calculateTotal(),
-          itemCount: localCart.length,
-          items: [...localCart]
-        });
-        
-        toast.success(`Order placed successfully! Order ID: ${result.orderId}`);
-        setLocalCart([]);
-        setShowOrderConfirmation(true); // Show confirmation dialog instead of navigating
-      } else {
-        toast.error(result.error || 'Failed to place order');
+    // Save cart items to localStorage and navigate to checkout
+    localStorage.setItem('cartItems', JSON.stringify(localCart));
+    navigate('/checkout', { 
+      state: { 
+        cartItems: localCart,
+        total: calculateTotal()
       }
-    } catch (error) {
-      toast.error('Failed to place order');
-    } finally {
-      setIsPlacingOrder(false);
-    }
+    });
   };
 
   const closeOrderConfirmation = () => {
@@ -308,13 +289,13 @@ const CartPage = () => {
                   </Button>
                   
                   <Button
-                    onClick={handlePlaceOrder}
-                    disabled={isPlacingOrder || localCart.length === 0}
+                    onClick={handleProceedToCheckout}
+                    disabled={localCart.length === 0}
                     variant="success"
                     className="w-full"
                   >
-                    <FaShoppingBag className="mr-2" />
-                    {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
+                    <FaShoppingBag className="mr-2 group-hover:scale-110 transition-transform" />
+                    Proceed to Checkout
                   </Button>
                 </div>
 

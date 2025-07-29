@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 29/07/2025 22:48:08
+ Date: 30/07/2025 01:45:40
 */
 
 SET NAMES utf8mb4;
@@ -134,7 +134,7 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for category
@@ -234,7 +234,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 295 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order
@@ -255,7 +255,7 @@ CREATE TABLE `order`  (
   INDEX `order_confirmation`(`STATUS_UPDATED_BY` ASC) USING BTREE,
   CONSTRAINT `order_confirmation` FOREIGN KEY (`STATUS_UPDATED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 228356 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order_book
@@ -301,7 +301,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for permission
@@ -509,7 +509,7 @@ CREATE TABLE `user_address`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `USER_ID`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wishlist
@@ -525,7 +525,7 @@ CREATE TABLE `wishlist`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Procedure structure for ApproveBookRequest
@@ -785,6 +785,190 @@ BEGIN
     WHERE ID = p_address_id;
     
     COMMIT;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for TriggerOrderNotification
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `TriggerOrderNotification`;
+delimiter ;;
+CREATE PROCEDURE `TriggerOrderNotification`(IN order_id INT,
+    IN notification_type ENUM('NEW_ORDER', 'STATUS_UPDATE'))
+BEGIN
+    DECLARE order_user_id INT;
+    DECLARE order_status VARCHAR(50);
+    DECLARE order_amount DECIMAL(12,2);
+    DECLARE updated_by_admin INT;
+    
+    
+    SELECT USER_ID, ORDER_STATUS, TOTAL_AMOUNT, STATUS_UPDATED_BY
+    INTO order_user_id, order_status, order_amount, updated_by_admin
+    FROM `order`
+    WHERE ID = order_id;
+    
+    IF order_user_id IS NOT NULL THEN
+        IF notification_type = 'NEW_ORDER' THEN
+            
+            INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+            SELECT 
+                a.USER_ID,
+                CONCAT('New order #', order_id, ' requires attention. Amount: $', COALESCE(order_amount, 0)),
+                'ORDER',
+                0,
+                NOW(),
+                CONCAT('/admin/orders/', order_id)
+            FROM admin a;
+            
+        ELSEIF notification_type = 'STATUS_UPDATE' THEN
+            
+            INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+            VALUES (
+                order_user_id,
+                CONCAT('Your order #', order_id, ' status has been updated to: ', order_status),
+                'ORDER',
+                0,
+                NOW(),
+                CONCAT('/orders/', order_id)
+            );
+        END IF;
+    END IF;
+    
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table order
+-- ----------------------------
+DROP TRIGGER IF EXISTS `notify_admins_new_order`;
+delimiter ;;
+CREATE TRIGGER `notify_admins_new_order` AFTER INSERT ON `order` FOR EACH ROW BEGIN
+    DECLARE customer_name VARCHAR(100) DEFAULT 'Customer';
+    DECLARE customer_email VARCHAR(50) DEFAULT '';
+    DECLARE notification_message TEXT;
+    
+    
+    SELECT COALESCE(CONCAT(FIRST_NAME, ' ', LAST_NAME), USERNAME, 'Customer'),
+           COALESCE(EMAIL, '')
+    INTO customer_name, customer_email
+    FROM user
+    WHERE ID = NEW.USER_ID;
+    
+    
+    SET notification_message = CONCAT(
+        'New order #', NEW.ID, ' placed by ', customer_name,
+        CASE 
+            WHEN customer_email != '' THEN CONCAT(' (', customer_email, ')')
+            ELSE ''
+        END,
+        '. Total amount: $', COALESCE(NEW.TOTAL_AMOUNT, 0),
+        '. Status: ', COALESCE(NEW.ORDER_STATUS, 'pending')
+    );
+    
+    
+    INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+    SELECT 
+        a.USER_ID,
+        notification_message,
+        'ORDER',
+        0,
+        NOW(),
+        CONCAT('/admin/orders/', NEW.ID)
+    FROM admin a
+    WHERE EXISTS (SELECT 1 FROM user u WHERE u.ID = a.USER_ID AND u.IS_ACTIVE = 1);
+    
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table order
+-- ----------------------------
+DROP TRIGGER IF EXISTS `notify_user_order_update`;
+delimiter ;;
+CREATE TRIGGER `notify_user_order_update` AFTER UPDATE ON `order` FOR EACH ROW BEGIN
+    DECLARE admin_name VARCHAR(100) DEFAULT 'Admin';
+    DECLARE notification_message TEXT;
+    DECLARE status_display VARCHAR(50);
+    
+    
+    IF (OLD.ORDER_STATUS != NEW.ORDER_STATUS OR OLD.ORDER_STATUS IS NULL) 
+       AND NEW.STATUS_UPDATED_BY IS NOT NULL THEN
+        
+        
+        SELECT COALESCE(CONCAT(u.FIRST_NAME, ' ', u.LAST_NAME), u.USERNAME, 'Admin')
+        INTO admin_name
+        FROM admin a
+        JOIN user u ON a.USER_ID = u.ID
+        WHERE a.USER_ID = NEW.STATUS_UPDATED_BY;
+        
+        
+        SET status_display = CASE NEW.ORDER_STATUS
+            WHEN 'pending' THEN 'Pending Review'
+            WHEN 'confirmed' THEN 'Confirmed'
+            WHEN 'processing' THEN 'Being Processed'
+            WHEN 'shipped' THEN 'Shipped'
+            WHEN 'delivered' THEN 'Delivered'
+            WHEN 'cancelled' THEN 'Cancelled'
+            WHEN 'returned' THEN 'Returned'
+            WHEN 'refunded' THEN 'Refunded'
+            WHEN 'on_hold' THEN 'On Hold'
+            ELSE NEW.ORDER_STATUS
+        END;
+        
+        
+        SET notification_message = CASE NEW.ORDER_STATUS
+            WHEN 'confirmed' THEN CONCAT(
+                'Great news! Your order #', NEW.ID, ' has been confirmed by ', admin_name, 
+                ' and is now being prepared for shipping.'
+            )
+            WHEN 'processing' THEN CONCAT(
+                'Your order #', NEW.ID, ' is now being processed. We''ll notify you when it ships!'
+            )
+            WHEN 'shipped' THEN CONCAT(
+                'Exciting news! Your order #', NEW.ID, ' has been shipped and is on its way to you. ',
+                'You should receive it soon!'
+            )
+            WHEN 'delivered' THEN CONCAT(
+                'Your order #', NEW.ID, ' has been delivered! We hope you enjoy your books. ',
+                'Thank you for choosing BoiToi!'
+            )
+            WHEN 'cancelled' THEN CONCAT(
+                'Your order #', NEW.ID, ' has been cancelled by ', admin_name, '. ',
+                'If you have any questions, please contact our support team.'
+            )
+            WHEN 'returned' THEN CONCAT(
+                'Your return request for order #', NEW.ID, ' has been processed. ',
+                'Thank you for your patience.'
+            )
+            WHEN 'refunded' THEN CONCAT(
+                'Your refund for order #', NEW.ID, ' has been processed. ',
+                'The amount will be credited to your original payment method within 3-5 business days.'
+            )
+            WHEN 'on_hold' THEN CONCAT(
+                'Your order #', NEW.ID, ' has been placed on hold by ', admin_name, '. ',
+                'Our team will contact you soon with more information.'
+            )
+            ELSE CONCAT(
+                'Your order #', NEW.ID, ' status has been updated to: ', status_display, ' by ', admin_name
+            )
+        END;
+        
+        
+        INSERT INTO notifications (USER_ID, MESSAGE, TYPE, IS_READ, CREATED_AT, URL)
+        VALUES (
+            NEW.USER_ID,
+            notification_message,
+            'ORDER',
+            0,
+            NOW(),
+            CONCAT('/orders/', NEW.ID)
+        );
+        
+    END IF;
+    
 END
 ;;
 delimiter ;

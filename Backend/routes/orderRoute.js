@@ -4,12 +4,21 @@ const {
   placeOrder,
   getOrderHistory,
   getOrderDetails,
-  updateOrderStatus
+  updateOrderStatus,
+  createOrder
 } = require('../controllers/orderController');
 
 /**
+ * @route   POST /api/orders/create
+ * @desc    Create a new order with comprehensive checkout data
+ * @access  Public
+ * @body    { user_id, shipping_address, phone_number, payment_method, transaction_id, total_amount, shipping_fee, items }
+ */
+router.post('/create', createOrder);
+
+/**
  * @route   POST /api/orders/place
- * @desc    Place a new order from cart items
+ * @desc    Place a new order from cart items (simple version)
  * @access  Public
  * @body    { user_id }
  */

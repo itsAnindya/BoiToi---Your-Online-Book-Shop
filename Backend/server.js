@@ -31,7 +31,7 @@ app.use('/api/orders', require('./routes/orderRoute'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/publisher', publisherRoutes);
 app.use('/api/admin', adminBookRequestRoutes);
-app.use('/api/admin/orders', adminOrderRoutes);
+app.use('/api/admin', adminOrderRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 
