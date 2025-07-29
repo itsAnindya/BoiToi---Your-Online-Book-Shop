@@ -104,24 +104,15 @@ const getUserWishlist = (req, res) => {
     });
   }
 
-  const query = `
-    SELECT 
-      w.ID,
-      w.USER_ID,
-      w.BOOK_ID,
-      w.ADDED_AT,
-      b.TITLE,
-      b.DESCRIPTION,
-      b.PRICE,
-      b.COVER_URL,
-      b.PUBLISHER_ID
-    FROM wishlist w
-    INNER JOIN book b ON w.BOOK_ID = b.ID
-    WHERE w.USER_ID = ?
-    ORDER BY w.ADDED_AT DESC;
+  // First get book IDs from wishlist table by user ID
+  const wishlistQuery = `
+    SELECT BOOK_ID, ADDED_AT 
+    FROM wishlist 
+    WHERE USER_ID = ? 
+    ORDER BY ADDED_AT DESC
   `;
 
-  db.query(query, [userId], (err, results) => {
+  db.query(wishlistQuery, [userId], (err, wishlistResults) => {
     if (err) {
       console.error('Error fetching wishlist:', err);
       return res.status(500).json({
@@ -131,11 +122,57 @@ const getUserWishlist = (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: 'Wishlist fetched successfully',
-      data: results,
-      count: results.length
+    if (wishlistResults.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: 'Wishlist is empty',
+        wishlist: [],
+        count: 0
+      });
+    }
+
+    // Get book IDs array
+    const bookIds = wishlistResults.map(item => item.BOOK_ID);
+    
+    // Then get book details from book table using book IDs
+    const bookQuery = `
+      SELECT 
+        ID as BOOK_ID,
+        TITLE,
+        PRICE,
+        COVER_URL
+      FROM book 
+      WHERE ID IN (${bookIds.map(() => '?').join(',')})
+    `;
+
+    db.query(bookQuery, bookIds, (err, bookResults) => {
+      if (err) {
+        console.error('Error fetching book details:', err);
+        return res.status(500).json({
+          success: false,
+          message: 'Internal server error while fetching book details',
+          error: err.message
+        });
+      }
+
+      // Combine wishlist data with book data
+      const wishlistWithBooks = bookResults.map(book => {
+        const wishlistItem = wishlistResults.find(w => w.BOOK_ID === book.BOOK_ID);
+        return {
+          BOOK_ID: book.BOOK_ID,
+          TITLE: book.TITLE,
+          PRICE: book.PRICE,
+          COVER_URL: book.COVER_URL,
+          ADDED_AT: wishlistItem.ADDED_AT
+        };
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Wishlist fetched successfully',
+        wishlist: wishlistWithBooks,
+        count: wishlistWithBooks.length
+      });
     });
   });
 };

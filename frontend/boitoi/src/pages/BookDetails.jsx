@@ -24,6 +24,7 @@ const BookDetails = ({ username }) => {
   const [reviewStats, setReviewStats] = useState(null);
   const [wishlistAdded, setWishlistAdded] = useState(false);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
+  const [wishlistError, setWishlistError] = useState(null);
 
   useEffect(() => {
     // Fetch book details
@@ -158,8 +159,14 @@ const BookDetails = ({ username }) => {
 
       if (response.ok) {
         setWishlistAdded(true);
+        setWishlistError(null);
         // Auto-hide success message after 3 seconds
         setTimeout(() => setWishlistAdded(false), 3000);
+      } else if (response.status === 409) {
+        // Book already in wishlist
+        setWishlistError('You have already added this book to your wishlist! You can\'t add again');
+        // Auto-hide error message after 5 seconds
+        setTimeout(() => setWishlistError(null), 5000);
       } else {
         throw new Error(data.message || 'Failed to add to wishlist');
       }
@@ -328,7 +335,17 @@ const BookDetails = ({ username }) => {
                         <div className="space-y-4">
                           <h4 className="font-semibold text-neutral-800 text-lg">Save for Later</h4>
                           
-                          {!wishlistAdded ? (
+                          {/* Wishlist Error Message */}
+                          {wishlistError && (
+                            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                              <div className="flex items-center gap-2 text-red-700">
+                                <X className="w-5 h-5" />
+                                <span className="font-medium">{wishlistError}</span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {!wishlistAdded && !wishlistError ? (
                             <Button
                               onClick={addToWishlist}
                               disabled={isAddingToWishlist}
@@ -339,12 +356,12 @@ const BookDetails = ({ username }) => {
                               <Heart className="w-5 h-5 mr-2" />
                               {isAddingToWishlist ? 'Adding to Wishlist...' : 'Add to Wishlist'}
                             </Button>
-                          ) : (
+                          ) : wishlistAdded ? (
                             <div className="flex items-center gap-2 text-pink-600 bg-pink-50 p-4 rounded-xl">
                               <Heart className="w-5 h-5 fill-current" />
                               <span className="font-medium">Added to your wishlist!</span>
                             </div>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                     );

@@ -191,14 +191,10 @@ const Wishlist = () => {
                   {/* Book Info */}
                   <div className="p-6">
                     <Link to={`/books/${item.BOOK_ID}`}>
-                      <h3 className="text-lg font-bold text-neutral-900 mb-2 line-clamp-2 hover:text-primary-600 transition-colors">
+                      <h3 className="text-lg font-bold text-neutral-900 mb-4 line-clamp-2 hover:text-primary-600 transition-colors">
                         {item.TITLE}
                       </h3>
                     </Link>
-                    
-                    <p className="text-sm text-neutral-600 mb-3 line-clamp-1">
-                      by {item.AUTHORS || 'Unknown Author'}
-                    </p>
 
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-2xl font-bold text-primary-600">
