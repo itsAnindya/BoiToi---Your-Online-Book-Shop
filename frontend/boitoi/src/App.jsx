@@ -9,6 +9,7 @@ import CartTestPage from './pages/CartTestPage'
 import UserProfilePage from './pages/UserProfilePage'
 import AdminControlPanel from './pages/AdminControlPanel'
 import BookRequestsManagement from './pages/BookRequestsManagement'
+import AdminOrderManagement from './pages/AdminOrderManagement'
 import NotificationTestPage from './pages/NotificationTestPage'
 import PublisherAuth from './pages/PublisherAuth'
 import PublisherDashboard from './pages/PublisherDashboard'
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/orders" element={<MyOrders />} />
                 <Route path="/admin" element={<AdminControlPanel />} />
                 <Route path="/admin/book-requests" element={<BookRequestsManagement />} />
+                <Route path="/admin/orders" element={<AdminOrderManagement />} />
                 <Route path="/notifications-test" element={<NotificationTestPage />} />
                 <Route path="/publisher/auth" element={<PublisherAuth />} />
                 <Route path="/publisher-login" element={<PublisherLoginPage />} />
