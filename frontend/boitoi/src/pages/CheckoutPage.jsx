@@ -1,0 +1,730 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { FaShoppingCart, FaMapMarkerAlt, FaCreditCard, FaPhone, FaEdit, FaPlus, FaTimes, FaCheck, FaMoneyBillWave, FaMobileAlt, FaUser, FaEnvelope, FaShippingFast, FaExclamationTriangle } from 'react-icons/fa';
+import toast from 'react-hot-toast';
+import DefaultLayout from '../components/layouts/DefaultLayout';
+import Button from '../components/ui/Button';
+import AddressCard from '../components/Profile/AddressCard';
+import AddressManagement from '../components/Profile/AddressManagement';
+
+const CheckoutPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [placingOrder, setPlacingOrder] = useState(false);
+  
+  // User and authentication
+  const [user, setUser] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  
+  // Address management
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [isAddingAddress, setIsAddingAddress] = useState(false);
+  const [editingAddressId, setEditingAddressId] = useState(null);
+  const [addressFormData, setAddressFormData] = useState({
+    type: 'home',
+    address: '',
+    city: '',
+    state: '',
+    country: 'Bangladesh',
+    zipCode: '',
+    isDefault: false
+  });
+  const [isSavingAddress, setIsSavingAddress] = useState(false);
+  
+  // Contact information
+  const [phoneNumber, setPhoneNumber] = useState('');
+  
+  // Payment information
+  const [paymentMethod, setPaymentMethod] = useState('cash_on_delivery');
+  const [transactionId, setTransactionId] = useState('');
+  
+  // Order summary
+  const [orderSummary, setOrderSummary] = useState({
+    subtotal: 0,
+    shippingFee: 40.00,
+    total: 0
+  });
+
+  // Fetch user data and addresses on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        
+        // Get user from sessionStorage
+        const userId = sessionStorage.getItem('id');
+        if (!userId) {
+          toast.error('Please login to proceed with checkout');
+          navigate('/login');
+          return;
+        }
+
+        // Get user details
+        const userResponse = await fetch(`http://localhost:3001/api/user/profile/${userId}`);
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setUser(userData.user);
+          setPhoneNumber(userData.user.phone || '');
+        }
+
+        // Get cart items from location state or localStorage
+        const items = location.state?.cartItems || JSON.parse(localStorage.getItem('cartItems') || '[]');
+        if (items.length === 0) {
+          toast.error('Your cart is empty');
+          navigate('/cart');
+          return;
+        }
+        setCartItems(items);
+
+        // Calculate order summary
+        const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        setOrderSummary({
+          subtotal,
+          shippingFee: 40.00,
+          total: subtotal + 40.00
+        });
+
+        // Fetch user addresses
+        const addressResponse = await fetch(`http://localhost:3001/api/user/addresses/${userId}`);
+        if (addressResponse.ok) {
+          const addressData = await addressResponse.json();
+          setAddresses(addressData.addresses || []);
+          
+          // Set default address as selected
+          const defaultAddress = addressData.addresses?.find(addr => addr.is_default === 1);
+          if (defaultAddress) {
+            setSelectedAddress(defaultAddress);
+          }
+        }
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        toast.error('Failed to load checkout data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [navigate, location.state]);
+
+  // Format address for display and storage
+  const formatAddress = (address) => {
+    const parts = [
+      address.address,
+      address.city,
+      address.state,
+      address.country,
+      address.zip_code
+    ].filter(part => part && part.trim() !== '');
+    
+    return parts.join(', ');
+  };
+
+  // Address management functions
+  const handleAddressChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setAddressFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const startAddingAddress = () => {
+    setIsAddingAddress(true);
+    setEditingAddressId(null);
+    setAddressFormData({
+      type: 'home',
+      address: '',
+      city: '',
+      state: '',
+      country: 'Bangladesh',
+      zipCode: '',
+      isDefault: false
+    });
+  };
+
+  const startEditingAddress = (address) => {
+    setEditingAddressId(address.id);
+    setAddressFormData({
+      type: address.address_type,
+      address: address.address,
+      city: address.city,
+      state: address.state,
+      country: address.country,
+      zipCode: address.zip_code,
+      isDefault: address.is_default === 1
+    });
+  };
+
+  const cancelAddressEdit = () => {
+    setIsAddingAddress(false);
+    setEditingAddressId(null);
+    setAddressFormData({
+      type: 'home',
+      address: '',
+      city: '',
+      state: '',
+      country: 'Bangladesh',
+      zipCode: '',
+      isDefault: false
+    });
+  };
+
+  const saveAddress = async () => {
+    try {
+      setIsSavingAddress(true);
+      
+      const addressData = {
+        user_id: user.id,
+        address_type: addressFormData.type,
+        address: addressFormData.address,
+        city: addressFormData.city,
+        state: addressFormData.state,
+        country: addressFormData.country,
+        zip_code: addressFormData.zipCode,
+        is_default: addressFormData.isDefault ? 1 : 0
+      };
+
+      const url = editingAddressId 
+        ? `http://localhost:3001/api/user/addresses/${editingAddressId}`
+        : `http://localhost:3001/api/user/addresses`;
+      
+      const method = editingAddressId ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addressData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        toast.success(editingAddressId ? 'Address updated successfully!' : 'Address added successfully!');
+        
+        // Refresh addresses
+        const addressResponse = await fetch(`http://localhost:3001/api/user/addresses/${user.id}`);
+        if (addressResponse.ok) {
+          const addressData = await addressResponse.json();
+          setAddresses(addressData.addresses || []);
+          
+          // If this was set as default or is the first address, select it
+          if (addressFormData.isDefault || !selectedAddress) {
+            const newAddress = addressData.addresses?.find(addr => 
+              editingAddressId ? addr.id === editingAddressId : addr.id === result.addressId
+            );
+            if (newAddress) setSelectedAddress(newAddress);
+          }
+        }
+        
+        cancelAddressEdit();
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to save address');
+      }
+    } catch (error) {
+      console.error('Error saving address:', error);
+      toast.error('Failed to save address');
+    } finally {
+      setIsSavingAddress(false);
+    }
+  };
+
+  const deleteAddress = async (addressId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/user/addresses/${addressId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        toast.success('Address deleted successfully!');
+        
+        // Refresh addresses
+        const addressResponse = await fetch(`http://localhost:3001/api/user/addresses/${user.id}`);
+        if (addressResponse.ok) {
+          const addressData = await addressResponse.json();
+          setAddresses(addressData.addresses || []);
+          
+          // If deleted address was selected, clear selection
+          if (selectedAddress?.id === addressId) {
+            const defaultAddress = addressData.addresses?.find(addr => addr.is_default === 1);
+            setSelectedAddress(defaultAddress || null);
+          }
+        }
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to delete address');
+      }
+    } catch (error) {
+      console.error('Error deleting address:', error);
+      toast.error('Failed to delete address');
+    }
+  };
+
+  const getAddressTypeIcon = (type) => {
+    return type === 'home' ? <FaMapMarkerAlt className="text-emerald-600" /> : <FaMobileAlt className="text-blue-600" />;
+  };
+
+  // Place order function
+  const handlePlaceOrder = async () => {
+    try {
+      // Validation
+      if (!selectedAddress) {
+        toast.error('Please select a delivery address');
+        return;
+      }
+
+      if (!phoneNumber.trim()) {
+        toast.error('Please provide a phone number');
+        return;
+      }
+
+      if (paymentMethod === 'bkash' && !transactionId.trim()) {
+        toast.error('Please provide the bKash transaction ID');
+        return;
+      }
+
+      setPlacingOrder(true);
+
+      // Prepare order data
+      const orderData = {
+        user_id: user.id,
+        shipping_address: formatAddress(selectedAddress),
+        phone_number: phoneNumber,
+        payment_method: paymentMethod,
+        transaction_id: paymentMethod === 'bkash' ? transactionId : null,
+        total_amount: orderSummary.total,
+        shipping_fee: orderSummary.shippingFee,
+        items: cartItems.map(item => ({
+          book_id: item.id,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      };
+
+      const response = await fetch('http://localhost:3001/api/orders/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        toast.success(`Order placed successfully! Order ID: ${result.orderId}`);
+        
+        // Clear cart and navigate to order confirmation
+        localStorage.removeItem('cartItems');
+        navigate('/order-confirmation', { 
+          state: { 
+            orderId: result.orderId,
+            orderDetails: orderData,
+            total: orderSummary.total
+          }
+        });
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to place order');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error('Failed to place order');
+    } finally {
+      setPlacingOrder(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <DefaultLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-500 mx-auto"></div>
+            <p className="mt-4 text-slate-600">Loading checkout...</p>
+          </div>
+        </div>
+      </DefaultLayout>
+    );
+  }
+
+  return (
+    <DefaultLayout>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-slate-800 mb-2">Checkout</h1>
+            <p className="text-slate-600">Review your order and complete your purchase</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-6">
+              
+              {/* Contact Information */}
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+                <h2 className="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+                  <FaUser className="mr-3 text-emerald-600" />
+                  Contact Information
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <FaUser className="inline mr-2" />
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={`${user?.first_name || ''} ${user?.last_name || ''}`.trim()}
+                      disabled
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 text-slate-600"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <FaEnvelope className="inline mr-2" />
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={user?.email || ''}
+                      disabled
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 text-slate-600"
+                    />
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <FaPhone className="inline mr-2" />
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      placeholder="Enter your phone number"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Delivery Address */}
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-semibold text-slate-800 flex items-center">
+                    <FaMapMarkerAlt className="mr-3 text-emerald-600" />
+                    Delivery Address
+                  </h2>
+                  <Button
+                    onClick={() => setShowAddressModal(true)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <FaEdit className="mr-2 group-hover:scale-110 transition-transform" />
+                    Manage Addresses
+                  </Button>
+                </div>
+
+                {selectedAddress ? (
+                  <div className="bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200 rounded-lg p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center mb-2">
+                          {getAddressTypeIcon(selectedAddress.address_type)}
+                          <span className="ml-2 font-medium text-slate-800 capitalize">
+                            {selectedAddress.address_type} Address
+                          </span>
+                          {selectedAddress.is_default === 1 && (
+                            <span className="ml-2 px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded-full">
+                              Default
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-slate-600">{formatAddress(selectedAddress)}</p>
+                      </div>
+                      <Button
+                        onClick={() => setShowAddressModal(true)}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <FaEdit className="group-hover:scale-110 transition-transform" />
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 bg-slate-50 rounded-lg border-2 border-dashed border-slate-300">
+                    <FaMapMarkerAlt className="text-4xl text-slate-400 mx-auto mb-4" />
+                    <p className="text-slate-600 mb-4">No address selected</p>
+                    <Button
+                      onClick={() => setShowAddressModal(true)}
+                      variant="primary"
+                      size="md"
+                    >
+                      <FaPlus className="mr-2 group-hover:scale-110 transition-transform" />
+                      Select Address
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* Payment Method */}
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+                <h2 className="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+                  <FaCreditCard className="mr-3 text-emerald-600" />
+                  Payment Method
+                </h2>
+
+                <div className="space-y-4">
+                  {/* Cash on Delivery */}
+                  <div 
+                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                      paymentMethod === 'cash_on_delivery' 
+                        ? 'border-emerald-500 bg-emerald-50' 
+                        : 'border-slate-300 hover:border-slate-400'
+                    }`}
+                    onClick={() => setPaymentMethod('cash_on_delivery')}
+                  >
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="cash_on_delivery"
+                        checked={paymentMethod === 'cash_on_delivery'}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="mr-3 text-emerald-600"
+                      />
+                      <FaMoneyBillWave className="mr-3 text-green-600" />
+                      <div>
+                        <h3 className="font-semibold text-slate-800">Cash on Delivery</h3>
+                        <p className="text-sm text-slate-600">Pay when you receive your order</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* bKash */}
+                  <div 
+                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                      paymentMethod === 'bkash' 
+                        ? 'border-pink-500 bg-pink-50' 
+                        : 'border-slate-300 hover:border-slate-400'
+                    }`}
+                    onClick={() => setPaymentMethod('bkash')}
+                  >
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="bkash"
+                        checked={paymentMethod === 'bkash'}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="mr-3 text-pink-600"
+                      />
+                      <FaMobileAlt className="mr-3 text-pink-600" />
+                      <div>
+                        <h3 className="font-semibold text-slate-800">bKash</h3>
+                        <p className="text-sm text-slate-600">Mobile payment solution</p>
+                      </div>
+                    </div>
+
+                    {paymentMethod === 'bkash' && (
+                      <div className="mt-4 pt-4 border-t border-pink-200">
+                        <div className="bg-pink-100 border border-pink-300 rounded-lg p-4 mb-4">
+                          <div className="flex items-start">
+                            <FaExclamationTriangle className="text-pink-600 mt-1 mr-3 flex-shrink-0" />
+                            <div>
+                              <h4 className="font-semibold text-pink-800 mb-2">Payment Instructions</h4>
+                              <ol className="text-sm text-pink-700 space-y-1">
+                                <li>1. Open your bKash app</li>
+                                <li>2. Select "Send Money"</li>
+                                <li>3. Send <strong>৳{orderSummary.total.toFixed(2)}</strong> to: <strong>01821-646373</strong></li>
+                                <li>4. Enter the transaction ID below</li>
+                              </ol>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-2">
+                            Transaction ID *
+                          </label>
+                          <input
+                            type="text"
+                            value={transactionId}
+                            onChange={(e) => setTransactionId(e.target.value)}
+                            placeholder="Enter bKash transaction ID"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                            required={paymentMethod === 'bkash'}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Order Summary Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sticky top-4">
+                <h2 className="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+                  <FaShoppingCart className="mr-3 text-emerald-600" />
+                  Order Summary
+                </h2>
+
+                {/* Cart Items */}
+                <div className="space-y-3 mb-6">
+                  {cartItems.map((item, index) => (
+                    <div key={index} className="flex items-center space-x-3 py-2 border-b border-slate-100 last:border-b-0">
+                      <img
+                        src={item.cover_url || '/placeholder-book.jpg'}
+                        alt={item.title}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-slate-800 truncate">{item.title}</p>
+                        <p className="text-sm text-slate-600">Qty: {item.quantity}</p>
+                      </div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        ৳{(item.price * item.quantity).toFixed(2)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Price Breakdown */}
+                <div className="space-y-2 mb-6">
+                  <div className="flex justify-between text-slate-600">
+                    <span>Subtotal</span>
+                    <span>৳{orderSummary.subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-600">
+                    <span className="flex items-center">
+                      <FaShippingFast className="mr-1" />
+                      Shipping
+                    </span>
+                    <span>৳{orderSummary.shippingFee.toFixed(2)}</span>
+                  </div>
+                  <div className="border-t border-slate-200 pt-2 flex justify-between text-lg font-semibold text-slate-800">
+                    <span>Total</span>
+                    <span>৳{orderSummary.total.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                {/* Place Order Button */}
+                <Button
+                  onClick={handlePlaceOrder}
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  disabled={placingOrder || !selectedAddress || !phoneNumber.trim() || (paymentMethod === 'bkash' && !transactionId.trim())}
+                >
+                  {placingOrder ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Placing Order...
+                    </>
+                  ) : (
+                    <>
+                      <FaCheck className="mr-2 group-hover:scale-110 transition-transform" />
+                      Place Order
+                    </>
+                  )}
+                </Button>
+
+                <p className="text-xs text-slate-500 text-center mt-3">
+                  By placing your order, you agree to our Terms of Service and Privacy Policy.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Address Management Modal */}
+        {showAddressModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              <div className="bg-gradient-to-r from-emerald-700 to-emerald-800 text-white p-6 flex items-center justify-between">
+                <h3 className="text-2xl font-bold">Manage Addresses</h3>
+                <Button
+                  onClick={() => setShowAddressModal(false)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white hover:bg-opacity-20"
+                >
+                  <FaTimes className="group-hover:scale-110 transition-transform" />
+                </Button>
+              </div>
+              
+              <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+                <AddressManagement
+                  addresses={addresses}
+                  isAddingAddress={isAddingAddress}
+                  editingAddressId={editingAddressId}
+                  addressFormData={addressFormData}
+                  isSavingAddress={isSavingAddress}
+                  handleAddressChange={handleAddressChange}
+                  startAddingAddress={startAddingAddress}
+                  startEditingAddress={startEditingAddress}
+                  cancelAddressEdit={cancelAddressEdit}
+                  saveAddress={saveAddress}
+                  deleteAddress={deleteAddress}
+                  getAddressTypeIcon={getAddressTypeIcon}
+                />
+                
+                <div className="mt-6 pt-4 border-t border-slate-200">
+                  <h4 className="font-semibold text-slate-800 mb-3">Select Address for Delivery</h4>
+                  <div className="space-y-3">
+                    {addresses.map((address) => (
+                      <div
+                        key={address.id}
+                        className={`border rounded-lg p-3 cursor-pointer transition-all ${
+                          selectedAddress?.id === address.id
+                            ? 'border-emerald-500 bg-emerald-50'
+                            : 'border-slate-300 hover:border-slate-400'
+                        }`}
+                        onClick={() => {
+                          setSelectedAddress(address);
+                          setShowAddressModal(false);
+                        }}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              name="selectedAddress"
+                              checked={selectedAddress?.id === address.id}
+                              onChange={() => setSelectedAddress(address)}
+                              className="mr-3 text-emerald-600"
+                            />
+                            {getAddressTypeIcon(address.address_type)}
+                            <span className="ml-2 font-medium capitalize">{address.address_type}</span>
+                            {address.is_default === 1 && (
+                              <span className="ml-2 px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded-full">
+                                Default
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-sm text-slate-600 mt-2 ml-8">
+                          {formatAddress(address)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </DefaultLayout>
+  );
+};
+
+export default CheckoutPage;

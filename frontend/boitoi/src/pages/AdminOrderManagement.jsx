@@ -58,256 +58,152 @@ const AdminOrderManagement = () => {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [filterStatus, paymentFilterStatus, sortBy]); // Refetch when filters change
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/orders`);
+      setLoading(true);
+      
+      // Build query parameters for filtering
+      const queryParams = new URLSearchParams();
+      if (filterStatus !== 'all') {
+        queryParams.append('status', filterStatus);
+      }
+      if (paymentFilterStatus !== 'all') {
+        queryParams.append('payment_status', paymentFilterStatus);
+      }
+      queryParams.append('sort', sortBy);
+      queryParams.append('limit', '100'); // Get more orders for better UX
+      
+      const url = `${API_BASE_URL}/api/admin/orders${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+      const response = await fetch(url);
       
       if (!response.ok) {
-        // If API is not ready, show sample data
-        if (response.status === 404) {
-          console.warn('Orders API not implemented yet, showing sample data');
-          // Sample data with comprehensive order information
-          const sampleOrders = [
-            {
-              id: 1001,
-              user_id: 1,
-              customer: {
-                id: 1,
-                name: 'John Doe',
-                email: 'john.doe@email.com',
-                phone: '+1234567890'
-              },
-              ordered_at: '2025-07-29T10:30:00Z',
-              shipping_address: '123 Main Street, Apartment 4B, New York, NY 10001, United States',
-              order_status: 'processing',
-              shipping_fee: 40.00,
-              total_amount: 285.97,
-              status_updated_by: null,
-              status_updated_at: null,
-              payment: {
-                id: 2001,
-                payment_date: '2025-07-29T10:35:00Z',
-                payment_method: 'Credit Card',
-                amount: 285.97,
-                payment_status: 'paid',
-                transaction_id: 'TXN_1001_CC_789456'
-              },
-              books: [
-                {
-                  book_id: 101,
-                  title: 'The Great Gatsby',
-                  author: 'F. Scott Fitzgerald',
-                  price: 15.99,
-                  quantity: 2,
-                  isbn: '978-0-7432-7356-5'
-                },
-                {
-                  book_id: 102,
-                  title: 'To Kill a Mockingbird',
-                  author: 'Harper Lee',
-                  price: 12.99,
-                  quantity: 1,
-                  isbn: '978-0-06-112008-4'
-                },
-                {
-                  book_id: 103,
-                  title: '1984',
-                  author: 'George Orwell',
-                  price: 13.99,
-                  quantity: 3,
-                  isbn: '978-0-452-28423-4'
-                }
-              ]
-            },
-            {
-              id: 1002,
-              user_id: 2,
-              customer: {
-                id: 2,
-                name: 'Jane Smith',
-                email: 'jane.smith@email.com',
-                phone: '+1234567891'
-              },
-              ordered_at: '2025-07-28T15:45:00Z',
-              shipping_address: '456 Oak Avenue, Suite 2A, Los Angeles, CA 90210, United States',
-              order_status: 'shipped',
-              shipping_fee: 40.00,
-              total_amount: 167.96,
-              status_updated_by: 1,
-              status_updated_at: '2025-07-29T09:15:00Z',
-              payment: {
-                id: 2002,
-                payment_date: '2025-07-28T15:50:00Z',
-                payment_method: 'PayPal',
-                amount: 167.96,
-                payment_status: 'paid',
-                transaction_id: 'TXN_1002_PP_123789'
-              },
-              books: [
-                {
-                  book_id: 104,
-                  title: 'Pride and Prejudice',
-                  author: 'Jane Austen',
-                  price: 11.99,
-                  quantity: 1,
-                  isbn: '978-0-14-143951-8'
-                },
-                {
-                  book_id: 105,
-                  title: 'The Catcher in the Rye',
-                  author: 'J.D. Salinger',
-                  price: 14.99,
-                  quantity: 2,
-                  isbn: '978-0-316-76948-0'
-                }
-              ]
-            },
-            {
-              id: 1003,
-              user_id: 3,
-              customer: {
-                id: 3,
-                name: 'Bob Johnson',
-                email: 'bob.johnson@email.com',
-                phone: '+1234567892'
-              },
-              ordered_at: '2025-07-27T12:20:00Z',
-              shipping_address: '789 Pine Street, Unit 5, Chicago, IL 60601, United States',
-              order_status: 'pending',
-              shipping_fee: 40.00,
-              total_amount: 92.97,
-              status_updated_by: null,
-              status_updated_at: null,
-              payment: {
-                id: 2003,
-                payment_date: null,
-                payment_method: 'Bank Transfer',
-                amount: 92.97,
-                payment_status: 'pending',
-                transaction_id: null
-              },
-              books: [
-                {
-                  book_id: 106,
-                  title: 'Lord of the Flies',
-                  author: 'William Golding',
-                  price: 12.99,
-                  quantity: 1,
-                  isbn: '978-0-571-05686-2'
-                },
-                {
-                  book_id: 107,
-                  title: 'Brave New World',
-                  author: 'Aldous Huxley',
-                  price: 13.99,
-                  quantity: 3,
-                  isbn: '978-0-06-085052-4'
-                }
-              ]
-            },
-            {
-              id: 1004,
-              user_id: 4,
-              customer: {
-                id: 4,
-                name: 'Alice Brown',
-                email: 'alice.brown@email.com',
-                phone: '+1234567893'
-              },
-              ordered_at: '2025-07-26T18:30:00Z',
-              shipping_address: '321 Elm Drive, Building B, Miami, FL 33101, United States',
-              order_status: 'delivered',
-              shipping_fee: 40.00,
-              total_amount: 125.96,
-              status_updated_by: 1,
-              status_updated_at: '2025-07-28T14:20:00Z',
-              payment: {
-                id: 2004,
-                payment_date: '2025-07-26T18:35:00Z',
-                payment_method: 'Credit Card',
-                amount: 125.96,
-                payment_status: 'paid',
-                transaction_id: 'TXN_1004_CC_456123'
-              },
-              books: [
-                {
-                  book_id: 108,
-                  title: 'The Hobbit',
-                  author: 'J.R.R. Tolkien',
-                  price: 16.99,
-                  quantity: 2,
-                  isbn: '978-0-547-92822-7'
-                },
-                {
-                  book_id: 109,
-                  title: 'Fahrenheit 451',
-                  author: 'Ray Bradbury',
-                  price: 13.99,
-                  quantity: 1,
-                  isbn: '978-1-4516-7331-9'
-                }
-              ]
-            },
-            {
-              id: 1005,
-              user_id: 5,
-              customer: {
-                id: 5,
-                name: 'Charlie Wilson',
-                email: 'charlie.wilson@email.com',
-                phone: '+1234567894'
-              },
-              ordered_at: '2025-07-25T14:15:00Z',
-              shipping_address: '654 Maple Lane, House 12, Seattle, WA 98101, United States',
-              order_status: 'cancelled',
-              shipping_fee: 40.00,
-              total_amount: 78.97,
-              status_updated_by: 2,
-              status_updated_at: '2025-07-26T10:30:00Z',
-              payment: {
-                id: 2005,
-                payment_date: '2025-07-25T14:20:00Z',
-                payment_method: 'Credit Card',
-                amount: 78.97,
-                payment_status: 'refunded',
-                transaction_id: 'TXN_1005_CC_789123'
-              },
-              books: [
-                {
-                  book_id: 110,
-                  title: 'Of Mice and Men',
-                  author: 'John Steinbeck',
-                  price: 11.99,
-                  quantity: 1,
-                  isbn: '978-0-14-017739-8'
-                },
-                {
-                  book_id: 111,
-                  title: 'The Grapes of Wrath',
-                  author: 'John Steinbeck',
-                  price: 15.99,
-                  quantity: 2,
-                  isbn: '978-0-14-303943-3'
-                }
-              ]
-            }
-          ];
-          setOrders(sampleOrders);
-          return;
-        }
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
       const data = await response.json();
-      setOrders(Array.isArray(data) ? data : []);
-      setLastUpdated(new Date());
+      
+      if (data.success) {
+        // Transform the data to add books for each order
+        const ordersWithBooks = await Promise.all(data.orders.map(async (order) => {
+          try {
+            const orderDetailResponse = await fetch(`${API_BASE_URL}/api/admin/orders/${order.id}`);
+            if (orderDetailResponse.ok) {
+              const orderDetailData = await orderDetailResponse.json();
+              if (orderDetailData.success && orderDetailData.order.books) {
+                return {
+                  ...order,
+                  books: orderDetailData.order.books
+                };
+              }
+            }
+            // If fetching books fails, return order without books
+            return { ...order, books: [] };
+          } catch (error) {
+            console.error(`Error fetching books for order ${order.id}:`, error);
+            return { ...order, books: [] };
+          }
+        }));
+        
+        setOrders(ordersWithBooks);
+        setLastUpdated(new Date());
+      } else {
+        throw new Error(data.message || 'Failed to fetch orders');
+      }
     } catch (error) {
       console.error('Error fetching orders:', error);
       toast.error('Failed to fetch orders: ' + error.message);
-      // Set empty array on error
-      setOrders([]);
+      
+      // Show sample data as fallback only in development
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Using sample data as fallback');
+        // Sample data with comprehensive order information
+        const sampleOrders = [
+          {
+            id: 1001,
+            user_id: 1,
+            customer: {
+              id: 1,
+              name: 'John Doe',
+              email: 'john.doe@email.com',
+              phone: '+1234567890'
+            },
+            ordered_at: '2025-07-29T10:30:00Z',
+            shipping_address: '123 Main Street, Apartment 4B, New York, NY 10001, United States',
+            order_status: 'processing',
+            shipping_fee: 40.00,
+            total_amount: 285.97,
+            status_updated_by: null,
+            status_updated_at: null,
+            payment: {
+              id: 2001,
+              payment_date: '2025-07-29T10:35:00Z',
+              payment_method: 'Credit Card',
+              amount: 285.97,
+              payment_status: 'paid',
+              transaction_id: 'TXN_1001_CC_789456'
+            },
+            books: [
+              {
+                book_id: 101,
+                title: 'The Great Gatsby',
+                author: 'F. Scott Fitzgerald',
+                price: 15.99,
+                quantity: 2,
+                isbn: '978-0-7432-7356-5'
+              },
+              {
+                book_id: 102,
+                title: 'To Kill a Mockingbird',
+                author: 'Harper Lee',
+                price: 12.99,
+                quantity: 1,
+                isbn: '978-0-06-112008-4'
+              }
+            ]
+          },
+          {
+            id: 1002,
+            user_id: 2,
+            customer: {
+              id: 2,
+              name: 'Jane Smith',
+              email: 'jane.smith@email.com',
+              phone: '+1234567891'
+            },
+            ordered_at: '2025-07-28T15:45:00Z',
+            shipping_address: '456 Oak Avenue, Suite 2A, Los Angeles, CA 90210, United States',
+            order_status: 'shipped',
+            shipping_fee: 40.00,
+            total_amount: 167.96,
+            status_updated_by: 1,
+            status_updated_at: '2025-07-29T09:15:00Z',
+            payment: {
+              id: 2002,
+              payment_date: '2025-07-28T15:50:00Z',
+              payment_method: 'PayPal',
+              amount: 167.96,
+              payment_status: 'paid',
+              transaction_id: 'TXN_1002_PP_123789'
+            },
+            books: [
+              {
+                book_id: 104,
+                title: 'Pride and Prejudice',
+                author: 'Jane Austen',
+                price: 11.99,
+                quantity: 1,
+                isbn: '978-0-14-143951-8'
+              }
+            ]
+          }
+        ];
+        setOrders(sampleOrders);
+        setLastUpdated(new Date());
+      } else {
+        setOrders([]);
+      }
     } finally {
       setLoading(false);
     }
