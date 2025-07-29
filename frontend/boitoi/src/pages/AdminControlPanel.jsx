@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { BackToHomeButton } from '../components/ui/Button';
 import DefaultLayout from '../layouts/DefaultLayout';
+import { API_BASE_URL } from '../config';
 import {
   FaUsers,
   FaBook,
@@ -21,6 +22,45 @@ const AdminControlPanel = () => {
   const navigate = useNavigate();
   const { getCurrentUser } = useCart();
   const user = getCurrentUser();
+  
+  // State for admin statistics
+  const [stats, setStats] = useState({
+    total_users: 0,
+    total_books: 0,
+    total_orders: 0,
+    total_revenue: 0,
+    loading: true,
+    error: null,
+    lastUpdated: null
+  });
+
+  // Fetch admin statistics
+  const fetchAdminStats = async () => {
+    try {
+      setStats(prev => ({ ...prev, loading: true, error: null }));
+      
+      const response = await fetch(`${API_BASE_URL}/api/admin/stats`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setStats(prev => ({
+          ...prev,
+          ...data.data,
+          loading: false,
+          lastUpdated: new Date()
+        }));
+      } else {
+        throw new Error(data.message || 'Failed to fetch stats');
+      }
+    } catch (error) {
+      console.error('Error fetching admin stats:', error);
+      setStats(prev => ({
+        ...prev,
+        loading: false,
+        error: error.message
+      }));
+    }
+  };
 
   // Redirect if user is not admin
   useEffect(() => {
@@ -33,7 +73,10 @@ const AdminControlPanel = () => {
       navigate('/');
       return;
     }
-  }, [user, navigate]);
+
+    // Fetch stats when component mounts (only once)
+    fetchAdminStats();
+  }, []); // Remove user and navigate from dependencies to prevent repeated calls
 
   // Don't render if not admin
   if (!user?.id || user.role !== 'admin') {
@@ -160,12 +203,58 @@ const AdminControlPanel = () => {
                 Welcome back, <span className="font-semibold">{user.username}</span>.
                 Manage your BoiToi bookstore from here.
               </p>
+              {stats.lastUpdated && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Last updated: {stats.lastUpdated.toLocaleTimeString()}
+                </p>
+              )}
             </div>
-            <div className="bg-red-100 text-red-800 px-4 py-2 rounded-lg">
-              <FaUserShield className="inline mr-2" />
-              Administrator
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={fetchAdminStats}
+                variant="outline"
+                size="sm"
+                disabled={stats.loading}
+                className="flex items-center space-x-2"
+              >
+                <FaChartBar className={`text-sm ${stats.loading ? 'animate-spin' : ''}`} />
+                <span>{stats.loading ? 'Refreshing...' : 'Refresh Stats'}</span>
+              </Button>
+              <div className="bg-red-100 text-red-800 px-4 py-2 rounded-lg">
+                <FaUserShield className="inline mr-2" />
+                Administrator
+              </div>
             </div>
           </div>
+          
+          {/* Error display */}
+          {stats.error && (
+            <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="flex items-center">
+                <div className="text-red-500">
+                  <FaChartBar className="w-5 h-5" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-red-800">
+                    Failed to load statistics
+                  </p>
+                  <p className="text-sm text-red-600 mt-1">
+                    {stats.error}
+                  </p>
+                </div>
+                <div className="ml-auto">
+                  <Button
+                    onClick={fetchAdminStats}
+                    variant="outline"
+                    size="xs"
+                    className="text-red-600 border-red-200"
+                  >
+                    Retry
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Quick Stats */}
@@ -177,7 +266,15 @@ const AdminControlPanel = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Total Users</p>
-                <p className="text-2xl font-semibold text-gray-900">1,234</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {stats.loading ? (
+                    <span className="animate-pulse">Loading...</span>
+                  ) : stats.error ? (
+                    <span className="text-red-500 text-sm">Error</span>
+                  ) : (
+                    stats.total_users?.toLocaleString() || '0'
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -189,7 +286,15 @@ const AdminControlPanel = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Total Books</p>
-                <p className="text-2xl font-semibold text-gray-900">5,678</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {stats.loading ? (
+                    <span className="animate-pulse">Loading...</span>
+                  ) : stats.error ? (
+                    <span className="text-red-500 text-sm">Error</span>
+                  ) : (
+                    stats.total_books?.toLocaleString() || '0'
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -201,7 +306,15 @@ const AdminControlPanel = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Total Orders</p>
-                <p className="text-2xl font-semibold text-gray-900">892</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {stats.loading ? (
+                    <span className="animate-pulse">Loading...</span>
+                  ) : stats.error ? (
+                    <span className="text-red-500 text-sm">Error</span>
+                  ) : (
+                    stats.total_orders?.toLocaleString() || '0'
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -213,7 +326,15 @@ const AdminControlPanel = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Revenue</p>
-                <p className="text-2xl font-semibold text-gray-900">৳45,321</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {stats.loading ? (
+                    <span className="animate-pulse">Loading...</span>
+                  ) : stats.error ? (
+                    <span className="text-red-500 text-sm">Error</span>
+                  ) : (
+                    `৳${stats.total_revenue?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0.00'}`
+                  )}
+                </p>
               </div>
             </div>
           </div>
