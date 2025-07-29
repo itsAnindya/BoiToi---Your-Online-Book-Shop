@@ -83,5 +83,24 @@ export const BackToAdminButton = ({ onClick, className = '' }) => {
   );
 };
 
+export const BackToAuthorsButton = ({ onClick, className = '' }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className={`mb-6 flex items-center ${className}`}>
+      <Button
+        onClick={() => {
+          if (onClick) onClick();
+          navigate('/authors');
+        }}
+        variant="ghost"
+      >
+        <FaArrowLeft className="text-sm group-hover:-translate-x-1 transition-transform" />
+        <span className="text-sm font-medium">Back to Authors</span>
+      </Button>
+    </div>
+  );
+};
+
 
 export default Button;

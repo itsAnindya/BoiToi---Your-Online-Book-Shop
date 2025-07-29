@@ -12,8 +12,8 @@ const getAllAuthors = (req, res) => {
       ID,
       NAME,
       BIO,
-      COALESCE(DATE_OF_BIRTH, '1971-12-16') as DATE_OF_BIRTH,
-      COALESCE(NATIONALITY, 'Bangladeshi') as NATIONALITY,
+      DATE_OF_BIRTH,
+      NATIONALITY,
       WEBSITE,
       PHOTO_URL
     FROM author
@@ -62,8 +62,8 @@ const getAuthorById = (req, res) => {
       ID,
       NAME,
       BIO,
-      COALESCE(DATE_OF_BIRTH, '1971-12-16') as DATE_OF_BIRTH,
-      COALESCE(NATIONALITY, 'Bangladeshi') as NATIONALITY,
+      DATE_OF_BIRTH,
+      NATIONALITY,
       WEBSITE,
       PHOTO_URL
     FROM author
@@ -208,8 +208,8 @@ const searchAuthors = (req, res) => {
       ID,
       NAME,
       BIO,
-      COALESCE(DATE_OF_BIRTH, '1971-12-16') as DATE_OF_BIRTH,
-      COALESCE(NATIONALITY, 'Bangladeshi') as NATIONALITY,
+      DATE_OF_BIRTH,
+      NATIONALITY,
       WEBSITE,
       PHOTO_URL
     FROM author
