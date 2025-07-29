@@ -18,6 +18,8 @@ import PublisherLoginPage from './pages/PublisherLoginPage'
 import MyOrders from './pages/MyOrders'
 import AuthorsPage from './pages/AuthorsPage'
 import AuthorDetailPage from './pages/AuthorDetailPage'
+import PublishersPage from './pages/PublishersPage'
+import PublisherDetailPage from './pages/PublisherDetailPage'
 import Wishlist from './pages/Wishlist'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
@@ -42,6 +44,8 @@ function App() {
                 <Route path="/books/:id" element={<BookDetail />} />
                 <Route path="/authors" element={<AuthorsPage />} />
                 <Route path="/author/:id" element={<AuthorDetailPage />} />
+                <Route path="/publishers" element={<PublishersPage />} />
+                <Route path="/publisher/:id" element={<PublisherDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/cart-test" element={<CartTestPage />} />
                 <Route path="/profile" element={<UserProfilePage />} />

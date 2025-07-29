@@ -289,10 +289,136 @@ const getPublisherStats = async (req, res) => {
   }
 };
 
+/**
+ * Get all publishers for public display
+ * Returns list of all publishers with their ID and name
+ */
+const getAllPublishers = (req, res) => {
+  console.log('Fetching all publishers for public display');
+
+  const query = `
+    SELECT 
+      ID as PUBLISHER_ID,
+      NAME as PUBLISHER_NAME,
+      EMAIL
+    FROM publisher 
+    WHERE STATUS = 'ACTIVE'
+    ORDER BY NAME ASC
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching publishers:', err);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error while fetching publishers',
+        error: err.message
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Publishers fetched successfully',
+      publishers: results,
+      count: results.length
+    });
+  });
+};
+
+/**
+ * Get publisher by ID with their books for public display
+ * Returns publisher details and all books published by them
+ */
+const getPublisherByIdPublic = (req, res) => {
+  const publisherId = req.params.id;
+  console.log(`Fetching publisher with ID: ${publisherId} for public display`);
+
+  if (!publisherId || isNaN(publisherId)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid publisher ID provided'
+    });
+  }
+
+  // First get publisher details
+  const publisherQuery = `
+    SELECT 
+      ID as PUBLISHER_ID,
+      NAME as PUBLISHER_NAME,
+      COALESCE(ADDRESS, 'NULL') as ADDRESS,
+      COALESCE(CITY, 'NULL') as CITY,
+      COALESCE(STATE, 'NULL') as STATE,
+      COALESCE(COUNTRY, 'NULL') as COUNTRY,
+      COALESCE(EMAIL, 'NULL') as EMAIL,
+      COALESCE(PHONE, 'NULL') as PHONE,
+      COALESCE(WEBSITE, 'NULL') as WEBSITE
+    FROM publisher 
+    WHERE ID = ? AND STATUS = 'ACTIVE'
+  `;
+
+  db.query(publisherQuery, [publisherId], (err, publisherResults) => {
+    if (err) {
+      console.error('Error fetching publisher:', err);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error while fetching publisher',
+        error: err.message
+      });
+    }
+
+    if (publisherResults.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Publisher not found'
+      });
+    }
+
+    const publisher = publisherResults[0];
+
+    // Then get books by this publisher
+    const booksQuery = `
+      SELECT 
+        b.ID as BOOK_ID,
+        b.TITLE,
+        b.COVER_URL,
+        GROUP_CONCAT(a.NAME SEPARATOR ' · ') as AUTHORS
+      FROM book b
+      LEFT JOIN book_author ba ON b.ID = ba.BOOK_ID
+      LEFT JOIN author a ON ba.AUTHOR_ID = a.ID
+      WHERE b.PUBLISHER_ID = ?
+      GROUP BY b.ID, b.TITLE, b.COVER_URL
+      ORDER BY b.ADDED_AT DESC
+    `;
+
+    db.query(booksQuery, [publisherId], (err, bookResults) => {
+      if (err) {
+        console.error('Error fetching publisher books:', err);
+        return res.status(500).json({
+          success: false,
+          message: 'Internal server error while fetching publisher books',
+          error: err.message
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'Publisher details fetched successfully',
+        publisher: {
+          ...publisher,
+          books: bookResults
+        },
+        bookCount: bookResults.length
+      });
+    });
+  });
+};
+
 module.exports = {
   publisherLogin,
   getPublisherProfile,
   submitBookRequest,
   getPublisherRequests,
-  getPublisherStats
+  getPublisherStats,
+  getAllPublishers,
+  getPublisherByIdPublic
 };
