@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Button from '../components/ui/Button';
-import { ShoppingCart, Star, CheckCircle, X } from 'lucide-react';
+import { ShoppingCart, Star, CheckCircle, X, Heart } from 'lucide-react';
 import { formatPrice } from '../utils/formatters';
 import { useCartActions } from '../hooks/useCartActions';
 import { BOOK_CONSTANTS } from '../constants/books';
@@ -22,6 +22,8 @@ const BookDetails = ({ username }) => {
   const [existingReview, setExistingReview] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState(null);
+  const [wishlistAdded, setWishlistAdded] = useState(false);
+  const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
 
   useEffect(() => {
     // Fetch book details
@@ -126,6 +128,47 @@ const BookDetails = ({ username }) => {
       console.error('Error submitting review:', err);
       alert('Failed to submit review. Please try again.');
     });
+  };
+
+  const addToWishlist = async () => {
+    const userId = sessionStorage.getItem('id');
+    const userRole = sessionStorage.getItem('role');
+    
+    if (!userId || (userRole !== 'user' && userRole !== 'admin')) {
+      alert('Please log in as a user or admin to add items to wishlist');
+      return;
+    }
+
+    setIsAddingToWishlist(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/wishlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          bookId: book.ID,
+          userId: parseInt(userId),
+          added_at: new Date().toISOString().split('T')[0]
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setWishlistAdded(true);
+        // Auto-hide success message after 3 seconds
+        setTimeout(() => setWishlistAdded(false), 3000);
+      } else {
+        throw new Error(data.message || 'Failed to add to wishlist');
+      }
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+      alert('Failed to add to wishlist. Please try again.');
+    } finally {
+      setIsAddingToWishlist(false);
+    }
   };
 
   const handleAddToCart = () => {
@@ -275,6 +318,37 @@ const BookDetails = ({ username }) => {
                       </Button>
                     )}
                   </div>
+
+                  {/* Wishlist Section - Only show for users and admins (not publishers) */}
+                  {(() => {
+                    const userRole = sessionStorage.getItem('role');
+                    const userId = sessionStorage.getItem('id');
+                    return (userRole === 'user' || userRole === 'admin') && userId && (
+                      <div className="mt-6 pt-6 border-t border-neutral-200">
+                        <div className="space-y-4">
+                          <h4 className="font-semibold text-neutral-800 text-lg">Save for Later</h4>
+                          
+                          {!wishlistAdded ? (
+                            <Button
+                              onClick={addToWishlist}
+                              disabled={isAddingToWishlist}
+                              variant="outline"
+                              size="lg"
+                              className="w-full border-2 border-pink-300 text-pink-700 hover:bg-pink-50 hover:border-pink-400 transition-all duration-200"
+                            >
+                              <Heart className="w-5 h-5 mr-2" />
+                              {isAddingToWishlist ? 'Adding to Wishlist...' : 'Add to Wishlist'}
+                            </Button>
+                          ) : (
+                            <div className="flex items-center gap-2 text-pink-600 bg-pink-50 p-4 rounded-xl">
+                              <Heart className="w-5 h-5 fill-current" />
+                              <span className="font-medium">Added to your wishlist!</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
