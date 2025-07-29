@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 29/07/2025 22:31:40
+ Date: 29/07/2025 22:48:08
 */
 
 SET NAMES utf8mb4;
@@ -248,8 +248,12 @@ CREATE TABLE `order`  (
   `ORDER_STATUS` enum('pending','confirmed','processing','shipped','delivered','cancelled','returned','refunded','on_hold') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `SHIPPING_FEE` decimal(12, 2) NULL DEFAULT 40.00,
   `TOTAL_AMOUNT` decimal(12, 2) NULL DEFAULT NULL,
+  `STATUS_UPDATED_BY` int NULL DEFAULT NULL,
+  `STATUS_UPDATED_AT` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `idx_order_user_id`(`USER_ID` ASC) USING BTREE,
+  INDEX `order_confirmation`(`STATUS_UPDATED_BY` ASC) USING BTREE,
+  CONSTRAINT `order_confirmation` FOREIGN KEY (`STATUS_UPDATED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
