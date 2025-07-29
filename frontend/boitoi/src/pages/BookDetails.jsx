@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import DefaultLayout from '../layouts/DefaultLayout';
-import Button from '../components/ui/Button';
+import Button, { BackToHomeButton } from '../components/ui/Button';
 import { ShoppingCart, Star, CheckCircle, X, Heart } from 'lucide-react';
 import { formatPrice } from '../utils/formatters';
 import { useCartActions } from '../hooks/useCartActions';
@@ -206,6 +206,9 @@ const BookDetails = ({ username }) => {
       {/* Modern Container with Proper Spacing */}
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-primary-50/20">
         <div className="max-w-7xl mx-auto px-6 py-12">
+          
+          {/* Back to Home Button */}
+          <BackToHomeButton />
           
           {/* Main Content - Modern Two Column Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-12">
