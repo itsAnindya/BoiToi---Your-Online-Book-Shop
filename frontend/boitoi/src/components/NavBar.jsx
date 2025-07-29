@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
-import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog, FaUserShield, FaBell, FaBook, FaClipboardList } from 'react-icons/fa';
+import { FaBars, FaTimes, FaShoppingCart, FaUser, FaSignOutAlt, FaCog, FaUserShield, FaBell, FaBook, FaClipboardList, FaHeart } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useNotifications } from '../contexts/NotificationContext';
@@ -258,6 +258,18 @@ const NavBar = () => {
                     <span className="text-gray-800">My Orders</span>
                   </Link>
 
+                  {/* Wishlist - Only show for users and admins (not publishers) */}
+                  {(user.role === 'user' || user.role === 'admin') && (
+                    <Link
+                      to="/wishlist"
+                      className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-pink-50 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <FaHeart className="mr-3 text-pink-600" />
+                      <span className="text-gray-800">Wishlist</span>
+                    </Link>
+                  )}
+
                   {/* Admin Control Panel - Only show for admins */}
                   {user.role === 'admin' && (
                     <Link
@@ -456,6 +468,18 @@ const NavBar = () => {
                     <FaClipboardList />
                     <span>My Orders</span>
                   </Link>
+
+                  {/* Wishlist - Mobile (Only for users and admins, not publishers) */}
+                  {(user.role === 'user' || user.role === 'admin') && (
+                    <Link
+                      to="/wishlist"
+                      className="flex items-center justify-center space-x-2 p-2 hover:bg-slate-700 rounded text-white"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <FaHeart />
+                      <span>Wishlist</span>
+                    </Link>
+                  )}
 
                   {/* Admin Control Panel - Mobile */}
                   {user.role === 'admin' && (

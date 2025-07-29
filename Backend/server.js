@@ -12,6 +12,8 @@ const adminBookRequestRoutes = require('./routes/adminBookRequestRoutes');
 const adminOrderRoutes = require('./routes/adminOrderRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const authorRoutes= require('./routes/authorRoutes');
+const wishlistRoutes = require('./routes/wishlistRoute');
+const { addToWishlist } = require('./controllers/wishListController');
 const app = express();
 
 // Middleware
@@ -31,6 +33,7 @@ app.use('/api/publisher', publisherRoutes);
 app.use('/api/admin', adminBookRequestRoutes);
 app.use('/api/admin/orders', adminOrderRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
