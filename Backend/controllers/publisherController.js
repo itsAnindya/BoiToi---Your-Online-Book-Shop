@@ -345,13 +345,31 @@ const getPublisherByIdPublic = (req, res) => {
     SELECT 
       ID as PUBLISHER_ID,
       NAME as PUBLISHER_NAME,
-      COALESCE(ADDRESS, 'NULL') as ADDRESS,
-      COALESCE(CITY, 'NULL') as CITY,
-      COALESCE(STATE, 'NULL') as STATE,
-      COALESCE(COUNTRY, 'NULL') as COUNTRY,
+      CASE 
+        WHEN ADDRESS IS NULL OR ADDRESS = '' THEN 'Polashi,BUET'
+        ELSE ADDRESS
+      END as ADDRESS,
+      CASE 
+        WHEN CITY IS NULL OR CITY = '' THEN 'Dhaka'
+        ELSE CITY
+      END as CITY,
+      CASE 
+        WHEN STATE IS NULL OR STATE = '' THEN 'LA'
+        ELSE STATE
+      END as STATE,
+      CASE 
+        WHEN COUNTRY IS NULL OR COUNTRY = '' THEN 'USA'
+        ELSE COUNTRY
+      END as COUNTRY,
       COALESCE(EMAIL, 'NULL') as EMAIL,
-      COALESCE(PHONE, 'NULL') as PHONE,
-      COALESCE(WEBSITE, 'NULL') as WEBSITE
+      CASE 
+        WHEN PHONE IS NULL OR PHONE = '' THEN '01234567891'
+        ELSE PHONE
+      END as PHONE,
+      CASE 
+        WHEN WEBSITE IS NULL OR WEBSITE = '' THEN CONCAT(LOWER(REPLACE(NAME, ' ', '')), '.org')
+        ELSE WEBSITE
+      END as WEBSITE
     FROM publisher 
     WHERE ID = ? AND STATUS = 'ACTIVE'
   `;

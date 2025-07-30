@@ -140,16 +140,12 @@ const PublisherDetailPage = () => {
                       <Phone className="w-5 h-5 text-primary-600 flex-shrink-0" />
                       <div>
                         <p className="text-sm text-neutral-600">Phone</p>
-                        {publisher.PHONE && publisher.PHONE !== 'NULL' ? (
-                          <a 
-                            href={`tel:${publisher.PHONE}`}
-                            className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
-                          >
-                            {publisher.PHONE}
-                          </a>
-                        ) : (
-                          <p className="font-medium text-neutral-400">NULL</p>
-                        )}
+                        <a 
+                          href={`tel:${publisher.PHONE}`}
+                          className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                        >
+                          {publisher.PHONE}
+                        </a>
                       </div>
                     </div>
 
@@ -158,18 +154,14 @@ const PublisherDetailPage = () => {
                       <Globe className="w-5 h-5 text-primary-600 flex-shrink-0" />
                       <div>
                         <p className="text-sm text-neutral-600">Website</p>
-                        {publisher.WEBSITE && publisher.WEBSITE !== 'NULL' ? (
-                          <a 
-                            href={publisher.WEBSITE.startsWith('http') ? publisher.WEBSITE : `https://${publisher.WEBSITE}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
-                          >
-                            {publisher.WEBSITE}
-                          </a>
-                        ) : (
-                          <p className="font-medium text-neutral-400">NULL</p>
-                        )}
+                        <a 
+                          href={publisher.WEBSITE.startsWith('http') ? publisher.WEBSITE : `https://${publisher.WEBSITE}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                        >
+                          {publisher.WEBSITE}
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -183,9 +175,7 @@ const PublisherDetailPage = () => {
                       <MapPin className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
                       <div>
                         <p className="text-sm text-neutral-600">Address</p>
-                        <p className="font-medium">
-                          {publisher.ADDRESS && publisher.ADDRESS !== 'NULL' ? publisher.ADDRESS : 'NULL'}
-                        </p>
+                        <p className="font-medium">{publisher.ADDRESS}</p>
                       </div>
                     </div>
 
@@ -194,9 +184,7 @@ const PublisherDetailPage = () => {
                       <div className="w-5 h-5 flex-shrink-0"></div>
                       <div>
                         <p className="text-sm text-neutral-600">City</p>
-                        <p className="font-medium">
-                          {publisher.CITY && publisher.CITY !== 'NULL' ? publisher.CITY : 'NULL'}
-                        </p>
+                        <p className="font-medium">{publisher.CITY}</p>
                       </div>
                     </div>
 
@@ -205,9 +193,7 @@ const PublisherDetailPage = () => {
                       <div className="w-5 h-5 flex-shrink-0"></div>
                       <div>
                         <p className="text-sm text-neutral-600">State</p>
-                        <p className="font-medium">
-                          {publisher.STATE && publisher.STATE !== 'NULL' ? publisher.STATE : 'NULL'}
-                        </p>
+                        <p className="font-medium">{publisher.STATE}</p>
                       </div>
                     </div>
 
@@ -216,9 +202,7 @@ const PublisherDetailPage = () => {
                       <div className="w-5 h-5 flex-shrink-0"></div>
                       <div>
                         <p className="text-sm text-neutral-600">Country</p>
-                        <p className="font-medium">
-                          {publisher.COUNTRY && publisher.COUNTRY !== 'NULL' ? publisher.COUNTRY : 'NULL'}
-                        </p>
+                        <p className="font-medium">{publisher.COUNTRY}</p>
                       </div>
                     </div>
                   </div>
