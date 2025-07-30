@@ -222,46 +222,112 @@ const getOrderDetails = async (req, res) => {
           });
         }
         
-        // Transform results
-        const order = {
-          id: orderData.order_id,
-          user_id: orderData.USER_ID,
-          customer: {
-            id: orderData.USER_ID,
-            name: `${orderData.FIRST_NAME || ''} ${orderData.LAST_NAME || ''}`.trim() || orderData.USERNAME,
-            email: orderData.EMAIL,
-            phone: orderData.PHONE
-          },
-          ordered_at: orderData.ORDERD_AT,
-          shipping_address: orderData.SHIPPING_ADDRESS,
-          order_status: orderData.ORDER_STATUS,
-          shipping_fee: parseFloat(orderData.SHIPPING_FEE) || 0,
-          total_amount: parseFloat(orderData.TOTAL_AMOUNT) || 0,
-          status_updated_by: orderData.STATUS_UPDATED_BY,
-          status_updated_at: orderData.STATUS_UPDATED_AT,
-          updated_by_admin: orderData.updated_by_admin,
-          payment: orderData.payment_id ? {
-            id: orderData.payment_id,
-            payment_date: orderData.PAYMENT_DATE,
-            payment_method: orderData.PAYMENT_METHOD,
-            amount: parseFloat(orderData.payment_amount) || 0,
-            payment_status: orderData.PAYMENT_STATUS,
-            transaction_id: orderData.TRANSACTION_ID
-          } : null,
-          books: booksResults.map(book => ({
-            book_id: book.BOOK_ID,
-            title: book.TITLE,
-            author: book.authors,
-            isbn: book.ISBN,
-            price: parseFloat(book.PRICE) || 0,
-            quantity: book.QUANTITY,
-            cover_url: book.COVER_URL
-          }))
-        };
+        // Get order discount information
+        const discountSql = `
+          SELECT 
+            od.ID as order_discount_id,
+            d.ID as discount_id,
+            d.CODE,
+            d.DESCRIPTION,
+            d.DISCOUNT_TYPE,
+            d.PERCENTAGE,
+            d.VALUE
+          FROM order_discount od
+          JOIN discount d ON od.DISCOUNT_ID = d.ID
+          WHERE od.ORDER_ID = ?
+        `;
         
-        res.json({
-          success: true,
-          order
+        db.query(discountSql, [parseInt(orderId)], (discountErr, discountResults) => {
+          if (discountErr) {
+            console.error('Database error fetching order discount:', discountErr);
+            return res.status(500).json({
+              success: false,
+              message: 'Server error fetching order discount: ' + discountErr.message
+            });
+          }
+          
+          console.log(`Discount query for order ${orderId}:`, discountResults);
+          
+          // Calculate discount amount if discount exists
+          let discountInfo = null;
+          if (discountResults.length > 0) {
+            const discount = discountResults[0];
+            let discountAmount = 0;
+            
+            // Calculate the actual subtotal from books (price * quantity)
+            const booksSubtotal = booksResults.reduce((sum, book) => {
+              return sum + (parseFloat(book.PRICE) * book.QUANTITY);
+            }, 0);
+            
+            console.log(`Discount calculation for order ${orderId}:`);
+            console.log(`- Books subtotal: ${booksSubtotal}`);
+            console.log(`- Discount type: ${discount.DISCOUNT_TYPE}`);
+            console.log(`- Discount percentage: ${discount.PERCENTAGE}`);
+            console.log(`- Discount value: ${discount.VALUE}`);
+            
+            if (discount.DISCOUNT_TYPE === 'percentage') {
+              discountAmount = booksSubtotal * parseFloat(discount.PERCENTAGE);
+              console.log(`- Percentage calculation: ${booksSubtotal} * ${discount.PERCENTAGE} = ${discountAmount}`);
+            } else if (discount.DISCOUNT_TYPE === 'fixed') {
+              discountAmount = Math.min(parseFloat(discount.VALUE), booksSubtotal);
+              console.log(`- Fixed calculation: min(${discount.VALUE}, ${booksSubtotal}) = ${discountAmount}`);
+            }
+            
+            discountInfo = {
+              id: discount.discount_id,
+              code: discount.CODE,
+              description: discount.DESCRIPTION,
+              discount_type: discount.DISCOUNT_TYPE,
+              percentage: parseFloat(discount.PERCENTAGE) || 0,
+              value: parseFloat(discount.VALUE) || 0,
+              discount_amount: discountAmount
+            };
+            
+            console.log(`Discount info created for order ${orderId}:`, discountInfo);
+          }
+          
+          // Transform results
+          const order = {
+            id: orderData.order_id,
+            user_id: orderData.USER_ID,
+            customer: {
+              id: orderData.USER_ID,
+              name: `${orderData.FIRST_NAME || ''} ${orderData.LAST_NAME || ''}`.trim() || orderData.USERNAME,
+              email: orderData.EMAIL,
+              phone: orderData.PHONE
+            },
+            ordered_at: orderData.ORDERD_AT,
+            shipping_address: orderData.SHIPPING_ADDRESS,
+            order_status: orderData.ORDER_STATUS,
+            shipping_fee: parseFloat(orderData.SHIPPING_FEE) || 0,
+            total_amount: parseFloat(orderData.TOTAL_AMOUNT) || 0,
+            status_updated_by: orderData.STATUS_UPDATED_BY,
+            status_updated_at: orderData.STATUS_UPDATED_AT,
+            updated_by_admin: orderData.updated_by_admin,
+            payment: orderData.payment_id ? {
+              id: orderData.payment_id,
+              payment_date: orderData.PAYMENT_DATE,
+              payment_method: orderData.PAYMENT_METHOD,
+              amount: parseFloat(orderData.payment_amount) || 0,
+              payment_status: orderData.PAYMENT_STATUS,
+              transaction_id: orderData.TRANSACTION_ID
+            } : null,
+            discount: discountInfo,
+            books: booksResults.map(book => ({
+              book_id: book.BOOK_ID,
+              title: book.TITLE,
+              author: book.authors,
+              isbn: book.ISBN,
+              price: parseFloat(book.PRICE) || 0,
+              quantity: book.QUANTITY,
+              cover_url: book.COVER_URL
+            }))
+          };
+          
+          res.json({
+            success: true,
+            order
+          });
         });
       });
     });

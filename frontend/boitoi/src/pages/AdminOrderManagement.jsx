@@ -22,7 +22,8 @@ import {
   Home,
   BookOpen,
   Hash,
-  FileText
+  FileText,
+  Tag
 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import Button, { BackToAdminButton } from '../components/ui/Button';
@@ -85,28 +86,36 @@ const AdminOrderManagement = () => {
       const data = await response.json();
       
       if (data.success) {
-        // Transform the data to add books for each order
-        const ordersWithBooks = await Promise.all(data.orders.map(async (order) => {
+        // Transform the data to add books and discount information for each order
+        const ordersWithDetails = await Promise.all(data.orders.map(async (order) => {
           try {
             const orderDetailResponse = await fetch(`${API_BASE_URL}/api/admin/orders/${order.id}`);
             if (orderDetailResponse.ok) {
               const orderDetailData = await orderDetailResponse.json();
-              if (orderDetailData.success && orderDetailData.order.books) {
+              if (orderDetailData.success && orderDetailData.order) {
+                // Log discount information for debugging
+                if (orderDetailData.order.discount) {
+                  console.log(`Order ${order.id} has discount:`, orderDetailData.order.discount);
+                }
+                
+                // Use the complete order details including discount information
                 return {
                   ...order,
-                  books: orderDetailData.order.books
+                  books: orderDetailData.order.books || [],
+                  discount: orderDetailData.order.discount || null,
+                  payment: orderDetailData.order.payment || order.payment
                 };
               }
             }
-            // If fetching books fails, return order without books
-            return { ...order, books: [] };
+            // If fetching details fails, return order without additional details
+            return { ...order, books: [], discount: null };
           } catch (error) {
-            console.error(`Error fetching books for order ${order.id}:`, error);
-            return { ...order, books: [] };
+            console.error(`Error fetching details for order ${order.id}:`, error);
+            return { ...order, books: [], discount: null };
           }
         }));
         
-        setOrders(ordersWithBooks);
+        setOrders(ordersWithDetails);
         setLastUpdated(new Date());
       } else {
         throw new Error(data.message || 'Failed to fetch orders');
@@ -133,16 +142,25 @@ const AdminOrderManagement = () => {
             shipping_address: '123 Main Street, Apartment 4B, New York, NY 10001, United States',
             order_status: 'processing',
             shipping_fee: 40.00,
-            total_amount: 285.97,
+            total_amount: 71.48,  // Correct: subtotal (44.97) + shipping (40.00) - discount (13.49) = 71.48
             status_updated_by: null,
             status_updated_at: null,
             payment: {
               id: 2001,
               payment_date: '2025-07-29T10:35:00Z',
               payment_method: 'Credit Card',
-              amount: 285.97,
+              amount: 71.48,  // Match the total_amount
               payment_status: 'paid',
               transaction_id: 'TXN_1001_CC_789456'
+            },
+            discount: {
+              id: 2,
+              code: 'HELLOWORLD',
+              description: 'Use the code HELLOWORLD to get 30% off on any order greater than 200 BDT',
+              discount_type: 'percentage',
+              percentage: 0.30,
+              value: 0,
+              discount_amount: 13.49  // Correct calculation: (15.99*2 + 12.99*1) * 0.30 = 44.97 * 0.30 = 13.49
             },
             books: [
               {
@@ -176,16 +194,25 @@ const AdminOrderManagement = () => {
             shipping_address: '456 Oak Avenue, Suite 2A, Los Angeles, CA 90210, United States',
             order_status: 'shipped',
             shipping_fee: 40.00,
-            total_amount: 167.96,
+            total_amount: 40.00,  // Correct: subtotal (11.99) + shipping (40.00) - discount (11.99) = 40.00
             status_updated_by: 1,
             status_updated_at: '2025-07-29T09:15:00Z',
             payment: {
               id: 2002,
               payment_date: '2025-07-28T15:50:00Z',
               payment_method: 'PayPal',
-              amount: 167.96,
+              amount: 40.00,  // Match the total_amount
               payment_status: 'paid',
               transaction_id: 'TXN_1002_PP_123789'
+            },
+            discount: {
+              id: 3,
+              code: 'BOITOI',
+              description: 'Get 200tk off for orders exceeding 1000 BDT! Offer applicable for first 300 orders!',
+              discount_type: 'fixed',
+              percentage: 0,
+              value: 200.00,
+              discount_amount: 11.99  // Correct: min(200.00, 11.99) = 11.99 (can't exceed subtotal)
             },
             books: [
               {
@@ -375,6 +402,8 @@ const AdminOrderManagement = () => {
   };
 
   const openOrderModal = (order) => {
+    console.log('Opening order modal for order:', order);
+    console.log('Order discount data:', order.discount);
     setSelectedOrder(order);
     setShowModal(true);
   };
@@ -916,6 +945,55 @@ const AdminOrderManagement = () => {
                     </div>
                   )}
 
+                  {/* Discount Information */}
+                  {console.log('Rendering discount section, selectedOrder.discount:', selectedOrder.discount)}
+                  {selectedOrder.discount && (
+                    <div className="mt-6">
+                      <h4 className="text-md font-semibold text-gray-900 border-b pb-2 mb-4">Discount Applied</h4>
+                      
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="flex items-center">
+                            <Tag className="w-4 h-4 text-green-600 mr-3" />
+                            <div>
+                              <span className="text-sm text-gray-600">Code:</span>
+                              <p className="text-sm font-mono font-medium text-green-700">{selectedOrder.discount.code}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center">
+                            <DollarSign className="w-4 h-4 text-green-600 mr-3" />
+                            <div>
+                              <span className="text-sm text-gray-600">Discount Amount:</span>
+                              <p className="text-sm font-medium text-green-700">-{formatPrice(selectedOrder.discount.discount_amount)}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center md:col-span-2">
+                            <FileText className="w-4 h-4 text-green-600 mr-3" />
+                            <div>
+                              <span className="text-sm text-gray-600">Description:</span>
+                              <p className="text-sm text-gray-700">{selectedOrder.discount.description}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center">
+                            <div className="w-4 h-4 mr-3"></div>
+                            <div>
+                              <span className="text-sm text-gray-600">Type:</span>
+                              <p className="text-sm font-medium">
+                                {selectedOrder.discount.discount_type === 'percentage' 
+                                  ? `${(selectedOrder.discount.percentage * 100).toFixed(0)}% off`
+                                  : `${formatPrice(selectedOrder.discount.value)} off`
+                                }
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Order Items */}
                   {selectedOrder.books && selectedOrder.books.length > 0 && (
                     <div className="mt-6">
@@ -969,6 +1047,16 @@ const AdminOrderManagement = () => {
                                   {formatPrice(selectedOrder.shipping_fee)}
                                 </td>
                               </tr>
+                              {selectedOrder.discount && (
+                                <tr>
+                                  <td colSpan="4" className="px-4 py-3 text-sm font-medium text-green-700 text-right">
+                                    Discount ({selectedOrder.discount.code}):
+                                  </td>
+                                  <td className="px-4 py-3 text-sm font-medium text-green-700">
+                                    -{formatPrice(selectedOrder.discount.discount_amount)}
+                                  </td>
+                                </tr>
+                              )}
                               <tr>
                                 <td colSpan="4" className="px-4 py-3 text-sm font-bold text-gray-900 text-right">
                                   Total:
