@@ -193,12 +193,12 @@ const DiscountManagement = () => {
 
   const getDiscountStatus = (discount) => {
     const now = new Date();
-    const startDate = new Date(discount.started_at);
-    const endDate = new Date(discount.ended_at);
+    const startDate = new Date(discount.startedAt);
+    const endDate = new Date(discount.endedAt);
     
     if (now < startDate) return 'upcoming';
     if (now > endDate) return 'expired';
-    if (discount.times_used >= discount.max_usage) return 'exhausted';
+    if (discount.timesUsed >= discount.maxUsage) return 'exhausted';
     return 'active';
   };
 
@@ -228,13 +228,13 @@ const DiscountManagement = () => {
     .sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return new Date(b.added_at) - new Date(a.added_at);
+          return new Date(b.addedAt) - new Date(a.addedAt);
         case 'oldest':
-          return new Date(a.added_at) - new Date(b.added_at);
+          return new Date(a.addedAt) - new Date(b.addedAt);
         case 'usage_high':
-          return (b.times_used || 0) - (a.times_used || 0);
+          return (b.timesUsed || 0) - (a.timesUsed || 0);
         case 'usage_low':
-          return (a.times_used || 0) - (b.times_used || 0);
+          return (a.timesUsed || 0) - (b.timesUsed || 0);
         default:
           return 0;
       }
@@ -336,7 +336,7 @@ const DiscountManagement = () => {
                 <div className="ml-4">
                   <p className="text-sm text-gray-600">Total Usage</p>
                   <p className="text-2xl font-semibold text-gray-900">
-                    {discounts.reduce((sum, d) => sum + (d.times_used || 0), 0)}
+                    {discounts.reduce((sum, d) => sum + (d.timesUsed || 0), 0)}
                   </p>
                 </div>
               </div>
@@ -463,9 +463,9 @@ const DiscountManagement = () => {
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                                                    <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              {discount.discount_type === 'percentage' ? (
+                              {discount.discountType === 'percentage' ? (
                                 <div className="flex items-center text-green-600">
                                   <Percent className="w-4 h-4 mr-1" />
                                   <span className="font-medium">{(discount.percentage * 100).toFixed(0)}%</span>
@@ -477,9 +477,9 @@ const DiscountManagement = () => {
                                 </div>
                               )}
                             </div>
-                            {discount.min_expense && (
+                            {discount.minExpense && (
                               <div className="text-xs text-gray-500 mt-1">
-                                Min: ৳{discount.min_expense}
+                                Min: ৳{discount.minExpense}
                               </div>
                             )}
                           </td>
@@ -487,8 +487,8 @@ const DiscountManagement = () => {
                             <div className="flex items-center">
                               <Calendar className="w-4 h-4 text-gray-400 mr-2" />
                               <div>
-                                <div>{formatDate(discount.started_at)}</div>
-                                <div className="text-gray-500">to {formatDate(discount.ended_at)}</div>
+                                <div>{formatDate(discount.startedAt)}</div>
+                                <div className="text-gray-500">to {formatDate(discount.endedAt)}</div>
                               </div>
                             </div>
                           </td>
@@ -497,14 +497,14 @@ const DiscountManagement = () => {
                               <Activity className="w-4 h-4 text-gray-400 mr-2" />
                               <div>
                                 <div className="font-medium">
-                                  {discount.times_used || 0} / {discount.max_usage || '∞'}
+                                  {discount.timesUsed || 0} / {discount.maxUsage || '∞'}
                                 </div>
-                                {discount.max_usage && (
+                                {discount.maxUsage && (
                                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                                     <div 
                                       className="bg-primary-600 h-2 rounded-full" 
                                       style={{
-                                        width: `${Math.min(100, ((discount.times_used || 0) / discount.max_usage) * 100)}%`
+                                        width: `${Math.min(100, ((discount.timesUsed || 0) / discount.maxUsage) * 100)}%`
                                       }}
                                     ></div>
                                   </div>
@@ -802,7 +802,7 @@ const DiscountManagement = () => {
                           </div>
                           <div>
                             <span className="text-sm font-medium text-gray-500">Type:</span>
-                            <div className="text-gray-900 capitalize">{selectedDiscount.discount_type}</div>
+                            <div className="text-gray-900 capitalize">{selectedDiscount.discountType}</div>
                           </div>
                         </div>
                       </div>
@@ -813,15 +813,15 @@ const DiscountManagement = () => {
                           <div>
                             <span className="text-sm font-medium text-gray-500">Amount:</span>
                             <div className="text-lg font-bold text-green-600">
-                              {selectedDiscount.discount_type === 'percentage' 
+                              {selectedDiscount.discountType === 'percentage' 
                                 ? `${(selectedDiscount.percentage * 100).toFixed(0)}%` 
                                 : `৳${selectedDiscount.value}`}
                             </div>
                           </div>
-                          {selectedDiscount.min_expense && (
+                          {selectedDiscount.minExpense && (
                             <div>
                               <span className="text-sm font-medium text-gray-500">Minimum Order:</span>
-                              <div className="text-gray-900">৳{selectedDiscount.min_expense}</div>
+                              <div className="text-gray-900">৳{selectedDiscount.minExpense}</div>
                             </div>
                           )}
                         </div>
@@ -835,11 +835,11 @@ const DiscountManagement = () => {
                         <div className="space-y-3">
                           <div>
                             <span className="text-sm font-medium text-gray-500">Times Used:</span>
-                            <div className="text-gray-900">{selectedDiscount.times_used || 0}</div>
+                            <div className="text-gray-900">{selectedDiscount.timesUsed || 0}</div>
                           </div>
                           <div>
                             <span className="text-sm font-medium text-gray-500">Usage Limit:</span>
-                            <div className="text-gray-900">{selectedDiscount.max_usage || 'Unlimited'}</div>
+                            <div className="text-gray-900">{selectedDiscount.maxUsage || 'Unlimited'}</div>
                           </div>
                         </div>
                       </div>
@@ -850,13 +850,13 @@ const DiscountManagement = () => {
                           <div>
                             <span className="text-sm font-medium text-gray-500">Start Date:</span>
                             <div className="text-gray-900">
-                              {new Date(selectedDiscount.started_at).toLocaleString()}
+                              {new Date(selectedDiscount.startedAt).toLocaleString()}
                             </div>
                           </div>
                           <div>
                             <span className="text-sm font-medium text-gray-500">End Date:</span>
                             <div className="text-gray-900">
-                              {new Date(selectedDiscount.ended_at).toLocaleString()}
+                              {new Date(selectedDiscount.endedAt).toLocaleString()}
                             </div>
                           </div>
                         </div>
