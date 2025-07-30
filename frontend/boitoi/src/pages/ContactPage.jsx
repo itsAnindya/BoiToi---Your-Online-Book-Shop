@@ -90,8 +90,13 @@ const ContactPage = () => {
   const developerInfo = [
     {
       icon: <User className="w-5 h-5" />,
-      label: "Developer",
-      value: "Anindya Biswas"
+      label: "Frontend Developer",
+      value: "Anindya Biswas (ID: 2205107)"
+    },
+    {
+      icon: <User className="w-5 h-5" />,
+      label: "Backend Developer",
+      value: "Protaya Das (ID: 2205099)"
     },
     {
       icon: <GraduationCap className="w-5 h-5" />,
