@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 30/07/2025 09:50:09
+ Date: 30/07/2025 11:09:59
 */
 
 SET NAMES utf8mb4;
@@ -1036,7 +1036,7 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
@@ -1264,8 +1264,8 @@ CREATE TABLE `discount`  (
 -- ----------------------------
 -- Records of discount
 -- ----------------------------
-INSERT INTO `discount` VALUES (2, 'HELLOWORLD', 'Use the code HELLOWORLD to get 30% off on any order greater than 200 BDT. This offer is for a limited time. Available to the first 200 orders only!', 'percentage', 0.30, NULL, '2025-07-30 04:57:00', '2025-08-30 04:57:00', 200, 0, '2025-07-30 08:46:45', 1, 200.00);
-INSERT INTO `discount` VALUES (3, 'BOITOI', 'Get 200tk off for orders exceeding 1000 BDT! Offer applicable for first 300 orders! *Limited time offer.', 'fixed', NULL, 200.00, '2025-07-30 08:16:00', '2025-08-30 08:16:00', 300, 0, '2025-07-30 08:31:01', 1, 1000.00);
+INSERT INTO `discount` VALUES (2, 'HELLOWORLD', 'Use the code HELLOWORLD to get 30% off on any order greater than 200 BDT. This offer is for a limited time. Available to the first 200 orders only!', 'percentage', 0.30, NULL, '2025-07-30 04:57:00', '2025-08-30 04:57:00', 200, 1, '2025-07-30 10:04:34', 1, 200.00);
+INSERT INTO `discount` VALUES (3, 'BOITOI', 'Get 200tk off for orders exceeding 1000 BDT! Offer applicable for first 300 orders! *Limited time offer.', 'fixed', NULL, 200.00, '2025-07-30 08:16:00', '2025-08-30 08:16:00', 300, 1, '2025-07-30 11:02:40', 1, 1000.00);
 
 -- ----------------------------
 -- Table structure for favourite
@@ -1320,7 +1320,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 304 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 311 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notifications
@@ -1478,6 +1478,11 @@ INSERT INTO `notifications` VALUES (299, 3, 'Your order #1004 has been cancelled
 INSERT INTO `notifications` VALUES (300, 2, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 0, '2025-07-30 03:30:52', '/admin/orders/228357');
 INSERT INTO `notifications` VALUES (301, 3, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 1, '2025-07-30 03:30:52', '/admin/orders/228357');
 INSERT INTO `notifications` VALUES (303, 3, 'Your order #228357 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 1, '2025-07-30 03:32:32', '/orders/228357');
+INSERT INTO `notifications` VALUES (304, 2, 'New order #228358 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2070.00. Status: pending', 'ORDER', 0, '2025-07-30 10:04:34', '/admin/orders/228358');
+INSERT INTO `notifications` VALUES (305, 3, 'New order #228358 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2070.00. Status: pending', 'ORDER', 0, '2025-07-30 10:04:34', '/admin/orders/228358');
+INSERT INTO `notifications` VALUES (307, 2, 'New order #228359 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1240.00. Status: pending', 'ORDER', 0, '2025-07-30 11:02:40', '/admin/orders/228359');
+INSERT INTO `notifications` VALUES (308, 3, 'New order #228359 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1240.00. Status: pending', 'ORDER', 0, '2025-07-30 11:02:40', '/admin/orders/228359');
+INSERT INTO `notifications` VALUES (310, 3, 'Your order #228359 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-30 11:03:15', '/orders/228359');
 
 -- ----------------------------
 -- Table structure for order
@@ -1498,7 +1503,7 @@ CREATE TABLE `order`  (
   INDEX `order_confirmation`(`STATUS_UPDATED_BY` ASC) USING BTREE,
   CONSTRAINT `order_confirmation` FOREIGN KEY (`STATUS_UPDATED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 228358 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 228360 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order
@@ -1516,6 +1521,8 @@ INSERT INTO `order` VALUES (1009, 1, '2025-07-30 01:37:03', '123 Test Street, Te
 INSERT INTO `order` VALUES (228355, 1, '2025-07-30 01:43:48', '456 Real Customer Street, Dhaka, Bangladesh', 'shipped', 40.00, 250.50, 3, '2025-07-30 01:43:50');
 INSERT INTO `order` VALUES (228356, 3, '2025-07-30 02:37:33', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 1040.00, 3, '2025-07-30 02:38:52');
 INSERT INTO `order` VALUES (228357, 3, '2025-07-30 03:30:52', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 2440.00, 3, '2025-07-30 03:32:32');
+INSERT INTO `order` VALUES (228358, 3, '2025-07-30 10:04:34', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'pending', 40.00, 2070.00, NULL, NULL);
+INSERT INTO `order` VALUES (228359, 3, '2025-07-30 11:02:40', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 1240.00, 3, '2025-07-30 11:03:15');
 
 -- ----------------------------
 -- Table structure for order_book
@@ -1558,6 +1565,16 @@ INSERT INTO `order_book` VALUES (228357, 259, 1);
 INSERT INTO `order_book` VALUES (228357, 292, 2);
 INSERT INTO `order_book` VALUES (228357, 363, 1);
 INSERT INTO `order_book` VALUES (228357, 370, 1);
+INSERT INTO `order_book` VALUES (228358, 201, 1);
+INSERT INTO `order_book` VALUES (228358, 259, 1);
+INSERT INTO `order_book` VALUES (228358, 290, 1);
+INSERT INTO `order_book` VALUES (228358, 291, 1);
+INSERT INTO `order_book` VALUES (228358, 306, 1);
+INSERT INTO `order_book` VALUES (228358, 315, 1);
+INSERT INTO `order_book` VALUES (228358, 336, 1);
+INSERT INTO `order_book` VALUES (228359, 230, 1);
+INSERT INTO `order_book` VALUES (228359, 281, 1);
+INSERT INTO `order_book` VALUES (228359, 316, 1);
 
 -- ----------------------------
 -- Table structure for order_discount
@@ -1572,11 +1589,14 @@ CREATE TABLE `order_discount`  (
   INDEX `DISCOUNT_ID`(`DISCOUNT_ID` ASC) USING BTREE,
   CONSTRAINT `order_discount_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_discount_ibfk_2` FOREIGN KEY (`DISCOUNT_ID`) REFERENCES `discount` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_discount
 -- ----------------------------
+INSERT INTO `order_discount` VALUES (1, 228358, 2);
+INSERT INTO `order_discount` VALUES (2, 228358, 2);
+INSERT INTO `order_discount` VALUES (3, 228359, 3);
 
 -- ----------------------------
 -- Table structure for payment
@@ -1593,7 +1613,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payment
@@ -1603,6 +1623,8 @@ INSERT INTO `payment` VALUES (2, 1007, NULL, 'cash_on_delivery', 100, 'pending',
 INSERT INTO `payment` VALUES (3, 1008, '2025-07-30 01:28:13', 'bkash', 1840, 'refunded', 'testtrx');
 INSERT INTO `payment` VALUES (4, 228356, NULL, 'cash_on_delivery', 1040, 'paid', NULL);
 INSERT INTO `payment` VALUES (5, 228357, NULL, 'cash_on_delivery', 2440, 'paid', NULL);
+INSERT INTO `payment` VALUES (6, 228358, NULL, 'cash_on_delivery', 2070, 'pending', NULL);
+INSERT INTO `payment` VALUES (7, 228359, NULL, 'cash_on_delivery', 1240, 'paid', NULL);
 
 -- ----------------------------
 -- Table structure for permission
