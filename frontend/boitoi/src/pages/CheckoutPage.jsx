@@ -673,7 +673,7 @@ const CheckoutPage = () => {
                               <ol className="text-sm text-pink-700 space-y-1 text-left">
                                 <li>1. Open your bKash app</li>
                                 <li>2. Select "Send Money"</li>
-                                <li>3. Send <strong>৳{orderSummary.total.toFixed(2)}</strong> to: <strong>01821-646373</strong></li>
+                                <li>3. Send <strong>৳{orderSummary.total.toFixed(2)}</strong> to: <strong>01234-567890</strong></li>
                                 <li>4. Enter the transaction ID below</li>
                               </ol>
                             </div>
