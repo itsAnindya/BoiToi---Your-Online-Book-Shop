@@ -34,11 +34,15 @@ const DiscountManagement = () => {
   const [selectedDiscount, setSelectedDiscount] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  // const [showEditModal, setShowEditModal] = useState(false);
+  const [editingDiscount, setEditingDiscount] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [updating, setUpdating] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [currentAdminId, setCurrentAdminId] = useState(null);
 
   // Form state for creating/editing discounts
   const [formData, setFormData] = useState({
@@ -73,6 +77,11 @@ const DiscountManagement = () => {
 
   useEffect(() => {
     fetchDiscounts();
+    // Get current admin ID from session storage
+    const adminId = sessionStorage.getItem('id');
+    const parsedAdminId = adminId ? parseInt(adminId) : null;
+    console.log('Setting currentAdminId to:', parsedAdminId, 'from sessionStorage id:', adminId);
+    setCurrentAdminId(parsedAdminId);
   }, [filterStatus, sortBy]);
 
   const fetchDiscounts = async () => {
@@ -143,6 +152,45 @@ const DiscountManagement = () => {
     } catch (error) {
       console.error('Error creating discount:', error);
       toast.error(`Failed to create discount: ${error.message}`);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handleEditDiscount = async () => {
+    try {
+      setUpdating(true);
+      
+      // Prepare form data with percentage conversion
+      const submissionData = { ...formData };
+      
+      // Convert percentage from 0-100 range to 0-1 range for database
+      if (formData.discountType === 'percentage' && formData.percentage) {
+        submissionData.percentage = parseFloat(formData.percentage) / 100;
+      }
+      
+      const response = await fetch(`${API_BASE_URL}/api/admin/discounts/${selectedDiscount.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        toast.success('Discount updated successfully!');
+        setShowEditModal(false);
+        setSelectedDiscount(null);
+        resetForm();
+        fetchDiscounts();
+      } else {
+        throw new Error(data.message || 'Failed to update discount');
+      }
+    } catch (error) {
+      console.error('Error updating discount:', error);
+      toast.error(`Failed to update discount: ${error.message}`);
     } finally {
       setUpdating(false);
     }
@@ -528,22 +576,50 @@ const DiscountManagement = () => {
                                 size="sm"
                                 className="text-primary-600 hover:text-primary-700"
                               >
-                                <Eye className="w-4 h-4" />
+                                <Eye className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                <span>View</span>
                               </Button>
+                              {/* Edit button - only show if current admin created this discount */}
+                              {currentAdminId && discount.addedByUserId && Number(currentAdminId) === Number(discount.addedByUserId) && (
+                                <Button
+                                  onClick={() => {
+                                    setSelectedDiscount(discount);
+                                    setFormData({
+                                      code: discount.code,
+                                      description: discount.description,
+                                      discountType: discount.discountType,
+                                      percentage: discount.discountType === 'percentage' ? discount.percentage * 100 : '',
+                                      value: discount.discountType === 'fixed' ? discount.value : '',
+                                      startedAt: discount.startedAt ? new Date(discount.startedAt).toISOString().slice(0, 16) : '',
+                                      endedAt: discount.endedAt ? new Date(discount.endedAt).toISOString().slice(0, 16) : '',
+                                      maxUsage: discount.maxUsage || '',
+                                      minExpense: discount.minExpense || ''
+                                    });
+                                    setShowEditModal(true);
+                                  }}
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-blue-600 hover:text-blue-700 transition-all duration-200"
+                                >
+                                  <Edit3 className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                  <span>Edit</span>
+                                </Button>
+                              )}
                               <Button
                                 onClick={() => handleToggleStatus(discount.id, status)}
                                 variant={status === 'active' ? 'danger' : 'success'}
                                 size="sm"
                                 disabled={updating || status === 'expired'}
+                                className="transition-all duration-200"
                               >
                                 {status === 'active' ? (
                                   <>
-                                    <XCircle className="w-4 h-4" />
+                                    <XCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                     <span>Deactivate</span>
                                   </>
                                 ) : (
                                   <>
-                                    <CheckCircle className="w-4 h-4" />
+                                    <CheckCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                     <span>Activate</span>
                                   </>
                                 )}
@@ -748,6 +824,210 @@ const DiscountManagement = () => {
                         <>
                           <Save className="w-4 h-4" />
                           <span>Create Discount</span>
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Edit Discount Modal */}
+          {showEditModal && selectedDiscount && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                      <Edit3 className="mr-3 text-blue-600" />
+                      Edit Discount
+                    </h2>
+                    <Button
+                      onClick={() => {
+                        setShowEditModal(false);
+                        setSelectedDiscount(null);
+                        resetForm();
+                      }}
+                      variant="ghost"
+                      size="sm"
+                    >
+                      <X className="w-5 h-5" />
+                    </Button>
+                  </div>
+
+                  {/* Form Fields - Same as Create Modal */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Tag className="w-4 h-4 inline mr-1" />
+                        Discount Code
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.code}
+                        onChange={(e) => setFormData({...formData, code: e.target.value.toUpperCase()})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="SAVE20"
+                        maxLength="50"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <FileText className="w-4 h-4 inline mr-1" />
+                        Description
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.description}
+                        onChange={(e) => setFormData({...formData, description: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="20% off on all books"
+                        maxLength="200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Percent className="w-4 h-4 inline mr-1" />
+                        Discount Type
+                      </label>
+                      <select
+                        value={formData.discountType}
+                        onChange={(e) => setFormData({...formData, discountType: e.target.value, percentage: '', value: ''})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      >
+                        <option value="percentage">Percentage</option>
+                        <option value="fixed">Fixed Amount</option>
+                      </select>
+                    </div>
+
+                    {formData.discountType === 'percentage' && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Percent className="w-4 h-4 inline mr-1" />
+                          Percentage (%)
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.percentage}
+                          onChange={(e) => setFormData({...formData, percentage: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          placeholder="20"
+                          min="1"
+                          max="100"
+                          step="0.01"
+                        />
+                      </div>
+                    )}
+
+                    {formData.discountType === 'fixed' && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <DollarSign className="w-4 h-4 inline mr-1" />
+                          Fixed Amount (৳)
+                        </label>
+                        <input
+                          type="number"
+                          value={formData.value}
+                          onChange={(e) => setFormData({...formData, value: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          placeholder="100"
+                          min="1"
+                          step="0.01"
+                        />
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Calendar className="w-4 h-4 inline mr-1" />
+                        Start Date & Time
+                      </label>
+                      <input
+                        type="datetime-local"
+                        value={formData.startedAt}
+                        onChange={(e) => setFormData({...formData, startedAt: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Calendar className="w-4 h-4 inline mr-1" />
+                        End Date & Time
+                      </label>
+                      <input
+                        type="datetime-local"
+                        value={formData.endedAt}
+                        onChange={(e) => setFormData({...formData, endedAt: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <Hash className="w-4 h-4 inline mr-1" />
+                        Max Usage (Optional)
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.maxUsage}
+                        onChange={(e) => setFormData({...formData, maxUsage: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="100"
+                        min="1"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <DollarSign className="w-4 h-4 inline mr-1" />
+                        Minimum Expense (৳)
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.minExpense}
+                        onChange={(e) => setFormData({...formData, minExpense: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="500"
+                        min="0"
+                        step="0.01"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-3 mt-8">
+                    <Button
+                      onClick={() => {
+                        setShowEditModal(false);
+                        setSelectedDiscount(null);
+                        resetForm();
+                      }}
+                      variant="outline"
+                      disabled={updating}
+                    >
+                      <X className="w-4 h-4" />
+                      <span>Cancel</span>
+                    </Button>
+                    <Button
+                      onClick={handleEditDiscount}
+                      variant="primary"
+                      disabled={updating || !formData.code || !formData.startedAt || !formData.endedAt}
+                    >
+                      {updating ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                          <span>Updating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4" />
+                          <span>Update Discount</span>
                         </>
                       )}
                     </Button>

@@ -16,6 +16,9 @@ router.post('/', discountController.createDiscount);
 // GET /api/admin/discounts/statistics - Get discount statistics for dashboard
 router.get('/statistics', discountController.getDiscountStatistics);
 
+// PUT /api/admin/discounts/:discountId - Update discount details
+router.put('/:discountId', discountController.updateDiscount);
+
 // PUT /api/admin/discounts/:discountId/status - Update discount status (activate/deactivate)
 router.put('/:discountId/status', discountController.updateDiscountStatus);
 

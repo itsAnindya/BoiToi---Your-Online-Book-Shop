@@ -63,6 +63,7 @@ const getAllDiscounts = async (req, res) => {
         d.MAX_USAGE,
         d.TIMES_USED,
         d.ADDED_AT,
+        d.ADDED_BY,
         d.MIN_EXPENSE,
         u.USERNAME as ADDED_BY_USERNAME,
         CASE 
@@ -125,8 +126,9 @@ const getAllDiscounts = async (req, res) => {
               maxUsage: discount.MAX_USAGE,
               timesUsed: discount.TIMES_USED || 0,
               addedAt: discount.ADDED_AT,
-              minExpense: parseFloat(discount.MIN_EXPENSE || 0),
               addedBy: discount.ADDED_BY_USERNAME,
+              addedByUserId: discount.ADDED_BY,
+              minExpense: parseFloat(discount.MIN_EXPENSE || 0),
               status: discount.STATUS
             })),
             pagination: {
@@ -485,9 +487,152 @@ const getDiscountStatistics = async (req, res) => {
   }
 };
 
+/**
+ * Update discount details (for the admin who created it)
+ */
+const updateDiscount = async (req, res) => {
+  try {
+    const { id: discountId } = req.params;
+    const { 
+      code, 
+      description, 
+      discountType, 
+      percentage, 
+      value, 
+      startedAt, 
+      endedAt, 
+      maxUsage, 
+      minExpense 
+    } = req.body;
+
+    console.log(`Updating discount ${discountId}`);
+
+    // Validate required fields
+    if (!code || !discountType || !startedAt || !endedAt) {
+      return res.status(400).json({
+        success: false,
+        message: 'Code, discount type, start date, and end date are required'
+      });
+    }
+
+    // Validate discount type specific fields
+    if (discountType === 'percentage' && (percentage === undefined || percentage === null)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Percentage is required for percentage discounts'
+      });
+    }
+
+    if (discountType === 'fixed' && (value === undefined || value === null)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Value is required for fixed amount discounts'
+      });
+    }
+
+    // First, check if discount exists and get current creator info
+    const checkSql = 'SELECT ADDED_BY FROM discount WHERE ID = ?';
+    
+    db.query(checkSql, [discountId], (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('Database error during discount check:', checkErr);
+        return res.status(500).json({
+          success: false,
+          message: 'Server error during discount verification'
+        });
+      }
+
+      if (checkResults.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'Discount not found'
+        });
+      }
+
+      const discountCreatorId = checkResults[0].ADDED_BY;
+
+      // Check if current admin has permission to edit
+      // Note: In a real app, you'd get the current admin ID from the auth token
+      // For now, we'll assume it's passed in the request or session
+      const currentAdminId = req.user?.userId || req.headers['admin-id'] || req.body.currentAdminId;
+      
+      if (!currentAdminId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Admin authentication required'
+        });
+      }
+
+      if (discountCreatorId !== parseInt(currentAdminId)) {
+        return res.status(403).json({
+          success: false,
+          message: 'Only the admin who created this discount can edit it'
+        });
+      }
+
+      // Proceed with update
+      const updateSql = `
+        UPDATE discount 
+        SET CODE = ?, DESCRIPTION = ?, DISCOUNT_TYPE = ?, PERCENTAGE = ?, 
+            VALUE = ?, STARTED_AT = ?, ENDED_AT = ?, MAX_USAGE = ?, MIN_EXPENSE = ?
+        WHERE ID = ?
+      `;
+
+      const updateParams = [
+        code,
+        description || null,
+        discountType,
+        discountType === 'percentage' ? (percentage / 100) : null, // Convert percentage to decimal
+        discountType === 'fixed' ? value : null,
+        new Date(startedAt),
+        new Date(endedAt),
+        maxUsage || null,
+        minExpense || null,
+        discountId
+      ];
+
+      db.query(updateSql, updateParams, (updateErr, updateResult) => {
+        if (updateErr) {
+          console.error('Database error during discount update:', updateErr);
+          return res.status(500).json({
+            success: false,
+            message: 'Server error during discount update'
+          });
+        }
+
+        if (updateResult.affectedRows === 0) {
+          return res.status(404).json({
+            success: false,
+            message: 'Discount not found or no changes made'
+          });
+        }
+
+        console.log(`Discount ${discountId} updated successfully`);
+
+        return res.status(200).json({
+          success: true,
+          message: 'Discount updated successfully',
+          data: {
+            discountId: parseInt(discountId),
+            updatedAt: new Date().toISOString()
+          }
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Unexpected error in updateDiscount:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
 module.exports = {
   getAllDiscounts,
   createDiscount,
+  updateDiscount,
   updateDiscountStatus,
   deleteDiscount,
   getDiscountStatistics
