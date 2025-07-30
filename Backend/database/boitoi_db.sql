@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 30/07/2025 04:18:58
+ Date: 30/07/2025 09:50:09
 */
 
 SET NAMES utf8mb4;
@@ -1248,8 +1248,8 @@ CREATE TABLE `discount`  (
   `DISCOUNT_TYPE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `PERCENTAGE` decimal(3, 2) NULL DEFAULT NULL,
   `VALUE` decimal(12, 2) NULL DEFAULT NULL,
-  `START_DATE` date NULL DEFAULT NULL,
-  `END_DATE` date NULL DEFAULT NULL,
+  `STARTED_AT` timestamp NULL DEFAULT NULL,
+  `ENDED_AT` timestamp NULL DEFAULT NULL,
   `MAX_USAGE` int NULL DEFAULT NULL,
   `TIMES_USED` int NULL DEFAULT NULL,
   `ADDED_AT` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -1259,11 +1259,13 @@ CREATE TABLE `discount`  (
   INDEX `DISCOUNT_ADMIN`(`ADDED_BY` ASC) USING BTREE,
   UNIQUE INDEX `unique_discount_code`(`CODE` ASC) USING BTREE,
   CONSTRAINT `DISCOUNT_ADMIN` FOREIGN KEY (`ADDED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of discount
 -- ----------------------------
+INSERT INTO `discount` VALUES (2, 'HELLOWORLD', 'Use the code HELLOWORLD to get 30% off on any order greater than 200 BDT. This offer is for a limited time. Available to the first 200 orders only!', 'percentage', 0.30, NULL, '2025-07-30 04:57:00', '2025-08-30 04:57:00', 200, 0, '2025-07-30 08:46:45', 1, 200.00);
+INSERT INTO `discount` VALUES (3, 'BOITOI', 'Get 200tk off for orders exceeding 1000 BDT! Offer applicable for first 300 orders! *Limited time offer.', 'fixed', NULL, 200.00, '2025-07-30 08:16:00', '2025-08-30 08:16:00', 300, 0, '2025-07-30 08:31:01', 1, 1000.00);
 
 -- ----------------------------
 -- Table structure for favourite
@@ -1466,16 +1468,16 @@ INSERT INTO `notifications` VALUES (285, 3, 'New order #1009 placed by admin. To
 INSERT INTO `notifications` VALUES (287, 1, 'Great news! Your order #1009 has been confirmed by Prottoy Das and is now being prepared for shipping.', 'ORDER', 0, '2025-07-30 01:37:04', '/orders/1009');
 INSERT INTO `notifications` VALUES (288, 1, 'Exciting news! Your order #1009 has been shipped and is on its way to you. You should receive it soon!', 'ORDER', 1, '2025-07-30 01:37:05', '/orders/1009');
 INSERT INTO `notifications` VALUES (290, 2, 'New order #228355 placed by admin. Total amount: $250.50. Status: pending', 'ORDER', 0, '2025-07-30 01:43:48', '/admin/orders/228355');
-INSERT INTO `notifications` VALUES (291, 3, 'New order #228355 placed by admin. Total amount: $250.50. Status: pending', 'ORDER', 0, '2025-07-30 01:43:48', '/admin/orders/228355');
+INSERT INTO `notifications` VALUES (291, 3, 'New order #228355 placed by admin. Total amount: $250.50. Status: pending', 'ORDER', 1, '2025-07-30 01:43:48', '/admin/orders/228355');
 INSERT INTO `notifications` VALUES (293, 1, 'Great news! Your order #228355 has been confirmed by Prottoy Das and is now being prepared for shipping.', 'ORDER', 0, '2025-07-30 01:43:49', '/orders/228355');
 INSERT INTO `notifications` VALUES (294, 1, 'Exciting news! Your order #228355 has been shipped and is on its way to you. You should receive it soon!', 'ORDER', 0, '2025-07-30 01:43:50', '/orders/228355');
 INSERT INTO `notifications` VALUES (295, 2, 'New order #228356 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1040.00. Status: pending', 'ORDER', 0, '2025-07-30 02:37:33', '/admin/orders/228356');
-INSERT INTO `notifications` VALUES (296, 3, 'New order #228356 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1040.00. Status: pending', 'ORDER', 0, '2025-07-30 02:37:33', '/admin/orders/228356');
-INSERT INTO `notifications` VALUES (298, 3, 'Your order #228356 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-30 02:38:52', '/orders/228356');
-INSERT INTO `notifications` VALUES (299, 3, 'Your order #1004 has been cancelled by Anindya Biswas. If you have any questions, please contact our support team.', 'ORDER', 0, '2025-07-30 02:42:21', '/orders/1004');
+INSERT INTO `notifications` VALUES (296, 3, 'New order #228356 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1040.00. Status: pending', 'ORDER', 1, '2025-07-30 02:37:33', '/admin/orders/228356');
+INSERT INTO `notifications` VALUES (298, 3, 'Your order #228356 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 1, '2025-07-30 02:38:52', '/orders/228356');
+INSERT INTO `notifications` VALUES (299, 3, 'Your order #1004 has been cancelled by Anindya Biswas. If you have any questions, please contact our support team.', 'ORDER', 1, '2025-07-30 02:42:21', '/orders/1004');
 INSERT INTO `notifications` VALUES (300, 2, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 0, '2025-07-30 03:30:52', '/admin/orders/228357');
-INSERT INTO `notifications` VALUES (301, 3, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 0, '2025-07-30 03:30:52', '/admin/orders/228357');
-INSERT INTO `notifications` VALUES (303, 3, 'Your order #228357 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-30 03:32:32', '/orders/228357');
+INSERT INTO `notifications` VALUES (301, 3, 'New order #228357 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $2440.00. Status: pending', 'ORDER', 1, '2025-07-30 03:30:52', '/admin/orders/228357');
+INSERT INTO `notifications` VALUES (303, 3, 'Your order #228357 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 1, '2025-07-30 03:32:32', '/orders/228357');
 
 -- ----------------------------
 -- Table structure for order
@@ -1982,7 +1984,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, '01234567890', NULL, NULL, 0, 'MALE', NULL);
 INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-30 02:37:17', 1, 'MALE', '2003-04-20');
+INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-30 08:34:58', 1, 'MALE', '2003-04-20');
 INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-30 01:39:24', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');

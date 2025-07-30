@@ -428,6 +428,8 @@ const createOrder = async (req, res) => {
       transaction_id, 
       total_amount, 
       shipping_fee,
+      discount_amount,
+      discount_id,
       items 
     } = req.body;
     
@@ -560,74 +562,121 @@ const createOrder = async (req, res) => {
 
               console.log(`${itemsResult.affectedRows} order items inserted`);
 
-              // Update user phone number if provided
-              const updateUserPhoneSql = `
-                UPDATE user SET PHONE = ? WHERE ID = ?
-              `;
+              // Insert order discount if discount was applied
+              const handleDiscountInsertion = (callback) => {
+                if (discount_id && discount_amount && discount_amount > 0) {
+                  const insertDiscountSql = `
+                    INSERT INTO order_discount (ORDER_ID, DISCOUNT_ID) 
+                    VALUES (?, ?)
+                  `;
 
-              db.query(updateUserPhoneSql, [phone_number, user_id], (phoneErr) => {
-                if (phoneErr) {
-                  console.error('Warning: Could not update user phone number:', phoneErr);
-                  // Don't fail the order for this
-                }
-
-                // Clear user's cart
-                const clearCartSql = `DELETE FROM cart WHERE USER_ID = ?`;
-                
-                db.query(clearCartSql, [user_id], (cartErr) => {
-                  if (cartErr) {
-                    console.error('Database error during cart clearing:', cartErr);
-                    return db.rollback(() => {
-                      res.status(500).json({ 
-                        success: false,
-                        message: 'Server error during cart cleanup' 
-                      });
-                    });
-                  }
-
-                  console.log(`Cart cleared for user ${user_id}`);
-
-                  // Commit transaction
-                  db.commit((commitErr) => {
-                    if (commitErr) {
-                      console.error('Transaction commit error:', commitErr);
+                  db.query(insertDiscountSql, [orderId, discount_id], (discountErr, discountResult) => {
+                    if (discountErr) {
+                      console.error('Database error during discount insertion:', discountErr);
                       return db.rollback(() => {
                         res.status(500).json({ 
                           success: false,
-                          message: 'Server error during order finalization' 
+                          message: 'Server error during discount processing' 
                         });
                       });
                     }
 
-                    // Generate order ID string
-                    const orderIdString = `ORD-${String(orderId).padStart(6, '0')}`;
-                    
-                    console.log(`Order placed successfully for user ${user_id}, Order ID: ${orderIdString}`);
-                    
-                    return res.status(200).json({
-                      success: true,
-                      message: 'Order placed successfully',
-                      orderId: orderIdString,
-                      orderDetails: {
-                        orderId: orderIdString,
-                        databaseOrderId: orderId,
-                        items: items.map(item => ({
-                          book_id: item.book_id,
-                          quantity: item.quantity,
-                          price: parseFloat(item.price),
-                          subtotal: parseFloat((item.price * item.quantity).toFixed(2))
-                        })),
-                        itemCount: items.length,
-                        totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
-                        totalAmount: parseFloat(total_amount),
-                        shippingFee: parseFloat(shipping_fee || 40.00),
-                        orderDate: new Date().toISOString(),
-                        status: 'pending',
-                        shippingAddress: shipping_address,
-                        paymentMethod: payment_method,
-                        paymentStatus: paymentStatus,
-                        transactionId: transaction_id
+                    console.log(`Discount applied to order: ${discount_id}`);
+
+                    // Update discount usage count
+                    const updateDiscountUsageSql = `
+                      UPDATE discount 
+                      SET TIMES_USED = COALESCE(TIMES_USED, 0) + 1 
+                      WHERE ID = ?
+                    `;
+
+                    db.query(updateDiscountUsageSql, [discount_id], (updateErr) => {
+                      if (updateErr) {
+                        console.error('Warning: Could not update discount usage count:', updateErr);
+                        // Don't fail the order for this
+                      } else {
+                        console.log(`Updated discount usage count for discount ID: ${discount_id}`);
                       }
+                      callback();
+                    });
+                  });
+                } else {
+                  callback();
+                }
+              };
+
+              // Handle discount insertion then continue with user phone update
+              handleDiscountInsertion(() => {
+                // Update user phone number if provided
+                const updateUserPhoneSql = `
+                  UPDATE user SET PHONE = ? WHERE ID = ?
+                `;
+
+                db.query(updateUserPhoneSql, [phone_number, user_id], (phoneErr) => {
+                  if (phoneErr) {
+                    console.error('Warning: Could not update user phone number:', phoneErr);
+                    // Don't fail the order for this
+                  }
+
+                  // Clear user's cart
+                  const clearCartSql = `DELETE FROM cart WHERE USER_ID = ?`;
+                  
+                  db.query(clearCartSql, [user_id], (cartErr) => {
+                    if (cartErr) {
+                      console.error('Database error during cart clearing:', cartErr);
+                      return db.rollback(() => {
+                        res.status(500).json({ 
+                          success: false,
+                          message: 'Server error during cart cleanup' 
+                        });
+                      });
+                    }
+
+                    console.log(`Cart cleared for user ${user_id}`);
+
+                    // Commit transaction
+                    db.commit((commitErr) => {
+                      if (commitErr) {
+                        console.error('Transaction commit error:', commitErr);
+                        return db.rollback(() => {
+                          res.status(500).json({ 
+                            success: false,
+                            message: 'Server error during order finalization' 
+                          });
+                        });
+                      }
+
+                      // Generate order ID string
+                      const orderIdString = `ORD-${String(orderId).padStart(6, '0')}`;
+                      
+                      console.log(`Order placed successfully for user ${user_id}, Order ID: ${orderIdString}`);
+                      
+                      return res.status(200).json({
+                        success: true,
+                        message: 'Order placed successfully',
+                        orderId: orderIdString,
+                        orderDetails: {
+                          orderId: orderIdString,
+                          databaseOrderId: orderId,
+                          items: items.map(item => ({
+                            book_id: item.book_id,
+                            quantity: item.quantity,
+                            price: parseFloat(item.price),
+                            subtotal: parseFloat((item.price * item.quantity).toFixed(2))
+                          })),
+                          itemCount: items.length,
+                          totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+                          totalAmount: parseFloat(total_amount),
+                          shippingFee: parseFloat(shipping_fee || 40.00),
+                          discountAmount: parseFloat(discount_amount || 0),
+                          orderDate: new Date().toISOString(),
+                          status: 'pending',
+                          shippingAddress: shipping_address,
+                          paymentMethod: payment_method,
+                          paymentStatus: paymentStatus,
+                          transactionId: transaction_id
+                        }
+                      });
                     });
                   });
                 });

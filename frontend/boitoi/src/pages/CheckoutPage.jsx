@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaShoppingCart, FaMapMarkerAlt, FaCreditCard, FaPhone, FaEdit, FaPlus, FaTimes, FaCheck, FaMoneyBillWave, FaMobileAlt, FaUser, FaEnvelope, FaShippingFast, FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa';
+import { FaShoppingCart, FaMapMarkerAlt, FaCreditCard, FaPhone, FaEdit, FaPlus, FaTimes, FaCheck, FaMoneyBillWave, FaMobileAlt, FaUser, FaEnvelope, FaShippingFast, FaExclamationTriangle, FaArrowLeft, FaTag, FaPercentage } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Button from '../components/ui/Button';
 import AddressCard from '../components/Profile/AddressCard';
 import AddressManagement from '../components/Profile/AddressManagement';
+import { API_BASE_URL } from '../config';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -41,10 +42,16 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('cash_on_delivery');
   const [transactionId, setTransactionId] = useState('');
   
+  // Discount information
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
+  const [discountLoading, setDiscountLoading] = useState(false);
+  
   // Order summary
   const [orderSummary, setOrderSummary] = useState({
     subtotal: 0,
     shippingFee: 40.00,
+    discount: 0,
     total: 0
   });
 
@@ -129,6 +136,7 @@ const CheckoutPage = () => {
         setOrderSummary({
           subtotal,
           shippingFee: 40.00,
+          discount: 0,
           total: subtotal + 40.00
         });
 
@@ -143,6 +151,84 @@ const CheckoutPage = () => {
 
     fetchUserData();
   }, [navigate, location.state]);
+
+  // Function to recalculate order total
+  const recalculateOrderTotal = (discount = appliedDiscount) => {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    let discountAmount = 0;
+    
+    if (discount) {
+      if (discount.discountType === 'percentage') {
+        discountAmount = subtotal * discount.percentage;
+      } else if (discount.discountType === 'fixed') {
+        discountAmount = Math.min(discount.value, subtotal); // Don't exceed subtotal
+      }
+    }
+    
+    const total = subtotal + orderSummary.shippingFee - discountAmount;
+    
+    setOrderSummary(prev => ({
+      ...prev,
+      subtotal,
+      discount: discountAmount,
+      total: Math.max(total, orderSummary.shippingFee) // Ensure total is not negative
+    }));
+  };
+
+  // Apply discount code
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) {
+      toast.error('Please enter a discount code');
+      return;
+    }
+
+    setDiscountLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/discounts/validate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: discountCode.trim(),
+          orderAmount: orderSummary.subtotal
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const discount = data.data.discount;
+        setAppliedDiscount(discount);
+        toast.success(`Discount "${discount.code}" applied successfully!`);
+        
+        // Recalculate order total with discount
+        recalculateOrderTotal(discount);
+      } else {
+        toast.error(data.message || 'Invalid discount code');
+      }
+    } catch (error) {
+      console.error('Error applying discount:', error);
+      toast.error('Failed to apply discount code');
+    } finally {
+      setDiscountLoading(false);
+    }
+  };
+
+  // Remove applied discount
+  const handleRemoveDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+    recalculateOrderTotal(null);
+    toast.success('Discount removed');
+  };
+
+  // Update order total when cart items change
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      recalculateOrderTotal();
+    }
+  }, [cartItems, appliedDiscount]);
 
   // Format address for display and storage
   const formatAddress = (address) => {
@@ -330,6 +416,8 @@ const CheckoutPage = () => {
         transaction_id: paymentMethod === 'bkash' ? transactionId : null,
         total_amount: orderSummary.total,
         shipping_fee: orderSummary.shippingFee,
+        discount_amount: orderSummary.discount,
+        discount_id: appliedDiscount?.id || null,
         items: cartItems.map(item => ({
           book_id: item.book_id || item.id,
           quantity: item.quantity,
@@ -653,10 +741,87 @@ const CheckoutPage = () => {
                     </span>
                     <span>৳{orderSummary.shippingFee.toFixed(2)}</span>
                   </div>
+                  
+                  {/* Discount Section */}
+                  {appliedDiscount && (
+                    <div className="flex justify-between text-green-600">
+                      <span className="flex items-center">
+                        <FaTag className="mr-1" />
+                        Discount ({appliedDiscount.code})
+                      </span>
+                      <span>-৳{orderSummary.discount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  
                   <div className="border-t border-slate-200 pt-2 flex justify-between text-lg font-semibold text-slate-800">
                     <span>Total</span>
                     <span>৳{orderSummary.total.toFixed(2)}</span>
                   </div>
+                </div>
+
+                {/* Discount Code Section */}
+                <div className="mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center">
+                    <FaTag className="mr-2 text-emerald-600" />
+                    Discount Code
+                  </h3>
+                  
+                  {!appliedDiscount ? (
+                    <div className="space-y-3">
+                      <div className="flex space-x-2">
+                        <input
+                          type="text"
+                          value={discountCode}
+                          onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                          placeholder="Enter discount code"
+                          className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                        />
+                        <Button
+                          onClick={handleApplyDiscount}
+                          disabled={discountLoading || !discountCode.trim()}
+                          variant="primary"
+                          size="sm"
+                        >
+                          {discountLoading ? (
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                          ) : (
+                            <>
+                              <FaCheck className="mr-1" />
+                              Apply
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                      <p className="text-xs text-slate-500">
+                        Enter a valid discount code to get savings on your order
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center">
+                        <FaPercentage className="text-green-600 mr-2" />
+                        <div>
+                          <p className="text-sm font-medium text-green-800">
+                            {appliedDiscount.code} Applied
+                          </p>
+                          <p className="text-xs text-green-600">
+                            {appliedDiscount.discountType === 'percentage' 
+                              ? `${(appliedDiscount.percentage * 100).toFixed(0)}% off`
+                              : `৳${appliedDiscount.value} off`
+                            }
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={handleRemoveDiscount}
+                        variant="ghost"
+                        size="sm"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <FaTimes />
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Place Order Button */}

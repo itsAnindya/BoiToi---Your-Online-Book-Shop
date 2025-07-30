@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 30/07/2025 04:31:07
+ Date: 30/07/2025 09:50:34
 */
 
 SET NAMES utf8mb4;
@@ -189,7 +189,7 @@ CREATE TABLE `discount`  (
   INDEX `DISCOUNT_ADMIN`(`ADDED_BY` ASC) USING BTREE,
   UNIQUE INDEX `unique_discount_code`(`CODE` ASC) USING BTREE,
   CONSTRAINT `DISCOUNT_ADMIN` FOREIGN KEY (`ADDED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for favourite
