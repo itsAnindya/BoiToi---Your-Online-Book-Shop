@@ -25,6 +25,7 @@ import PublishersPage from './pages/PublishersPage'
 import PublisherDetailPage from './pages/PublisherDetailPage'
 import BestsellersPage from './pages/BestsellersPage'
 import Wishlist from './pages/Wishlist'
+import AboutPage from './pages/AboutPage'
 import { Routes, Route } from 'react-router-dom'; // Ensure you have react-router-dom installed
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -58,6 +59,7 @@ function App() {
                 <Route path="/profile" element={<UserProfilePage />} />
                 <Route path="/orders" element={<MyOrders />} />
                 <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/about" element={<AboutPage />} />
                 <Route path="/admin" element={<AdminControlPanel />} />
                 <Route path="/admin/book-requests" element={<BookRequestsManagement />} />
                 <Route path="/admin/orders" element={<AdminOrderManagement />} />
