@@ -1,0 +1,64 @@
+Description of our database project, BoiToi - Your Online Bookshop:
+-------------------------------------------------------------------
+
+1. Books:
+BoiToi has a database of 200+ books that are displayed for purchase on the website.
+Each book has Title, Author, Publisher, ISBN, Page Count, Stock Quantity, Price etc.
+Books are organized by categories and genres, making it easy for users to browse and find what they're looking for.
+
+2. Ratings and Reviews:
+Users can rate and review books.
+Each review includes a star rating (1-5) and written comments to help other users make informed decisions.
+
+3. Wishlist:
+Users can add books to their wish list.
+This helps users save books they want to buy later and keeps track of their interests.
+
+4. Order and Payment:
+Users can place order. They can also add payment details. An admin has to confirm the order.
+The system supports multiple address management for delivery and tracks order status from pending to delivered.
+
+5. User Authentication and Profiles:
+We implemented separate login systems for regular users and publishers.
+Users can create accounts, manage their profiles, update personal information, and change passwords.
+The system keeps track of user sessions and provides secure authentication.
+
+6. Shopping Cart:
+Users can add multiple books to their cart and adjust quantities before checkout.
+Cart items are saved per user session and persist between logins.
+
+7. Admin Panel:
+Admins have special access to manage the entire system.
+They can view and manage all users, orders, and book requests.
+Admin dashboard shows statistics like total users, books, orders, and revenue.
+
+8. Publisher System:
+Publishers can register separately and submit book requests for approval.
+They have their own dashboard to track submitted books and see approval status.
+Admins review publisher submissions and can approve or reject with feedback.
+
+9. Search and Filtering:
+Users can search books by title, author, or keywords.
+Advanced filtering options include price range and category selection.
+The search is fast and shows relevant results instantly.
+
+10. Bestsellers and Recommendations:
+The system tracks popular books and displays bestseller sections.
+Books are ranked by sales and user ratings to highlight trending titles.
+
+11. Notifications:
+Users receive notifications about order updates, book approvals, and system announcements.
+The notification system keeps users informed about important events.
+
+12. Address Management:
+Users can save multiple delivery addresses (Home, Work, etc.).
+During checkout, they can select from saved addresses or add new ones.
+
+Technical Implementation:
+- Frontend: ReactJS with modern styling using TailwindCSS
+- Backend: NodeJS with Express framework
+- Database: MySQL with proper normalization and relationships
+- Authentication: JWT tokens for secure session management
+- API: RESTful endpoints for all operations
+
+BoiToi demonstrates a complete e-commerce solution with proper database design, user management, and admin controls suitable for a real-world online bookstore.

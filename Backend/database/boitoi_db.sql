@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 30/07/2025 11:09:59
+ Date: 01/08/2025 00:38:53
 */
 
 SET NAMES utf8mb4;
@@ -1036,11 +1036,12 @@ CREATE TABLE `cart`  (
   INDEX `BOOK_ID`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
 -- ----------------------------
+INSERT INTO `cart` VALUES (0000000051, 3, 202, 1, '2025-07-31 23:58:22');
 
 -- ----------------------------
 -- Table structure for category
@@ -1256,8 +1257,8 @@ CREATE TABLE `discount`  (
   `ADDED_BY` int NULL DEFAULT NULL,
   `MIN_EXPENSE` decimal(12, 2) NULL DEFAULT NULL COMMENT 'The minimum cost of the order for which the discount is applicable',
   PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `DISCOUNT_ADMIN`(`ADDED_BY` ASC) USING BTREE,
   UNIQUE INDEX `unique_discount_code`(`CODE` ASC) USING BTREE,
+  INDEX `DISCOUNT_ADMIN`(`ADDED_BY` ASC) USING BTREE,
   CONSTRAINT `DISCOUNT_ADMIN` FOREIGN KEY (`ADDED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
@@ -1320,7 +1321,7 @@ CREATE TABLE `notifications`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `notification_recipient`(`USER_ID` ASC) USING BTREE,
   CONSTRAINT `notification_recipient` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 311 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 320 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notifications
@@ -1483,6 +1484,13 @@ INSERT INTO `notifications` VALUES (305, 3, 'New order #228358 placed by Anindya
 INSERT INTO `notifications` VALUES (307, 2, 'New order #228359 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1240.00. Status: pending', 'ORDER', 0, '2025-07-30 11:02:40', '/admin/orders/228359');
 INSERT INTO `notifications` VALUES (308, 3, 'New order #228359 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1240.00. Status: pending', 'ORDER', 0, '2025-07-30 11:02:40', '/admin/orders/228359');
 INSERT INTO `notifications` VALUES (310, 3, 'Your order #228359 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-30 11:03:15', '/orders/228359');
+INSERT INTO `notifications` VALUES (311, 2, 'New order #228360 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1640.00. Status: pending', 'ORDER', 0, '2025-07-30 15:00:35', '/admin/orders/228360');
+INSERT INTO `notifications` VALUES (312, 3, 'New order #228360 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $1640.00. Status: pending', 'ORDER', 0, '2025-07-30 15:00:35', '/admin/orders/228360');
+INSERT INTO `notifications` VALUES (314, 2, 'New order #228361 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $140.00. Status: pending', 'ORDER', 0, '2025-07-30 15:10:25', '/admin/orders/228361');
+INSERT INTO `notifications` VALUES (315, 3, 'New order #228361 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $140.00. Status: pending', 'ORDER', 0, '2025-07-30 15:10:25', '/admin/orders/228361');
+INSERT INTO `notifications` VALUES (316, 3, 'Your order #228361 has been delivered! We hope you enjoy your books. Thank you for choosing BoiToi!', 'ORDER', 0, '2025-07-31 23:53:41', '/orders/228361');
+INSERT INTO `notifications` VALUES (317, 2, 'New order #228362 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $340.00. Status: pending', 'ORDER', 0, '2025-07-31 23:54:50', '/admin/orders/228362');
+INSERT INTO `notifications` VALUES (318, 3, 'New order #228362 placed by Anindya Biswas (parabolicanindya@gmail.com). Total amount: $340.00. Status: pending', 'ORDER', 0, '2025-07-31 23:54:50', '/admin/orders/228362');
 
 -- ----------------------------
 -- Table structure for order
@@ -1503,7 +1511,7 @@ CREATE TABLE `order`  (
   INDEX `order_confirmation`(`STATUS_UPDATED_BY` ASC) USING BTREE,
   CONSTRAINT `order_confirmation` FOREIGN KEY (`STATUS_UPDATED_BY`) REFERENCES `admin` (`USER_ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 228360 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 228363 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order
@@ -1523,6 +1531,9 @@ INSERT INTO `order` VALUES (228356, 3, '2025-07-30 02:37:33', '60 Biswanath Heig
 INSERT INTO `order` VALUES (228357, 3, '2025-07-30 03:30:52', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 2440.00, 3, '2025-07-30 03:32:32');
 INSERT INTO `order` VALUES (228358, 3, '2025-07-30 10:04:34', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'pending', 40.00, 2070.00, NULL, NULL);
 INSERT INTO `order` VALUES (228359, 3, '2025-07-30 11:02:40', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 1240.00, 3, '2025-07-30 11:03:15');
+INSERT INTO `order` VALUES (228360, 3, '2025-07-30 15:00:35', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'pending', 40.00, 1640.00, NULL, NULL);
+INSERT INTO `order` VALUES (228361, 3, '2025-07-30 15:10:25', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'delivered', 40.00, 140.00, 3, '2025-07-31 23:53:41');
+INSERT INTO `order` VALUES (228362, 3, '2025-07-31 23:54:50', '60 Biswanath Heights, Natun Bazar, Magura, Khulna, Bangladesh', 'pending', 40.00, 340.00, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for order_book
@@ -1575,6 +1586,9 @@ INSERT INTO `order_book` VALUES (228358, 336, 1);
 INSERT INTO `order_book` VALUES (228359, 230, 1);
 INSERT INTO `order_book` VALUES (228359, 281, 1);
 INSERT INTO `order_book` VALUES (228359, 316, 1);
+INSERT INTO `order_book` VALUES (228360, 288, 2);
+INSERT INTO `order_book` VALUES (228361, 308, 1);
+INSERT INTO `order_book` VALUES (228362, 202, 1);
 
 -- ----------------------------
 -- Table structure for order_discount
@@ -1613,7 +1627,7 @@ CREATE TABLE `payment`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `ORDER_ID`(`ORDER_ID` ASC) USING BTREE,
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`ORDER_ID`) REFERENCES `order` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of payment
@@ -1625,6 +1639,9 @@ INSERT INTO `payment` VALUES (4, 228356, NULL, 'cash_on_delivery', 1040, 'paid',
 INSERT INTO `payment` VALUES (5, 228357, NULL, 'cash_on_delivery', 2440, 'paid', NULL);
 INSERT INTO `payment` VALUES (6, 228358, NULL, 'cash_on_delivery', 2070, 'pending', NULL);
 INSERT INTO `payment` VALUES (7, 228359, NULL, 'cash_on_delivery', 1240, 'paid', NULL);
+INSERT INTO `payment` VALUES (8, 228360, NULL, 'cash_on_delivery', 1640, 'pending', NULL);
+INSERT INTO `payment` VALUES (9, 228361, NULL, 'cash_on_delivery', 140, 'paid', NULL);
+INSERT INTO `payment` VALUES (10, 228362, NULL, 'cash_on_delivery', 340, 'pending', NULL);
 
 -- ----------------------------
 -- Table structure for permission
@@ -1906,7 +1923,7 @@ CREATE TABLE `review`  (
   INDEX `idx_review_book_id`(`BOOK_ID` ASC) USING BTREE,
   CONSTRAINT `review_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `review_ibfk_2` FOREIGN KEY (`BOOK_ID`) REFERENCES `book` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of review
@@ -1920,6 +1937,7 @@ INSERT INTO `review` VALUES (6, 3, 201, 4, 'Recommended book if you\'re learning
 INSERT INTO `review` VALUES (7, 3, 287, 3, 'Great textbook for students who are already familiar with the concepts.', '2025-07-25 17:20:31', NULL);
 INSERT INTO `review` VALUES (8, 3, 215, 3, 'My kids read this.', '2025-07-25 17:46:02', NULL);
 INSERT INTO `review` VALUES (9, 3, 245, 1, 'My machine didn\'t learn anything from this book. I believe it\'s a scam.', '2025-07-30 03:36:17', NULL);
+INSERT INTO `review` VALUES (11, 3, 204, 3, 'Nice', '2025-07-30 12:07:03', NULL);
 
 -- ----------------------------
 -- Table structure for review_reaction
@@ -2006,7 +2024,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', NULL, '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', NULL, NULL, '01234567890', NULL, NULL, 0, 'MALE', NULL);
 INSERT INTO `user` VALUES (2, 'prottoy', 'prottoy@example.com', '$2b$10$O4z7p.fH5G9Kr9YlhhiKhe0TRWz7Aki6jnGrOVYwqDNw4KB.J8ZTS', 'Prottoy', 'Das', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
-INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-30 08:34:58', 1, 'MALE', '2003-04-20');
+INSERT INTO `user` VALUES (3, 'anindya', 'parabolicanindya@gmail.com', '$2b$10$E/JSVKR5NIXUr57PK5uEqO280lm/f7camMzf4w.8Xz3Wa8mNfHV6m', 'Anindya', 'Biswas', '01821646373', '2025-06-24 12:00:00', '2025-07-31 23:53:08', 1, 'MALE', '2003-04-20');
 INSERT INTO `user` VALUES (4, 'sourav', 'sourav@example.com', '$2b$10$cSpOAoJw8oKbwhvk1xxZmOLy99BM8v5OfKbQclE2BwQfVjgZQ1rBa', 'Sourav', 'Sarkar', '01712345678', '2025-06-24 12:00:00', '2025-06-24 12:00:00', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (5, 'THK_is_dead', 'tahjib@example.com', '$2b$10$gGtA5D8G1XuE.Ekh76xuGuNmEwiztRruePKl1WHYPBEO4tI6N0ICS', 'Tahjib', 'Hossain Khan', '01712345678', '2025-06-24 12:00:00', '2025-07-30 01:39:24', 1, 'MALE', '2000-01-01');
 INSERT INTO `user` VALUES (6, 'johnpork', 'johnpork@gmail.com', '$2b$10$WCnA6LqcglLLOHKoNWfUSe1T9CN.rXul4fnM2qQ8fHKatYuFYYwtC', 'John', 'Pork', '01234567891', '2025-06-28 01:41:00', '2025-06-28 01:41:00', 0, 'MALE', '2000-01-01');
